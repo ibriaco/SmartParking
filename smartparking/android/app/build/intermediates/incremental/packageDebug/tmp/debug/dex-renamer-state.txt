@@ -1,0 +1,7 @@
+#Mon Nov 25 21:43:44 CET 2019
+base.1=C\:\\Users\\elshe\\Documents\\GitHub\\SmartParking\\smartparking\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\0
+path.1=classes.dex
+base.0=C\:\\Users\\elshe\\Documents\\GitHub\\SmartParking\\smartparking\\android\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\1
+renamed.1=classes2.dex
+renamed.0=classes.dex
+path.0=classes.dex
