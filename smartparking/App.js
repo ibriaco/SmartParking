@@ -13,7 +13,7 @@ const RootStack = createStackNavigator(
   {
   Welcome: { screen: WelcomeScreen },
   Login: { screen: Login },
-  Register: { screen: Register },
+  Register: { screen: Register},
   Profile: { screen: Profile },
   Home: {screen: HomePage}  
   },

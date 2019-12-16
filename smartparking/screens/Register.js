@@ -10,14 +10,16 @@ const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 
 export default class Register extends Component {
-
+  static navigationOptions = {
+    header: null,
+  }
   render() {
     return (
-      <ScrollView flex={1}>
+      <ScrollView flex={1} >
       <ImageBackground source={require('../assets/background.png')} style={styles.container}>
         <View style={styles.title}>
           <Text style={{ color: '#fff', fontSize: 35, fontWeight: 'bold', paddingBottom: heightPercentageToDP(2) }}>
-            Welcome
+            Register
           </Text>
           <Text style={{ color: '#fff', fontSize: 18 }}>
             Create a new account
@@ -39,7 +41,7 @@ export default class Register extends Component {
           </View>
         </View>
         <View style={styles.bottom}>
-          <Text style={{ fontSize: 18, color: '#fff' }}>Already have an account?  <Text style={{ color: '#212121', fontWeight: 'bold', fontSize: 18 }}>Sign in</Text></Text>
+          <Text style={{ fontSize: 18, color: '#fff' }}>Already have an account?</Text><Button type="clear" title="Sign in" titleStyle={{ color: '#212121', fontWeight: 'bold', fontSize: 18 }} onPress = {()=>this.props.navigation.navigate('Login')}/>
         </View>
       </ImageBackground>
       </ScrollView>
@@ -52,6 +54,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     paddingHorizontal: widthPercentageToDP(5),
+    paddingVertical: heightPercentageToDP(3)
   },
   title: {
     height: HEIGHT / 5,
@@ -75,9 +78,10 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   bottom: {
-    height: HEIGHT / 6,
+    height: HEIGHT / 5,
     alignItems: 'center',
     justifyContent: 'center',
+    flexDirection: 'row'
   },
   icons: {
     justifyContent: 'space-between',

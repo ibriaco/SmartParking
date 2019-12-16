@@ -26,7 +26,6 @@ export default class WelcomeScreen extends Component {
           </Text>
         </View>
         <View style={styles.middle}>
-
         </View>
         <View style={styles.bottom}>
           <Button

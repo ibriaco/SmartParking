@@ -20,15 +20,15 @@ export default class WelcomeScreen extends Component {
   }
   render() {
     return (
-      <ScrollView flex = {1} scrollEnabled={true}>
+      <ScrollView scrollEnabled={false}>
       <ImageBackground source={require('../assets/background.png')} style={styles.container}>
 
         <View style={styles.title}>
           <Text style={{ color: '#fff', fontSize: 35, fontWeight: 'bold', paddingBottom: heightPercentageToDP(2) }}>
-            Welcome
+            Login
           </Text>
           <Text style={{ color: '#fff', fontSize: 18 }}>
-            Login to access your account
+            Access your account
           </Text>
         </View>
         <View style = {styles.middle}>
@@ -110,6 +110,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     backgroundColor: '#fff', 
+    
   },
   bottom: {
     height: HEIGHT / 6,
