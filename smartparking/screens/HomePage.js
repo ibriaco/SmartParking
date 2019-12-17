@@ -23,47 +23,26 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 var firebase;
 var mapStyle = [
   {
-      "featureType": "landscape.natural",
-      "elementType": "geometry.fill",
+      "featureType": "administrative",
+      "elementType": "labels.text.fill",
       "stylers": [
           {
-              "visibility": "on"
-          },
+              "color": "#444444"
+          }
+      ]
+  },
+  {
+      "featureType": "landscape",
+      "elementType": "all",
+      "stylers": [
           {
-              "color": "#e0efef"
+              "color": "#f2f2f2"
           }
       ]
   },
   {
       "featureType": "poi",
-      "elementType": "geometry.fill",
-      "stylers": [
-          {
-              "visibility": "on"
-          },
-          {
-              "hue": "#1900ff"
-          },
-          {
-              "color": "#c0e8e8"
-          }
-      ]
-  },
-  {
-      "featureType": "road",
-      "elementType": "geometry",
-      "stylers": [
-          {
-              "lightness": 100
-          },
-          {
-              "visibility": "simplified"
-          }
-      ]
-  },
-  {
-      "featureType": "road",
-      "elementType": "labels",
+      "elementType": "all",
       "stylers": [
           {
               "visibility": "off"
@@ -71,14 +50,41 @@ var mapStyle = [
       ]
   },
   {
-      "featureType": "transit.line",
-      "elementType": "geometry",
+      "featureType": "road",
+      "elementType": "all",
       "stylers": [
           {
-              "visibility": "on"
+              "saturation": -100
           },
           {
-              "lightness": 700
+              "lightness": 45
+          }
+      ]
+  },
+  {
+      "featureType": "road.highway",
+      "elementType": "all",
+      "stylers": [
+          {
+              "visibility": "simplified"
+          }
+      ]
+  },
+  {
+      "featureType": "road.arterial",
+      "elementType": "labels.icon",
+      "stylers": [
+          {
+              "visibility": "off"
+          }
+      ]
+  },
+  {
+      "featureType": "transit",
+      "elementType": "all",
+      "stylers": [
+          {
+              "visibility": "off"
           }
       ]
   },
@@ -87,7 +93,19 @@ var mapStyle = [
       "elementType": "all",
       "stylers": [
           {
-              "color": "#7dcdcd"
+              "color": "#46bcec"
+          },
+          {
+              "visibility": "on"
+          }
+      ]
+  },
+  {
+      "featureType": "water",
+      "elementType": "geometry.fill",
+      "stylers": [
+          {
+              "color": "#90e3dc"
           }
       ]
   }
@@ -110,7 +128,6 @@ class Map extends React.Component {
   
 
     this.state = {
-
 
       currentCoordinates: {
         latitude: LATITUDE,
@@ -164,7 +181,7 @@ class Map extends React.Component {
         }
         ],
   
-      //variable containing the initial region viewed by the user
+      //variable containing the initial region viewed by the user (europe)
       region:  {
         latitude: 45.4,
         longitude: 9.8,
@@ -184,37 +201,6 @@ class Map extends React.Component {
     };
   }
 
-  //THINGS USED TO INSERT DATA INTO THE DB
-  writeUserData(id,price,points){
-    firebase.database().ref('Areas/'+id).set({
-        points,
-        price
-    }).then((data)=>{
-        //success callback
-        //console.log('data ' , data)
-    }).catch((error)=>{
-        //error callback
-        console.log('error ' , error)
-    })
-    
-}
-
-//THINGS USED TO INSERT DATA INTO THE DB
-writeParking(areaId, color, id, points){
-  firebase.database().ref('Parkings/'+ areaId + '/' +id ).set({
-      areaId,
-      color,
-      id,
-      points
-  }).then((data)=>{
-      //success callback
-      //console.log('data ' , data)
-  }).catch((error)=>{
-      //error callback
-      console.log('error ' , error)
-  })
-  
-}
 
 async readAndDrawAreas () {
 
@@ -293,6 +279,7 @@ async readAndDrawParkings (area) {
     //funziona solo cosi? pazzesco
     if(this.state.followUser && this.mapView !== null)
       this.mapView.animateCamera({center:  this.state.currentCoordinates, zoom: 16}, {duration: 2000});
+
   }
 
   updateRegion(event){
@@ -372,6 +359,8 @@ async readAndDrawParkings (area) {
 
 }
 
+
+
   
   render() {
     return (
@@ -381,6 +370,7 @@ async readAndDrawParkings (area) {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19} 
+          zoomEnabled = {!this.state.followUser}
           loadingEnabled={true}
           customMapStyle={mapStyle}
           ref={ref => { this.mapView = ref }}           
@@ -393,7 +383,7 @@ async readAndDrawParkings (area) {
             <View key={index}>
               <Polygon
                 coordinates={polygon}
-                fillColor="#ff147c"
+                fillColor={polygon.color}
                 tappable={true}
                 strokeWidth={0}
                 onPress={() => this.showAreaInfo(area)}

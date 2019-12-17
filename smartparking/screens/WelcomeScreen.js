@@ -18,10 +18,10 @@ export default class WelcomeScreen extends Component {
       <ImageBackground source={require('../assets/background.png')} style={styles.container}>
 
         <View style={styles.title}>
-          <Text style={{ color: '#fff', fontSize: 35, fontWeight: 'bold', }}>
+          <Text style={{ color: '#fff', fontSize: 35, fontFamily: 'AntDesign', fontWeight: 'bold', }}>
             SmartParking
           </Text>
-          <Text style={{ color: '#fff', fontSize: 18 }}>
+          <Text style={{ color: '#fff', fontSize: 18,  }}>
             Simplify your life.
           </Text>
         </View>
