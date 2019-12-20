@@ -2,7 +2,9 @@ import React from "react";
 import {
   StyleSheet,
   View,  
-  Image,  
+  Image,
+  Text,
+  Dimensions
 } from "react-native";
 import MapView, {
   Marker,
@@ -13,7 +15,11 @@ import MapView, {
 } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 import * as Permissions from 'expo-permissions';
+import Modal from "react-native-modal";
 
+
+const HEIGHT = Dimensions.get('window').height;
+const WIDTH = Dimensions.get('window').width;
 const LATITUDE_DELTA = 0.0009;
 const LONGITUDE_DELTA = 0.0009;
 const LATITUDE = 46.166625;
@@ -128,6 +134,8 @@ class Map extends React.Component {
   
 
     this.state = {
+
+      isModalVisible: true,
 
       currentCoordinates: {
         latitude: LATITUDE,
@@ -359,6 +367,10 @@ async readAndDrawParkings (area) {
 
 }
 
+toggleModal = () => {
+  this.setState({ isModalVisible: !this.state.isModalVisible });
+};
+
 
 
   
@@ -371,6 +383,7 @@ async readAndDrawParkings (area) {
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19} 
           zoomEnabled = {!this.state.followUser}
+          scrollEnabled = {!this.state.followUser}
           loadingEnabled={true}
           customMapStyle={mapStyle}
           ref={ref => { this.mapView = ref }}           
@@ -445,8 +458,18 @@ async readAndDrawParkings (area) {
             <Image source={require('../assets/car_marker.png')} style={{height: 35, width:35 }} />
             </Marker.Animated>
         </MapView>
-        
+
+        <View>
+        <Modal isVisible={this.state.isModalVisible}>
+          <View style={styles.modalView}>
+            <Text>Hello!</Text>            
+          </View>
+        </Modal>
       </View>
+        
+
+      </View>
+      
     );
   }
 }
@@ -481,6 +504,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: 20,
     backgroundColor: "transparent"
+  },
+  modalView: {
+    position: "absolute",
+    bottom: -30,
+    left: -10,
+    borderRadius: 20,
+    backgroundColor: "white",
+    width: WIDTH - 20,
+    height: HEIGHT / 2
   }
 });
   
