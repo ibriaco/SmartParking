@@ -28,6 +28,9 @@ const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 
+var tappedArea;
+var tappedParking;
+var tappedParkingCoords;
 var firebase;
 var mapStyle = [
   {
@@ -168,14 +171,21 @@ class Map extends React.Component {
       ],
 
       //variable containing the tapped area, this one is deleted from the receivedAreas so i have to save the data
-      tappedArea: {
+      /*
+      tappedArea:{
         id: 0,
+        color: "",
+        nCS: 0,
+        nFree: 0,
+        nHandicap: 0,
+        nPay: 0,
+        nTot: 0,
         price: 0,
         points: [
         [{latitude: 0, longitude: 0}],
         ],
       },
-
+*/
       //variable containing (initially) the city where the user is, may be changed if the user inserts a different city
       selectedCity: "Sondrio",
 
@@ -305,8 +315,7 @@ async readAndDrawParkings (area) {
   }
 
   updateRegion(event){
-    console.log("change")
-  
+
     
     if(this.state.followUser){
       this.setState({region: {
@@ -316,33 +325,24 @@ async readAndDrawParkings (area) {
         longitudeDelta: 0
       }});
     }
-    /*
-    else{
-      this.setState({region: event});
-    }
-    */
+   
   }
 
   
 
-  getMapRegion() {
-
-    
+  getMapRegion() {    
     return {  latitude: this.state.coordinate.longitude,
       longitude: this.state.routeCoordinates[0].longitude,
       
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA
-    }
-
-
-    
+    }    
   }
 
 
   showAreaInfo(area){
 
-    this.setState({tappedArea: area});
+    tappedArea = area;
 
     //polygon è proprio il vettore di coordinate che rappresenta quella determinata area (o parte di area)
 
@@ -365,18 +365,19 @@ async readAndDrawParkings (area) {
   }
 
   showParkingInfo(parking) {
-    
-    //alert("Tap su Parcheggio di Tipo: " + parking.type);
+
+    tappedParking = parking;
+
 
     this.setState({isModalVisible: true});
 
-    //console.log(parking)
-    this.setState({tappedParkingCoords: {
-      latitude: ((parking.rectangle[0].latitude + parking.rectangle[1].latitude + parking.rectangle[2].latitude + parking.rectangle[3].latitude)/4) , 
-      longitude: ((parking.rectangle[0].longitude + parking.rectangle[1].longitude + parking.rectangle[2].longitude + parking.rectangle[3].longitude)/4)
-    },}), function () {
-      console.log(this.state.tappedParkingCoords);
-  };
+    alert("Tap su Parcheggio di Tipo: " + parking.type);
+
+    tappedParkingCoords = {
+      latitude : ((tappedParking.rectangle[0].latitude + tappedParking.rectangle[1].latitude + tappedParking.rectangle[2].latitude + tappedParking.rectangle[3].latitude)/4),
+      longitude : ((tappedParking.rectangle[0].longitude + tappedParking.rectangle[1].longitude + tappedParking.rectangle[2].longitude + tappedParking.rectangle[3].longitude)/4),
+    }
+   
 
 /*
     let newArray = [...this.state.routeCoordinates];
@@ -386,24 +387,13 @@ async readAndDrawParkings (area) {
 
   }
 
-  setCoords(parking){
-
-    
-
-  }
-
-
-  showParkingRoute(parking) {
-
+  showParkingRoute() {
    
     this.setState({isModalVisible: false});
 
-
-
     let newArray = [...this.state.routeCoordinates];
-    newArray[1] = {latitude: parking.rectangle[0].latitude, longitude: parking.rectangle[0].longitude};
-    this.setState({routeCoordinates: newArray});
-  
+    newArray[1] = {latitude: tappedParkingCoords.latitude, longitude: tappedParkingCoords.longitude};
+    this.setState({routeCoordinates: newArray});  
 
   }
 
@@ -511,8 +501,8 @@ toggleModal = () => {
         <Modal isVisible={this.state.isModalVisible}>
           <View style={styles.modalView}>
             <Text>Hello!</Text> 
-            <Button title="path" onPress={() => this.showParkingRoute(this.state.tappedParkingCoords)}></Button>
-            <Button title="google maps" onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.state.tappedParkingCoords.latitude + ',' + this.tappedParkingCoords.longitude + '+dir_action=navigate')}></Button>           
+            <Button title="path" onPress={() => this.showParkingRoute()}></Button>
+            <Button title="google maps" onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + tappedParkingCoords.latitude + ',' + tappedParkingCoords.longitude + '&dir_action=navigate')}></Button>           
           </View>
         </Modal>
       </View>
