@@ -4,7 +4,9 @@ import {
   View,  
   Image,
   Text,
-  Dimensions
+  Dimensions,
+  Button,
+  Linking
 } from "react-native";
 import MapView, {
   Marker,
@@ -135,7 +137,12 @@ class Map extends React.Component {
 
     this.state = {
 
-      isModalVisible: true,
+      isModalVisible: false,
+
+      tappedParkingCoords: {
+        latitude: 0,
+        longitude: 0
+      },
 
       currentCoordinates: {
         latitude: LATITUDE,
@@ -143,6 +150,13 @@ class Map extends React.Component {
       },
 
       followUser: true,
+
+      //variable containing the tapped area
+      tappedParking: {
+        color: '',
+        type: '',
+        rectangle:[ {latitude: 0, longitude: 0},{latitude: 0, longitude: 0},{latitude: 0, longitude: 0},{latitude: 0, longitude: 0}],
+      },
 
       //variable containing the fetched parkings belonging to the tapped area
       tappedAreaParkings: [
@@ -350,13 +364,47 @@ async readAndDrawParkings (area) {
 
   }
 
-  showParkingInfoAndRoute(parking) {
+  showParkingInfo(parking) {
+    
+    //alert("Tap su Parcheggio di Tipo: " + parking.type);
 
-    alert("Tap su Parcheggio di Tipo: " + parking.type);
+    this.setState({isModalVisible: true});
+
+    //console.log(parking)
+    this.setState({tappedParkingCoords: {
+      latitude: ((parking.rectangle[0].latitude + parking.rectangle[1].latitude + parking.rectangle[2].latitude + parking.rectangle[3].latitude)/4) , 
+      longitude: ((parking.rectangle[0].longitude + parking.rectangle[1].longitude + parking.rectangle[2].longitude + parking.rectangle[3].longitude)/4)
+    },}), function () {
+      console.log(this.state.tappedParkingCoords);
+  };
+
+/*
+    let newArray = [...this.state.routeCoordinates];
+    newArray[1] = {latitude: parking.rectangle[0].latitude, longitude: parking.rectangle[0].longitude};
+    this.setState({routeCoordinates: newArray});
+    */
+
+  }
+
+  setCoords(parking){
+
+    
+
+  }
+
+
+  showParkingRoute(parking) {
+
+   
+    this.setState({isModalVisible: false});
+
+
 
     let newArray = [...this.state.routeCoordinates];
     newArray[1] = {latitude: parking.rectangle[0].latitude, longitude: parking.rectangle[0].longitude};
     this.setState({routeCoordinates: newArray});
+  
+
   }
 
   removeArea(a) {
@@ -382,8 +430,8 @@ toggleModal = () => {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19} 
-          zoomEnabled = {!this.state.followUser}
-          scrollEnabled = {!this.state.followUser}
+          //zoomEnabled = {!this.state.followUser}
+          //scrollEnabled = {!this.state.followUser}
           loadingEnabled={true}
           customMapStyle={mapStyle}
           ref={ref => { this.mapView = ref }}           
@@ -410,7 +458,7 @@ toggleModal = () => {
                 coordinates={parking.rectangle}
                 fillColor={parking.color}
                 tappable={true}
-                onPress={() => this.showParkingInfoAndRoute(parking)}
+                onPress={() => this.showParkingInfo(parking)}
                 />              
             </View>
           ))}
@@ -462,7 +510,9 @@ toggleModal = () => {
         <View>
         <Modal isVisible={this.state.isModalVisible}>
           <View style={styles.modalView}>
-            <Text>Hello!</Text>            
+            <Text>Hello!</Text> 
+            <Button title="path" onPress={() => this.showParkingRoute(this.state.tappedParkingCoords)}></Button>
+            <Button title="google maps" onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.state.tappedParkingCoords.latitude + ',' + this.tappedParkingCoords.longitude + '+dir_action=navigate')}></Button>           
           </View>
         </Modal>
       </View>
