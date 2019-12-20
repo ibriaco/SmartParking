@@ -16,7 +16,7 @@ const itemHorizontalMargin = wp(2);
 export const sliderWidth = viewportWidth;
 export const itemWidth = slideWidth + itemHorizontalMargin * 2;
 
-const entryBorderRadius = 8;
+const entryBorderRadius = 6;
 
 export default StyleSheet.create({
     slideInnerContainer: {
@@ -40,7 +40,7 @@ export default StyleSheet.create({
     imageContainer: {
         flex: 1,
         marginBottom: IS_IOS ? 0 : -1, // Prevent a random Android rendering issue
-        backgroundColor: 'white',
+        backgroundColor: 'black',
         borderTopLeftRadius: entryBorderRadius,
         borderTopRightRadius: entryBorderRadius
     },
@@ -61,39 +61,31 @@ export default StyleSheet.create({
         left: 0,
         right: 0,
         height: entryBorderRadius,
-        backgroundColor: 'white'
+        backgroundColor: '#00ffcc'
     },
-    radiusMaskEven: {
-        backgroundColor: colors.black
-    },
+    
     textContainer: {
         justifyContent: 'center',
         paddingTop: 20 - entryBorderRadius,
         paddingBottom: 20,
         paddingHorizontal: 16,
-        backgroundColor: 'white',
+        backgroundColor: 'black',
         borderBottomLeftRadius: entryBorderRadius,
         borderBottomRightRadius: entryBorderRadius
     },
-    textContainerEven: {
-        backgroundColor: colors.black
-    },
+    
     title: {
-        color: colors.black,
+        color: 'white',
         fontSize: 13,
-        fontWeight: 'bold',
+        fontFamily: 'Montserrat-Regular',
         letterSpacing: 0.5
     },
-    titleEven: {
-        color: 'white'
-    },
+    
     subtitle: {
         marginTop: 6,
         color: colors.gray,
         fontSize: 12,
-        fontStyle: 'italic'
+        fontFamily: 'Montserrat-Regular',
     },
-    subtitleEven: {
-        color: 'rgba(255, 255, 255, 0.7)'
-    }
+    
 });

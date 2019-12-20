@@ -3,8 +3,25 @@ import { View, Text, Image, TouchableOpacity } from 'react-native';
 import PropTypes from 'prop-types';
 import { ParallaxImage } from 'react-native-snap-carousel';
 import styles from './SliderEntry.style';
+import * as Font from 'expo-font';
+
 
 export default class SliderEntry extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            fontLoaded: false
+        };
+    }
+    
+    async componentDidMount() {
+      await Font.loadAsync({
+        'Montserrat-Regular': require('../assets/fonts/Montserrat-Regular.ttf'),
+      });
+    
+      this.setState({ fontLoaded: true });
+    }
+    
 
     static propTypes = {
         data: PropTypes.object.isRequired,
@@ -37,20 +54,14 @@ export default class SliderEntry extends Component {
     render () {
         const { data: { title, subtitle } } = this.props;
 
-        const uppercaseTitle = title ? (
-            <Text
-              style={styles.title}
-              numberOfLines={2}
-            >
-                { title.toUpperCase() }
-            </Text>
-        ) : false;
+        
+        
 
         return (
+            
             <TouchableOpacity
               activeOpacity={1}
               style={styles.slideInnerContainer}
-              onPress={() => { alert(`You've clicked '${title}'`); }}
               >
                 <View style={styles.shadow} />
                 <View style={styles.imageContainer}>
@@ -58,13 +69,23 @@ export default class SliderEntry extends Component {
                     <View style={styles.radiusMask}/>
                 </View>
                 <View style={styles.textContainer}>
-                    { uppercaseTitle }
+
+                {this.state.fontLoaded ? (
+                    <Text
+                        style={styles.title}
+                        numberOfLines={2}
+                    >
+                    { title.toUpperCase() }
+                    </Text>
+                ): null}
+                {this.state.fontLoaded ? (
                     <Text
                       style={styles.subtitle}
                       numberOfLines={2}
                     >
                         { subtitle }
                     </Text>
+                ): null}
                 </View>
             </TouchableOpacity>
         );
