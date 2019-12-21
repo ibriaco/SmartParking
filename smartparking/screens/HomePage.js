@@ -164,6 +164,7 @@ class Map extends React.Component {
       //variable containing the fetched parkings belonging to the tapped area
       tappedAreaParkings: [
         {
+          id: 0,
           color: '',
           type: '',
           rectangle:[ {latitude: 0, longitude: 0}],
@@ -197,6 +198,7 @@ class Map extends React.Component {
       routeCoordinates: [],
 
       //variable containing the fetched areas belonging to the selected city
+      
       receivedAreas: [ 
         {
           id: 0,
@@ -237,16 +239,18 @@ class Map extends React.Component {
 async readAndDrawAreas () {
 
 //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
+
 firebase.database().ref(this.state.selectedCity + '/Areas').on('value', (snapshot) => {    
   this.setState({receivedAreas: snapshot.val()});
   })        
+  
 
 }
 
 async readAndDrawParkings (area) {
 
   //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
-  firebase.database().ref(this.state.selectedCity + '/Parkings' + area.id).on('value', (snapshot) => {    
+  firebase.database().ref(this.state.selectedCity + '/Parkings/Parkings' + area.id).on('value', (snapshot) => {    
     this.setState({tappedAreaParkings: snapshot.val()});  
 
  })        
@@ -410,6 +414,11 @@ toggleModal = () => {
 };
 
 
+addReservation(){
+  firebase.database().ref(this.state.selectedCity + '/Reservations/Reservation' + tappedArea.id + '-' + tappedParking.id).set( {    
+    id: 1
+})
+}
 
   
   render() {
@@ -501,6 +510,7 @@ toggleModal = () => {
         <Modal isVisible={this.state.isModalVisible}>
           <View style={styles.modalView}>
             <Text>Hello!</Text> 
+            <Button title="i parked here" onPress={() => this.addReservation()}></Button>
             <Button title="path" onPress={() => this.showParkingRoute()}></Button>
             <Button title="google maps" onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + tappedParkingCoords.latitude + ',' + tappedParkingCoords.longitude + '&dir_action=navigate')}></Button>           
           </View>
