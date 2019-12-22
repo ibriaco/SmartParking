@@ -18,6 +18,7 @@ import MapView, {
 import MapViewDirections from 'react-native-maps-directions';
 import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
+import MAP_STYLE from "./mapStyle.js"
 
 
 const HEIGHT = Dimensions.get('window').height;
@@ -32,95 +33,6 @@ var tappedArea;
 var tappedParking;
 var tappedParkingCoords;
 var firebase;
-var mapStyle = [
-  {
-      "featureType": "administrative",
-      "elementType": "labels.text.fill",
-      "stylers": [
-          {
-              "color": "#444444"
-          }
-      ]
-  },
-  {
-      "featureType": "landscape",
-      "elementType": "all",
-      "stylers": [
-          {
-              "color": "#f2f2f2"
-          }
-      ]
-  },
-  {
-      "featureType": "poi",
-      "elementType": "all",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "road",
-      "elementType": "all",
-      "stylers": [
-          {
-              "saturation": -100
-          },
-          {
-              "lightness": 45
-          }
-      ]
-  },
-  {
-      "featureType": "road.highway",
-      "elementType": "all",
-      "stylers": [
-          {
-              "visibility": "simplified"
-          }
-      ]
-  },
-  {
-      "featureType": "road.arterial",
-      "elementType": "labels.icon",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "transit",
-      "elementType": "all",
-      "stylers": [
-          {
-              "visibility": "off"
-          }
-      ]
-  },
-  {
-      "featureType": "water",
-      "elementType": "all",
-      "stylers": [
-          {
-              "color": "#46bcec"
-          },
-          {
-              "visibility": "on"
-          }
-      ]
-  },
-  {
-      "featureType": "water",
-      "elementType": "geometry.fill",
-      "stylers": [
-          {
-              "color": "#90e3dc"
-          }
-      ]
-  }
-];
 
 class Map extends React.Component {
   constructor(props) {
@@ -240,7 +152,7 @@ async readAndDrawAreas () {
 
 //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
 
-firebase.database().ref(this.state.selectedCity + '/Areas').on('value', (snapshot) => {    
+firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {    
   this.setState({receivedAreas: snapshot.val()});
   })        
   
@@ -250,7 +162,7 @@ firebase.database().ref(this.state.selectedCity + '/Areas').on('value', (snapsho
 async readAndDrawParkings (area) {
 
   //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
-  firebase.database().ref(this.state.selectedCity + '/Parkings/Parkings' + area.id).on('value', (snapshot) => {    
+  firebase.database().ref('Cities/' + this.state.selectedCity + '/Parkings/Parkings' + area.id).on('value', (snapshot) => {    
     this.setState({tappedAreaParkings: snapshot.val()});  
 
  })        
@@ -383,6 +295,11 @@ async readAndDrawParkings (area) {
     }
    
 
+//get the CURRENT number of reservations for that specific parking, better to create an async function
+    firebase.database().ref('Cities/' + this.state.selectedCity + '/Reservations/Reservations' + tappedArea.id + '-' + tappedParking.id).on('value', (snapshot) => {    
+      console.log(snapshot.numChildren())
+   })   
+
 /*
     let newArray = [...this.state.routeCoordinates];
     newArray[1] = {latitude: parking.rectangle[0].latitude, longitude: parking.rectangle[0].longitude};
@@ -415,8 +332,10 @@ toggleModal = () => {
 
 
 addReservation(){
-  firebase.database().ref(this.state.selectedCity + '/Reservations/Reservation' + tappedArea.id + '-' + tappedParking.id).set( {    
-    id: 1
+
+
+  firebase.database().ref('Cities/' + this.state.selectedCity + '/Reservations/Reservations' + tappedArea.id + '-' + tappedParking.id).set( {    
+    timestampS: firebase.database.ServerValue.TIMESTAMP, //in milliseconds
 })
 }
 
@@ -429,10 +348,11 @@ addReservation(){
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19} 
+          //migliorare questa cosa
           //zoomEnabled = {!this.state.followUser}
           //scrollEnabled = {!this.state.followUser}
           loadingEnabled={true}
-          customMapStyle={mapStyle}
+          customMapStyle={MAP_STYLE}
           ref={ref => { this.mapView = ref }}           
           initialRegion={this.state.region}    
         >
