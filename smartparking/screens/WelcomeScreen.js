@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+/*import React, { Component } from 'react'
 import { Text, StyleSheet, View, Image, Dimensions, ImageBackground, UIManager } from 'react-native'
 import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
 import { TextInput } from 'react-native-gesture-handler';
@@ -50,7 +50,7 @@ async componentDidMount() {
   }
   render() {
     return (
-      <ImageBackground source={require('../assets/sfondo2.png')} style={styles.container}>
+      <View style={styles.container}>
 
         <View style={styles.title}>
         {this.state.fontLoaded ? (
@@ -121,7 +121,7 @@ async componentDidMount() {
         </View>
 
 
-      </ImageBackground>
+      </View>
     )
   }
 }
@@ -132,6 +132,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: widthPercentageToDP(5),
     paddingVertical: heightPercentageToDP(5),
+    backgroundColor: '#009788'
   },
   title: {
     height: HEIGHT / 5,
@@ -151,5 +152,123 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 })
+*/
 
+import React, { Component } from 'react';
 
+import { StyleSheet, View, Text, Platform } from 'react-native';
+
+import AppIntroSlider from 'react-native-app-intro-slider';
+
+export default class App extends Component {
+  static navigationOptions = {
+    header: null, 
+  }
+
+  constructor(props) {
+    super(props);
+    this.state = {
+
+      show_App: false
+
+    };
+  }
+
+  onDone = () => {
+    this.props.navigation.navigate('Login');
+  };
+
+  onSkip = () => {
+    this.props.navigation.navigate('Login');
+  };
+  render() {
+    if (this.state.show_App) {
+      return (
+        <View style={styles.mainapp}>
+
+          <Text style={{ textAlign: 'center', fontSize: 20, color: '#fff' }}>
+
+            This is your main App .
+
+          </Text>
+
+        </View>
+      );
+    } else {
+      return (
+        <AppIntroSlider
+          slides={slides}
+          onDone={this.onDone}
+          showSkipButton={true}
+          onSkip={this.onSkip}
+          
+        />
+      );
+    }
+  }
+}
+const styles = StyleSheet.create({
+
+  mainapp: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: 20,
+    flexDirection: 'row'
+  },
+  title: {
+    fontSize: 32,
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    marginTop: 0,
+    opacity: 1,
+    //alignItems: 'flex-end',
+    marginTop: 20
+  },
+  text: {
+    color: '#fff',
+    fontSize: 20,
+    opacity: 0.8,
+    backgroundColor: 'transparent'
+  },
+  image: {
+    width: 240,
+    height: 240,
+    resizeMode: 'contain',
+    marginBottom: 80
+  }
+});
+
+const slides = [
+  {
+    title:'Search',
+    key: 's1',
+    text: 'Choose your destination\nand we will find an available\nparking spot nearby',
+    image: require("../assets/images/comp1.png"),
+    titleStyle: styles.title,
+    textStyle: styles.text,
+    imageStyle: styles.image,
+    backgroundColor: 'rgba(13,182,101, 0.9)',
+  },
+  {
+    title:'Payment',
+    key: 's2',
+    text: 'Pay in a few touches\nwith any payment system',
+    image: require("../assets/images/comp2.png"),
+    titleStyle: styles.title,
+    textStyle: styles.text,
+    imageStyle: styles.image,
+    backgroundColor: '#0DB665',
+  },
+  {
+    title:'Time',
+    key: 's3',
+    text: 'Save your time\nsearching the perfect parking',
+    image: require("../assets/images/comp3.png"),
+    titleStyle: styles.title,
+    textStyle: styles.text,
+    imageStyle: styles.image,
+    backgroundColor: '#0DB665',
+  },
+];

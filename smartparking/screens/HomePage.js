@@ -19,6 +19,7 @@ import MapViewDirections from 'react-native-maps-directions';
 import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
 import MAP_STYLE from "./mapStyle.js"
+import { Searchbar } from 'react-native-paper';
 
 
 const HEIGHT = Dimensions.get('window').height;
@@ -52,6 +53,7 @@ class Map extends React.Component {
 
     this.state = {
 
+      firstQuery: '',
       isModalVisible: false,
 
       tappedParkingCoords: {
@@ -341,9 +343,10 @@ addReservation(){
 
   
   render() {
+    const { firstQuery } = this.state;
     return (
+      
       <View style={styles.container}>
-        
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -422,9 +425,18 @@ addReservation(){
           <Marker.Animated
             ref={marker => {this.marker = marker;}}
             coordinate={this.state.coordinate}>
-            <Image source={require('../assets/car_marker.png')} style={{height: 35, width:35 }} />
-            </Marker.Animated>
+            <Image source={require('../assets/icons/car_marker.png')} style={{height: 35, width:35 }} />
+          </Marker.Animated>
         </MapView>
+        <Searchbar
+          placeholder="Where are you going?"
+          placeholderTextColor = 'rgba(165, 165, 165, 0.8)'
+          iconColor = 'rgba(165, 165, 165, 0.8)'
+          rightIcon = "facebook"
+          onChangeText={query => { this.setState({ firstQuery: query }); }}
+          value={firstQuery}
+          style = {styles.searchbar}
+      />
 
         <View>
         <Modal isVisible={this.state.isModalVisible}>
@@ -446,8 +458,8 @@ addReservation(){
 
 const styles = StyleSheet.create({
   container: {
-    ...StyleSheet.absoluteFillObject,
-    justifyContent: "flex-end",
+   flex:1,
+    justifyContent: "flex-start",
     alignItems: "center"
   },
   map: {
@@ -483,6 +495,15 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     width: WIDTH - 20,
     height: HEIGHT / 2
+  },
+  searchbar: {
+    marginTop: 40,
+    marginHorizontal: 40,
+    borderRadius: 10,
+    opacity: 1,
+    height: 50
+
+
   }
 });
   

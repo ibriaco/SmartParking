@@ -1,375 +1,219 @@
-import React, { Component } from 'react'
-import { Text, StyleSheet, View, Image, Dimensions, ImageBackground, UIManager, KeyboardAvoidingView } from 'react-native'
-import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
-import { TextInput, ScrollView } from 'react-native-gesture-handler';
-import { Button, Header } from 'react-native-elements'
-import { Input, NavBar } from 'galio-framework'
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { HeaderBackButton } from 'react-navigation-stack';
+import React, { Component } from "react";
+import { Image, StyleSheet, ScrollView, TextInput } from "react-native";
+import Slider from "react-native-slider";
 
+import { Divider, Button, Block, Text, Switch } from "../components";
+import { theme, mocks } from "../constants";
 
-const HEIGHT = Dimensions.get('window').height;
-const WIDTH = Dimensions.get('window').width;
+class Profile extends Component {
+  state = {
+    budget: 850,
+    monthly: 1700,
+    notifications: true,
+    newsletter: false,
+    editing: null,
+    profile: {}
+  };
 
-
-export default class Profile extends Component {
-  static navigationOptions = {
-    title: 'Profile',
-    titleStyle: {
-      color: '#000', 
-      fontSize: 45, 
-      fontWeight: 'bold',
-    },
-    headerTitleStyle: {
-      textAlign: 'center',
-      flexGrow:1,
-      alignSelf:'center',
-  },
-  headerRight: (
-    <View></View>
-  ),
+  componentDidMount() {
+    this.setState({ profile: this.props.profile });
   }
-  
-  render() {
-    return (
-      <View style={{ flex: 1 }}>
-        <ScrollView scrollEnabled={false}>
-          <ImageBackground source={require('../assets/background.png')} style={styles.container}>
-            
-            <View style={styles.middle}>
-              <View style={styles.inputBox}>
-                <Input label="Name" labelStyle={{ color: '#212121', opacity: 0.5 }}></Input>
-                <Input label="Surname" labelStyle={{ color: '#212121', opacity: 0.5 }}></Input>
-                <Input label="Email Address" labelStyle={{ color: '#212121', opacity: 0.5 }}></Input>
-                <Input label="Password" labelStyle={{ color: '#212121', opacity: 0.5 }} password viewPass></Input>
-                <Button
-                  title="Save"
-                  type="solid"
-                  buttonStyle={{ paddingHorizontal: widthPercentageToDP(18), paddingVertical: heightPercentageToDP(2), borderRadius: 25, backgroundColor: '#009688' }}
-                  titleStyle={{ color: '#fff' }}
-                />
-              </View>
-            </View>
-            <View style={{ height: HEIGHT * (2 / 5) }}></View>
-          </ImageBackground>
-        </ScrollView>
-        <View style={styles.footer}>
-        <Icon
-            name="home"
-            size={25}
-            style={{ color: '#000' }}
-            onPress = {()=>this.props.navigation.navigate('Home')}
-          />
-          <Icon
-            name="cog"
-            size={25}
-            style={{ color: '#000' }}
-          />
-          <Icon
-            name="car"
-            size={25}
-            label="HELLO" 
-            style={{ color: '#000' }}
-            onPress = {this.getLocationHandler}
-          />
-          <Icon
-            name="user-circle"
-            size={25}
-            style={{ color: '#000' }}
-            onPress = {()=>this.props.navigation.navigate('Profile')}
 
-          />
-        </View>
-      </View>
+  handleEdit(name, text) {
+    const { profile } = this.state;
+    profile[name] = text;
 
-    )
+    this.setState({ profile });
   }
-}
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    paddingHorizontal: widthPercentageToDP(5),
-    paddingVertical: heightPercentageToDP(5),
-
-  },
-  title: {
-    height: HEIGHT / 5,
-    paddingHorizontal: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  middle: {
-    //height: HEIGHT * (3 / 5),
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  inputBox: {
-    height: HEIGHT * (3 / 5) - 50,
-    width: WIDTH - 70,
-    paddingHorizontal: 30,
-    paddingVertical: 25,
-    borderRadius: 20,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    backgroundColor: '#fff',
-  },
-  footer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    alignContent: 'center',
-    paddingVertical: heightPercentageToDP(1),
-    backgroundColor: '#000',
-  },
-  icons: {
-    justifyContent: 'space-between',
+  toggleEdit(name) {
+    const { editing } = this.state;
+    this.setState({ editing: !editing ? name : null });
   }
-})
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*import React, { Component } from 'react'
-import { Text, StyleSheet, View, Dimensions, TouchableOpacity, TextInput, KeyboardAvoidingView } from 'react-native'
-import { Input, Button } from 'react-native-elements'
-import Icon from 'react-native-vector-icons/FontAwesome'
-import { widthPercentageToDP, heightPercentageToDP } from 'react-native-responsive-screen';
-
-const { height, width } = Dimensions.get('window');
-
-export default class WelcomeScreen extends Component {
-  render() {
-    return (
-      <KeyboardAvoidingView style={styles.container} behavior="padding">
-        <View style={styles.up}>
-          <Icon
-            name = "chevron-left"
-            size = {widthPercentageToDP(5)}
-            color = "#009688"
-          />
-          <Text style =
-                      {{
-                        fontFamily: 'sans-serif',
-                        fontSize: widthPercentageToDP(10),
-                        fontWeight: '700',
-                        color: '#000000',
-                      }}>Login</Text>
-        <Text style =
-                      {{
-                        fontFamily: 'sans-serif',
-                        fontSize: widthPercentageToDP(5),
-                        fontWeight: 'normal',
-                        color: '#009688',
-                      }}>Please login to continue.</Text>
-        </View>
-
-        <View style={styles.bot}>
-          <Input rightIcon={
-            <Icon name ="envelope"
-                  color = "#A9A9A9A9"
-                  size = {widthPercentageToDP(5)}
-
-            />
-          } labelStyle = {{fontFamily:'sans-serif', fontWeight:'normal', fontSize: widthPercentageToDP(4), color:'#009688'}} label = "Your Email Address" placeholder="email@address.com"></Input>
-          <Input rightIcon={
-            <Icon name ="lock"
-                  color = "#A9A9A9A9"
-                  size = {widthPercentageToDP(6)}
-
-            />
-          } labelStyle = {{fontFamily:'sans-serif',  fontWeight:'normal', fontSize: widthPercentageToDP(4), color:'#009688'}} label = "Password" placeholder="Password"></Input>
-          <Button
-          title="Login"
-          buttonStyle = {{backgroundColor: '#009688', paddingHorizontal: widthPercentageToDP(10), padding:heightPercentageToDP(1), borderRadius: widthPercentageToDP(2)}}
+  renderEdit(name) {
+    const { profile, editing } = this.state;
+
+    if (editing === name) {
+      return (
+        <TextInput
+          defaultValue={profile[name]}
+          onChangeText={text => this.handleEdit([name], text)}
         />
-        </View>
+      );
+    }
 
+    return <Text bold>{profile[name]}</Text>;
+  }
 
-      </KeyboardAvoidingView>
-    )
+  render() {
+    const { profile, editing } = this.state;
+
+    return (
+      <Block>
+        <Block flex={false} row center space="between" style={styles.header}>
+          <Text h1 bold>
+            Settings
+          </Text>
+          <Button>
+            <Image source={profile.avatar} style={styles.avatar} />
+          </Button>
+        </Block>
+
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Block style={styles.inputs}>
+            <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+              <Block>
+                <Text gray2 style={{ marginBottom: 10 }}>
+                  Full Name
+                </Text>
+                {this.renderEdit("fullname")}
+              </Block>
+              <Text
+                medium
+                secondary
+                onPress={() => this.toggleEdit("fullname")}
+              >
+                {editing === "fullname" ? "Save" : "Edit"}
+              </Text>
+            </Block>
+            <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+              <Block>
+                <Text gray2 style={{ marginBottom: 10 }}>
+                  Email Address
+                </Text>
+                {this.renderEdit("email")}
+              </Block>
+              <Text
+                medium
+                secondary
+                onPress={() => this.toggleEdit("location")}
+              >
+                {editing === "email" ? "Save" : "Edit"}
+              </Text>
+            </Block>
+            <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+              <Block>
+                <Text gray2 style={{ marginBottom: 10 }}>
+                  Password
+                </Text>
+                {this.renderEdit("password")}
+              </Block>
+            </Block>
+          </Block>
+
+          <Divider margin={[theme.sizes.base, theme.sizes.base * 2]} />
+
+          <Block style={styles.sliders}>
+            <Block margin={[10, 0]}>
+              <Text gray2 style={{ marginBottom: 10 }}>
+                Budget
+              </Text>
+              <Slider
+                minimumValue={0}
+                maximumValue={1000}
+                style={{ height: 19 }}
+                thumbStyle={styles.thumb}
+                trackStyle={{ height: 6, borderRadius: 6 }}
+                minimumTrackTintColor={theme.colors.secondary}
+                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
+                value={this.state.budget}
+                onValueChange={value => this.setState({ budget: value })}
+              />
+              <Text caption gray right>
+                $1,000
+              </Text>
+            </Block>
+            <Block margin={[10, 0]}>
+              <Text gray2 style={{ marginBottom: 10 }}>
+                Monthly Cap
+              </Text>
+              <Slider
+                minimumValue={0}
+                maximumValue={5000}
+                style={{ height: 19 }}
+                thumbStyle={styles.thumb}
+                trackStyle={{ height: 6, borderRadius: 6 }}
+                minimumTrackTintColor={theme.colors.secondary}
+                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
+                value={this.state.monthly}
+                onValueChange={value => this.setState({ monthly: value })}
+              />
+              <Text caption gray right>
+                $5,000
+              </Text>
+            </Block>
+          </Block>
+
+          <Divider />
+
+          <Block style={styles.toggles}>
+            <Block
+              row
+              center
+              space="between"
+              style={{ marginBottom: theme.sizes.base * 2 }}
+            >
+              <Text gray2>Notifications</Text>
+              <Switch
+                value={this.state.notifications}
+                onValueChange={value => this.setState({ notifications: value })}
+              />
+            </Block>
+
+            <Block
+              row
+              center
+              space="between"
+              style={{ marginBottom: theme.sizes.base * 2 }}
+            >
+              <Text gray2>Newsletter</Text>
+              <Switch
+                value={this.state.newsletter}
+                onValueChange={value => this.setState({ newsletter: value })}
+              />
+            </Block>
+          </Block>
+        </ScrollView>
+      </Block>
+    );
   }
 }
 
+Profile.defaultProps = {
+  profile: mocks.profile
+};
+
+export default Profile;
+
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    //alignItems: 'center',
-    marginHorizontal: widthPercentageToDP(10),
-    marginVertical: heightPercentageToDP(10)
+  header: {
+    paddingHorizontal: theme.sizes.base * 2
   },
-  up: {
-    flex: 0.6,
-    flexDirection: 'column',
-    backgroundColor: '#ffff',
-    justifyContent: 'flex-start',
-    //alignItems: 'center'
+  avatar: {
+    height: theme.sizes.base * 2.2,
+    width: theme.sizes.base * 2.2
   },
-  mid: {
-    flex: 0.5,
-    justifyContent: 'space-evenly',
+  inputs: {
+    marginTop: theme.sizes.base * 0.7,
+    paddingHorizontal: theme.sizes.base * 2
   },
-  bot: {
-    flex: 0.5,
-    alignItems: 'center',
-    justifyContent: 'space-around'
+  inputRow: {
+    alignItems: "flex-end"
+  },
+  sliders: {
+    marginTop: theme.sizes.base * 0.7,
+    paddingHorizontal: theme.sizes.base * 2
+  },
+  thumb: {
+    width: theme.sizes.base,
+    height: theme.sizes.base,
+    borderRadius: theme.sizes.base,
+    borderColor: "white",
+    borderWidth: 3,
+    backgroundColor: theme.colors.secondary
+  },
+  toggles: {
+    paddingHorizontal: theme.sizes.base * 2
   }
-
-
-})*/
+});

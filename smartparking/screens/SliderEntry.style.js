@@ -61,7 +61,7 @@ export default StyleSheet.create({
         left: 0,
         right: 0,
         height: entryBorderRadius,
-        backgroundColor: '#00ffcc'
+        backgroundColor: '#fff'
     },
     
     textContainer: {
