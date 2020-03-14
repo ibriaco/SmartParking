@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.black,
     borderRadius: theme.sizes.radius,
     fontSize: theme.sizes.font,
-    fontWeight: "500",
+    fontWeight: "300",
     color: theme.colors.black,
     height: theme.sizes.base * 3
   },

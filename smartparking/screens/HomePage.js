@@ -3,9 +3,7 @@ import {
   StyleSheet,
   View,  
   Image,
-  Text,
   Dimensions,
-  Button,
   Linking
 } from "react-native";
 import MapView, {
@@ -20,6 +18,9 @@ import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
 import MAP_STYLE from "./mapStyle.js"
 import { Searchbar } from 'react-native-paper';
+import Button from "../components/Button.js";
+import { Icon } from "../components"
+import Text from "../components/Text.js"
 
 
 const HEIGHT = Dimensions.get('window').height;
@@ -347,6 +348,7 @@ addReservation(){
     return (
       
       <View style={styles.container}>
+      
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -359,7 +361,6 @@ addReservation(){
           ref={ref => { this.mapView = ref }}           
           initialRegion={this.state.region}    
         >
-
  
         {this.state.receivedAreas.map((area => (
           area.points.map((polygon, index) => (
@@ -428,15 +429,19 @@ addReservation(){
             <Image source={require('../assets/icons/car_marker.png')} style={{height: 35, width:35 }} />
           </Marker.Animated>
         </MapView>
+        
         <Searchbar
           placeholder="Where are you going?"
           placeholderTextColor = 'rgba(165, 165, 165, 0.8)'
           iconColor = 'rgba(165, 165, 165, 0.8)'
-          rightIcon = "facebook"
           onChangeText={query => { this.setState({ firstQuery: query }); }}
           value={firstQuery}
           style = {styles.searchbar}
       />
+
+      
+      
+        
 
         <View>
         <Modal isVisible={this.state.isModalVisible}>

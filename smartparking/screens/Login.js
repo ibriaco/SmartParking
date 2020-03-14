@@ -9,7 +9,6 @@ import {
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 const VALID_EMAIL = "";
 const VALID_PASSWORD = "";
@@ -54,7 +53,6 @@ export default class Login extends Component {
       <View style={styles.login}>
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text center h1 bold>
-            Login
           </Text>
           <Block middle>
             <Input
@@ -84,15 +82,16 @@ export default class Login extends Component {
             
             <Text></Text>
             <Block >
-              <Text center gray2 h4>you can also login with</Text>
               <Text></Text>
+              <Text center gray2 h4>you can also login with</Text>
+              
               <View style = {styles.social}>
               <Button style = {styles.facebook}>
-              <Text white h3>Facebook</Text>
+              <Text bold white h3>Facebook</Text>
               </Button>
-              <Text center gray2 h4>  or  </Text>
+              <Text center gray2 h4>    </Text>
               <Button style = {styles.google}>
-                <Text white h3>Google</Text>
+                <Text bold white h3>Google</Text>
               </Button>
               
               </View>
@@ -106,7 +105,7 @@ export default class Login extends Component {
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text h3 bold white center>
+                <Text h2 bold white center>
                   Login
                 </Text>
               )}
@@ -118,7 +117,7 @@ export default class Login extends Component {
                 center
               >
                 or <Text
-                h3 bold secondary onPress={() => navigation.navigate("Register")}
+                h2 bold secondary onPress={() => navigation.navigate("Register")}
                 >Sign up</Text>
               </Text>
               </Block>
@@ -132,6 +131,7 @@ const styles = StyleSheet.create({
   login: {
     flex: 1,
     justifyContent: "center",
+    backgroundColor: '#ffffff'
   },
   input: {
     borderRadius: 0,
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   button:{
     backgroundColor: '#0DB665',
     height: 50,
-    borderRadius: 18,
+    borderRadius: 10,
     marginHorizontal: 25
   },
   bottom: {
@@ -162,16 +162,16 @@ const styles = StyleSheet.create({
   },
   google:{
     backgroundColor: '#db4a39',
-    height: 30,
-    width: 80,
+    height: 40,
+    width: 100,
     //justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10
   },
   facebook:{
     backgroundColor: '#3b5998',
-    height: 30,
-    width: 80,
+    height: 40,
+    width: 100,
     //justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 10

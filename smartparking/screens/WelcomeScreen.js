@@ -259,7 +259,7 @@ const slides = [
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
-    backgroundColor: '#0DB665',
+    backgroundColor: 'rgba(13,182,101, 0.9)',
   },
   {
     title:'Time',
@@ -269,6 +269,6 @@ const slides = [
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
-    backgroundColor: '#0DB665',
+    backgroundColor: 'rgba(13,182,101, 0.9)',
   },
 ];

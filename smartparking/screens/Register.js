@@ -63,7 +63,6 @@ export default class Register extends Component {
       <View style={styles.signup}>
         <Block middle padding={[0, theme.sizes.base * 2]}>
           <Text center h1 bold>
-            Sign Up
           </Text>
           <Block middle>
             <Input
@@ -97,7 +96,7 @@ export default class Register extends Component {
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text h3 bold white center>
+                <Text h2 bold white center>
                   Sign Up
                 </Text>
               )}
