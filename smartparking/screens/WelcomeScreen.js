@@ -245,11 +245,12 @@ const slides = [
     title:'Search',
     key: 's1',
     text: 'Choose your destination\nand we will find an available\nparking spot nearby',
-    image: require("../assets/images/comp1.png"),
+    image: require("../assets/images/comp_1.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
-    backgroundColor: 'rgba(13,182,101, 0.9)',
+    //backgroundColor: 'rgba(13,182,101, 0.9)',
+    backgroundColor: "#38BC7C"
   },
   {
     title:'Payment',

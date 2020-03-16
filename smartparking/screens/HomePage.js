@@ -16,11 +16,13 @@ import MapView, {
 import MapViewDirections from 'react-native-maps-directions';
 import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
-import MAP_STYLE from "./mapStyle.js"
 import { Searchbar } from 'react-native-paper';
 import Button from "../components/Button.js";
-import { Icon } from "../components"
+import { Icon, Block } from "../components"
 import Text from "../components/Text.js"
+import FloatingButton from "../components/FloatingButton.js";
+import {mapStyle} from "./mapStyle.json";
+import DrawerButton from "../components/DrawerButton.js";
 
 
 const HEIGHT = Dimensions.get('window').height;
@@ -357,7 +359,7 @@ addReservation(){
           //zoomEnabled = {!this.state.followUser}
           //scrollEnabled = {!this.state.followUser}
           loadingEnabled={true}
-          customMapStyle={MAP_STYLE}
+          customMapStyle={mapStyle}
           ref={ref => { this.mapView = ref }}           
           initialRegion={this.state.region}    
         >
@@ -429,7 +431,16 @@ addReservation(){
             <Image source={require('../assets/icons/car_marker.png')} style={{height: 35, width:35 }} />
           </Marker.Animated>
         </MapView>
-        
+          
+        <Block center top>         
+          <DrawerButton style = {{right: WIDTH*2/5}}>
+
+          </DrawerButton>
+          <FloatingButton style = {{left: WIDTH*2/5}}>
+
+          </FloatingButton>
+          
+        </Block>
         <Searchbar
           placeholder="Where are you going?"
           placeholderTextColor = 'rgba(165, 165, 165, 0.8)'
@@ -437,7 +448,8 @@ addReservation(){
           onChangeText={query => { this.setState({ firstQuery: query }); }}
           value={firstQuery}
           style = {styles.searchbar}
-      />
+        />
+        
 
       
       
@@ -502,12 +514,12 @@ const styles = StyleSheet.create({
     height: HEIGHT / 2
   },
   searchbar: {
-    marginTop: 40,
-    marginHorizontal: 40,
+    //marginTop: 40,
+    marginHorizontal: 20,
     borderRadius: 10,
     opacity: 1,
-    height: 50
-
+    height: 60,
+    bottom: HEIGHT*5/6
 
   }
 });
