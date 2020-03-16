@@ -19,6 +19,7 @@
     "react-native": "0.61.4",
     "react-native-app-intro-slider": "^3.0.0",
     "react-native-app-walkthrough": "^1.0.1",
+    "react-native-circular-action-menu": "^0.5.0",
     "react-native-dynamic-search-bar": "^0.3.1",
     "react-native-dynamic-vector-icons": "^0.2.2",
     "react-native-elements": "^1.2.7",

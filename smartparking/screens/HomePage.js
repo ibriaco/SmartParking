@@ -23,7 +23,8 @@ import Text from "../components/Text.js"
 import FloatingButton from "../components/FloatingButton.js";
 import {mapStyle} from "./mapStyle.json";
 import DrawerButton from "../components/DrawerButton.js";
-
+import ActionButton from 'react-native-circular-action-menu';
+import Icone from 'react-native-vector-icons/Ionicons';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -381,7 +382,7 @@ addReservation(){
             <View key={index}>
               <Polygon
                 coordinates={parking.rectangle}
-                fillColor={parking.color}
+                //fillColor={parking.color}
                 tappable={true}
                 onPress={() => this.showParkingInfo(parking)}
                 />              
@@ -465,6 +466,21 @@ addReservation(){
           </View>
         </Modal>
       </View>
+
+
+
+      <ActionButton buttonColor="rgba(231,76,60,1)">
+          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
+            <Icone name="android-create" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
+            <Icone name="android-notifications-none" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
+            <Icone name="android-done-all" style={styles.actionButtonIcon} />
+          </ActionButton.Item>
+          
+        </ActionButton>
         
 
       </View>
