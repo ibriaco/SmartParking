@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Dimensions, StyleSheet, View, Animated, Image } from 'react-native'
-import LottieView from 'lottie-react-native';
+import * as Animatable from 'react-native-animatable';
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -15,10 +15,21 @@ export default class SplashScreen extends Component {
     }
 
   }
+
+toggleNavigation(){
+  console.log("djksnfkcjsd");
+  navigation.navigate("Welcome");
+}
+
     render() {
+      const { navigation } = this.props;
+
         return (
           <View style={styles.container}>
-          <Image style={styles.image} source={require('../assets/animations/title.gif')} />
+            
+            <Animatable.Image animation="bounceIn" duration={3000} delay={1000} source={require('../assets/icons/car_marker.png')} style={styles.logo} onAnimationEnd={()=>navigation.navigate("Welcome")}/>
+            <Image style={styles.title} source={require('../assets/animations/title.gif')} />
+          
           </View>
         )
     }
@@ -31,43 +42,17 @@ const styles = StyleSheet.create({
       flexDirection: 'column',
       alignItems: 'center'
     },
-    titleLeft: {
-      fontFamily: 'sans-serif',
-      fontSize: wp(13),
-      fontWeight: 'bold',
-      color: '#212121'
-    },
-    titleRight: {
-      fontFamily: 'sans-serif',
-      fontSize: wp(13),
-      fontWeight: 'bold',
-      color: '#009688'
-  
-    },
-    subtitle: {
-      fontFamily: 'sans-serif',
-      fontSize: wp(6),
-      fontWeight: 'normal',
-      color: '#BDBDBD',
-    },
     logo: {
-      flex: 10,
-      padding: hp(10),
-      alignItems: 'center',
-      //justifyContent: 'flex-start'
+      width: 80,
+      height: 80,
+      position: 'absolute',
+      top: 250
     },
-    buttons: {
-      flex: 0.35,
-      justifyContent: 'space-between',
-      alignItems: 'center'
-    },
-    button: {
-      borderRadius: hp(2),
-      padding: hp(4.5)
-    },
-    image: {
+    title: {
       width: 300,
       height: 200,
-      
+      position: 'absolute',
+      top: 250,
+      left: 50
     }
   });
