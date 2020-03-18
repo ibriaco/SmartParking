@@ -139,6 +139,8 @@ android {
 }
 
 dependencies {
+  implementation 'com.facebook.fresco:animated-gif:2.0.0'
+
     implementation project(':react-native-screens')
     implementation project(':react-native-reanimated')
     implementation project(':react-native-gesture-handler')

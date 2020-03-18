@@ -10,3 +10,5 @@ includeUnimodulesProjects()
 rootProject.name = 'smartparking'
 
 include ':app'
+include ':lottie-react-native'
+project(':lottie-react-native').projectDir = new File(rootProject.projectDir, '../node_modules/lottie-react-native/src/android')

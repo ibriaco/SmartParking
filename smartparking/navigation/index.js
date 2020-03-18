@@ -4,6 +4,8 @@ import { Image, View } from "react-native";
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 
+import SplashScreen from "../screens/SplashScreen";
+
 import WelcomeScreen from "../screens/WelcomeScreen";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
@@ -20,6 +22,12 @@ import SearchHeader from "../components/SearchHeader";
 
 const screens = createStackNavigator(
   {
+    Splash:{
+      screen: SplashScreen,
+      navigationOptions:{
+        header: null
+      }
+    },
     Welcome:{
       screen: WelcomeScreen,
       navigationOptions:{
