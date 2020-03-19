@@ -37,11 +37,13 @@ async componentDidMount() {
 
   _renderItemWithParallax ({item, index}, parallaxProps) {
     return (
+      <View style={{ height: viewportHeight }} />
         <SliderEntry
           data={item}
           parallax={true}
           parallaxProps={parallaxProps}
         />
+        </View>
     );
 }
 
@@ -154,11 +156,15 @@ const styles = StyleSheet.create({
 })
 */
 
+//--------------------------------------------------------------
+
 import React, { Component } from 'react';
 
-import { StyleSheet, View, Text, Platform } from 'react-native';
+import { StyleSheet, View, Text, Image } from 'react-native';
 
 import AppIntroSlider from 'react-native-app-intro-slider';
+import { ENTRIES1 } from './entries';
+import { images } from './images';
 
 export default class App extends Component {
   static navigationOptions = {
@@ -173,6 +179,14 @@ export default class App extends Component {
 
     };
   }
+
+  _renderItem = ({ item, dimensions }) => (   
+    <View style={styles.mainapp}>
+        <Image style={styles.image} source={item.image}/> 
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.text}>{item.text}</Text>
+        </View>
+  );
 
   onDone = () => {
     this.props.navigation.navigate('Login');
@@ -198,6 +212,7 @@ export default class App extends Component {
       return (
         <AppIntroSlider
           slides={slides}
+          renderItem={this._renderItem}
           onDone={this.onDone}
           showSkipButton={true}
           onSkip={this.onSkip}
@@ -212,9 +227,10 @@ const styles = StyleSheet.create({
   mainapp: {
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    padding: 20,
-    flexDirection: 'row'
+    justifyContent: 'space-around',
+    padding: 100,
+    backgroundColor: "#38BC7C"
+    //flexDirection: 'row'
   },
   title: {
     fontSize: 32,
@@ -230,7 +246,9 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontSize: 20,
     opacity: 0.8,
-    backgroundColor: 'transparent'
+    backgroundColor: 'transparent',
+    textAlign: 'center'
+
   },
   image: {
     width: 240,
@@ -244,8 +262,8 @@ const slides = [
   {
     title:'Search',
     key: 's1',
-    text: 'Choose your destination\nand we will find an available\nparking spot nearby',
-    image: require("../assets/images/comp_1.png"),
+    text: 'Find parking spot near your destination',
+    image: require("../assets/animations/search.gif"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
@@ -256,7 +274,7 @@ const slides = [
     title:'Payment',
     key: 's2',
     text: 'Pay in a few touches\nwith any payment system',
-    image: require("../assets/images/comp2.png"),
+    image: require("../assets/animations/pay.gif"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
@@ -266,10 +284,149 @@ const slides = [
     title:'Time',
     key: 's3',
     text: 'Save your time\nsearching the perfect parking',
-    image: require("../assets/images/comp3.png"),
+    image: require("../assets/animations/time.gif"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
     backgroundColor: 'rgba(13,182,101, 0.9)',
   },
 ];
+
+
+
+//------------------------------------------------------------------
+/*
+import React, { Component } from 'react';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
+import { ENTRIES1 } from './entries';
+import { images } from './images';
+import { Dimensions, View, Text, Image, StyleSheet} from 'react-native';
+const { width: viewportWidth, height: viewportHeight } = Dimensions.get('window');
+
+export default class MyCarousel extends Component {
+
+    _renderItem ({item, index}) {
+      let x = item.title; 
+      if(x == 'search')
+     {
+        return (
+            <View style={styles.container}>
+              <Image source={images.search.uri}/> 
+              <Text>{item.title}</Text>
+            </View>
+            
+              );
+     }
+     else if(x == 'pay'){
+      return (
+        <View style={styles.container}>
+          <Image source={images.pay.uri}/> 
+          <Text>{item.title}</Text>
+        </View>
+        
+          );
+     }
+     else{
+      return (
+        <View style={styles.container}>
+          <Image source={images.time.uri}/> 
+          <Text>{item.title}</Text>
+        </View>
+        
+          );
+     }
+    }
+
+    render () {
+        return (
+            <Carousel
+              data={ENTRIES1}
+              renderItem={this._renderItem}
+              sliderWidth={viewportWidth}
+              itemWidth={viewportWidth}
+              slideStyle={{ width: viewportWidth }}
+              inactiveSlideOpacity={1}
+              inactiveSlideScale={1}
+            />
+        );
+    }
+    
+}
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,    
+  },
+});
+*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+//-------------------------------------fdgdfshsdf---------------------------------------------
+import React from 'react';
+import { Ionicons } from '@expo/vector-icons';
+import { StyleSheet, View, Text, Image } from 'react-native';
+import { LinearGradient } from 'expo';
+import AppIntroSlider from 'react-native-app-intro-slider';
+import { images } from './images';
+import { ENTRIES1 } from './entries';
+
+
+
+const styles = StyleSheet.create({
+  mainContent: {
+    flex: 1,
+
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  image: {
+    width: 320,
+    height: 320,
+  },
+  text: {
+    color: 'black',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    paddingHorizontal: 16,
+  },
+  title: {
+    fontSize: 22,
+    color: 'black',
+    backgroundColor: 'transparent',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+});
+
+
+export default class WelcomeScreen extends React.Component {
+  _renderItem = ({ item, dimensions }) => (
+    <View style={styles.mainContent, dimensions}>
+                <Image source={images.time.uri}/> 
+
+      
+        <Text style={styles.title}>{item.title}</Text>
+        <Text style={styles.text}>{item.text}</Text>
+        </View>
+  );
+
+  render() {
+    return <AppIntroSlider slides={ENTRIES1} renderItem={this._renderItem}  />;
+  }
+}
+*/
