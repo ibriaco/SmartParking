@@ -17,6 +17,7 @@ import { theme } from "../constants";
 import { Button } from "../components";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
 import SearchHeader from "../components/SearchHeader";
+import { zoomOut, zoomIn } from 'react-navigation-transitions';
 
 
 
@@ -90,6 +91,7 @@ const screens = createStackNavigator(
     },
   },
   {
+    transitionConfig: () => zoomIn(),
     defaultNavigationOptions: {
       headerStyle: {
         height: theme.sizes.base * 6,
@@ -112,5 +114,6 @@ const screens = createStackNavigator(
     }
   }
 );
+
 
 export default createAppContainer(screens);
