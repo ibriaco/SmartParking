@@ -25,6 +25,8 @@ import {mapStyle} from "./mapStyle.json";
 import DrawerButton from "../components/DrawerButton.js";
 import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
+import TabNavigator from "./TabNavigator.js";
+
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
