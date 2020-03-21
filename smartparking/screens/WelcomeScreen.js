@@ -183,8 +183,11 @@ export default class App extends Component {
   _renderItem = ({ item, dimensions }) => (   
     <View style={styles.mainapp}>
         <Image style={styles.image} source={item.image}/> 
-        <Text style={styles.title}>{item.title}</Text>
-        <Text style={styles.text}>{item.text}</Text>
+        <View>
+          <Text style={styles.title}>{item.title}</Text>
+          <Text style={styles.text}>{item.text}</Text>
+        </View>
+        
         </View>
   );
 
@@ -240,7 +243,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     opacity: 1,
     //alignItems: 'flex-end',
-    marginTop: 20
+    marginBottom: 10
   },
   text: {
     color: '#fff',
@@ -262,8 +265,8 @@ const slides = [
   {
     title:'Search',
     key: 's1',
-    text: 'Find parking spot near your destination',
-    image: require("../assets/animations/search.gif"),
+    text: 'Choose your destination\nand we will find an available\nparking slot nearby',
+    image: require("../assets/images/comp_1.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
@@ -274,7 +277,7 @@ const slides = [
     title:'Payment',
     key: 's2',
     text: 'Pay in a few touches\nwith any payment system',
-    image: require("../assets/animations/pay.gif"),
+    image: require("../assets/images/comp_2.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,
@@ -283,8 +286,8 @@ const slides = [
   {
     title:'Time',
     key: 's3',
-    text: 'Save your time\nsearching the perfect parking',
-    image: require("../assets/animations/time.gif"),
+    text: 'Save your time searching\nthe perfect parking',
+    image: require("../assets/images/comp_2.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,

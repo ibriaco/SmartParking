@@ -435,15 +435,6 @@ addReservation(){
           </Marker.Animated>
         </MapView>
           
-        <Block center top>         
-          <DrawerButton style = {{right: WIDTH*2/5}}>
-
-          </DrawerButton>
-          <FloatingButton style = {{left: WIDTH*2/5}}>
-
-          </FloatingButton>
-          
-        </Block>
         <Searchbar
           placeholder="Where are you going?"
           placeholderTextColor = 'rgba(165, 165, 165, 0.8)'
@@ -470,8 +461,8 @@ addReservation(){
       </View>
 
 
-
-      <ActionButton buttonColor="rgba(231,76,60,1)">
+            {/*
+             <ActionButton buttonColor="#38BC7C">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
             <Icone name="android-create" style={styles.actionButtonIcon} />
           </ActionButton.Item>
@@ -484,6 +475,8 @@ addReservation(){
           
         </ActionButton>
         
+             */}
+     
 
       </View>
       
@@ -532,12 +525,12 @@ const styles = StyleSheet.create({
     height: HEIGHT / 2
   },
   searchbar: {
-    //marginTop: 40,
+    marginTop: 40,
     marginHorizontal: 20,
     borderRadius: 10,
     opacity: 1,
     height: 60,
-    bottom: HEIGHT*5/6
+    //bottom: HEIGHT*5/6
 
   }
 });

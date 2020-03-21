@@ -52,7 +52,7 @@ import { StyleSheet } from "react-native";
 import { AppLoading } from "expo";
 import { Asset } from "expo-asset";
 
-import Navigation from "./navigation";
+import Navigation from "./navigation/index.js";
 import { Block } from "./components";
 
 // import all used images
