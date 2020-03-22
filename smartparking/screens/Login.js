@@ -24,12 +24,10 @@ export default class Login extends Component {
     const { email, password } = this.state;
 
     firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(() => this.props.navigation.navigate("Home"))
     .catch(error => this.setState({errorMessage: error.message}));
-    console.log(this.state.errorMessage);
-
-    if (this.state.errorMessage!=null){
-      navigation.navigate("Home");
-    }
+    
+    
      
     Keyboard.dismiss();
   }
