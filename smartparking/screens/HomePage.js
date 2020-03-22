@@ -275,8 +275,12 @@ async readAndDrawParkings (area) {
 
     //salvo l'area tappata, mi servirà per cancellarla quando verrà tappato un parcheggio 
     //controllare il tap di due aree consecutive
-    this.removeArea(area)
-    this.readAndDrawParkings(area);
+    
+    
+    //this.removeArea(area)
+    //this.readAndDrawParkings(area);
+    
+    
     /*
     if(areaHasBeenDeleted()){
       //se non è gia stata cancellata un area (nascosta temporaneamente) allora faccio tutto normale
@@ -372,7 +376,8 @@ addReservation(){
             <View key={index}>
               <Polygon
                 coordinates={polygon}
-                fillColor={polygon.color}
+                //fillColor={polygon.color}
+                fillColor="rgba(3,100,255,0.3)"
                 tappable={true}
                 strokeWidth={0}
                 onPress={() => this.showAreaInfo(area)}
