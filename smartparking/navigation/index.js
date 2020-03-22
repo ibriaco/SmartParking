@@ -1,6 +1,7 @@
 
 import React from "react";
 import { Image, View } from "react-native";
+import * as firebase from 'firebase';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
 import { createBottomTabNavigator } from 'react-navigation-tabs';
@@ -22,6 +23,20 @@ import { Button } from "../components";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
 import SearchHeader from "../components/SearchHeader";
 import { zoomOut, zoomIn } from 'react-navigation-transitions';
+
+var firebaseConfig = {
+  apiKey: "AIzaSyDrUppJZiKvyUvcLUau9iUsDKcZJIGLZuQ",
+  authDomain: "smartparking-19214.firebaseapp.com",
+  databaseURL: "https://smartparking-19214.firebaseio.com",
+  projectId: "smartparking-19214",
+  storageBucket: "smartparking-19214.appspot.com",
+  messagingSenderId: "663247712461",
+  appId: "1:663247712461:web:6e8d3ad439233bdb4a7984",
+  measurementId: "G-L5G3YNNYH4"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+//firebase.analytics();
 
 const tab = createBottomTabNavigator(
   {

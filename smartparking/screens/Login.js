@@ -7,47 +7,35 @@ import {
   View
 } from "react-native";
 
+import * as firebase from 'firebase'
+
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
 
-const VALID_EMAIL = "";
-const VALID_PASSWORD = "";
-
 export default class Login extends Component {
   state = {
-    email: VALID_EMAIL,
-    password: VALID_PASSWORD,
-    errors: [],
-    loading: false
+    email: "",
+    password: "",
+    errorMessage: null
   };
 
   handleLogin() {
     const { navigation } = this.props;
     const { email, password } = this.state;
-    const errors = [];
 
-    Keyboard.dismiss();
-    this.setState({ loading: true });
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .catch(error => this.setState({errorMessage: error.message}));
+    console.log(this.state.errorMessage);
 
-    // check with backend API or with some static data
-    if (email !== VALID_EMAIL) {
-      errors.push("email");
-    }
-    if (password !== VALID_PASSWORD) {
-      errors.push("password");
-    }
-
-    this.setState({ errors, loading: false });
-
-    if (!errors.length) {
+    if (this.state.errorMessage!=null){
       navigation.navigate("Home");
     }
+     
+    Keyboard.dismiss();
   }
 
   render() {
     const { navigation } = this.props;
-    const { loading, errors } = this.state;
-    const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
 
     return (
       <View style={styles.login}>
@@ -55,20 +43,21 @@ export default class Login extends Component {
           <Text center h1 bold>
           </Text>
           <Block middle>
+          <View style = {styles.errorMessage}>
+            {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+          </View>
             <Input
               label="Email Address"
-              error={hasErrors("email")}
-              style={[styles.input, hasErrors("email")]}
-              defaultValue={this.state.email}
-              onChangeText={text => this.setState({ email: text })}
+              style={[styles.input,]}
+              onChangeText={email => this.setState({ email })}
+              value = {this.state.email}
             />
             <Input
               secure
               label="Password"
-              error={hasErrors("password")}
-              style={[styles.input, hasErrors("password")]}
-              defaultValue={this.state.password}
-              onChangeText={text => this.setState({ password: text })}
+              style={[styles.input]}
+              onChangeText={password => this.setState({ password })}
+              value = {this.state.password}
             />
             <Button style = {styles.forget}>
             <Text 
@@ -102,13 +91,9 @@ export default class Login extends Component {
           </Block>
           <Block bottom style = {styles.bottom}>
             <Button style = {styles.button} onPress={() => this.handleLogin()}>
-              {loading ? (
-                <ActivityIndicator size="small" color="white" />
-              ) : (
                 <Text h2 bold white center>
                   Login
                 </Text>
-              )}
             </Button>
 
               <Text
@@ -178,5 +163,17 @@ const styles = StyleSheet.create({
   },
   forget: {
     height: 3,
+  },
+  error: {
+    color: "#E9446A",
+    fontSize: 13,
+    fontWeight: "600",
+    textAlign: "center"
+  },
+  errorMessage: {
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+    marginHorizontal: 30
   }
 });

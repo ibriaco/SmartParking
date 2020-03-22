@@ -26,7 +26,7 @@ import DrawerButton from "../components/DrawerButton.js";
 import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
 import TabNavigator from "./TabNavigator.js";
-
+import * as firebase from 'firebase';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -39,13 +39,13 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 var tappedArea;
 var tappedParking;
 var tappedParkingCoords;
-var firebase;
+//var firebase;
 
 class Map extends React.Component {
   constructor(props) {
     super(props);
 
-    firebase = require("firebase");
+    //firebase = require("firebase");
 
     var config = {
       databaseURL: "https://smartparking-19214.firebaseio.com",
@@ -58,6 +58,9 @@ class Map extends React.Component {
   
 
     this.state = {
+
+      email: "",
+      displayName: "",
 
       firstQuery: '',
       isModalVisible: false,
@@ -177,8 +180,18 @@ async readAndDrawParkings (area) {
   
   }
 
+  signoutUser = () => {
+    firebase.auth().signOut();
+  }
+
   async componentDidMount() {
 
+
+  //authentication
+
+  const {email, displayName} = firebase.auth().currentUser
+
+  this.setState({email, displayName});
   //when everything is mounted i fetch the db to get areas to render
   this.readAndDrawAreas();
 

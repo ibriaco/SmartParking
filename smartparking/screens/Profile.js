@@ -51,6 +51,7 @@ class Profile extends Component {
 
     return (
       <Block>
+      <Block top></Block>
         <Block flex={false} row center space="between" style={styles.header}>
           <Text h1 bold>
             Settings

@@ -54,11 +54,12 @@
   "devDependencies": {
     "@babel/core": "^7.6.0",
     "babel-jest": "24.9.0",
+    "babel-preset-expo": "^7.1.0",
     "jest": "24.9.0",
     "jetifier": "^1.6.4",
+    "metro": "^0.59.0",
     "metro-react-native-babel-preset": "0.56.0",
-    "react-test-renderer": "16.9.0",
-    "babel-preset-expo": "^7.1.0"
+    "react-test-renderer": "16.9.0"
   },
   "private": true
 }
