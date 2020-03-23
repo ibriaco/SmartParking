@@ -10,8 +10,9 @@ import {
 import * as firebase from 'firebase'
 
 
-import { Button, Block, Input, Text } from "../components";
+import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
+import {Input} from "galio-framework"
 
 export default class Register extends Component {
   state = {
@@ -44,44 +45,67 @@ export default class Register extends Component {
     const { navigation } = this.props;
 
     return (
-      <View style={styles.signup}>
+      <KeyboardAvoidingView style={styles.signup} behavior="padding">
         <Block middle padding={[0, theme.sizes.base * 2]}>
-          <Text center h1 bold>
+        <Text h1 bold>
           </Text>
+          <Text h1 bold>
+          Register
+          </Text>
+          <Text gray2 h3>Enter your information to sign up</Text>
           <Block middle>
           <View style = {styles.errorMessage}>
             {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
           </View>
+          <Block middle>
+            </Block>
             <Input
-              email
-              label="Full Name"
+              placeholder="Full Name"
               style={[styles.input]}
               onChangeText={name => this.setState({ name })}
               value = {this.state.name}
+              right
+              icon = "user"
+              family="font-awesome"
+              iconSize={18}
+              iconColor="#a5a5a5"
+              style={styles.input}
             />
             <Input
-              label="Email Address"
-              style={[styles.input]}
+              placeholder ="Email Address"
+              right
+              icon="envelope"
+              family="font-awesome"
+              iconSize={18}
+              iconColor="#a5a5a5"
+              style={styles.input}
               onChangeText={email => this.setState({ email })}
-              value = {this.state.email}
+              value={this.state.email}
             />
             <Input
-              secure
-              label="Password"
+              password
+              viewPass
+              iconColor ="#a5a5a5"
+              iconSize = {20}
+              placeholder="Password"
               style={[styles.input]}
               onChangeText={password => this.setState({ password })}
-              value = {this.state.password}
+              value={this.state.password}
             />
             <Block>
               <Text center gray2 h4>Already registered?
               <Text bold center secondary h3 onPress={() => navigation.navigate("Login")}> Sign In</Text></Text>
             </Block>
+            <Block top>
+            </Block>
+            <Block top></Block>
+            <Block top ></Block>
             <Button style = {styles.button} onPress={() => this.handleSignUp()}>
                 <Text h2 bold white center>
-                  Sign Up
+                  Register
                 </Text>
             </Button>
-            <Button onPress={() => navigation.navigate("Profile")}>
+            <Button onPress={() => navigation.navigate("Test")}>
               <Text
                 gray
                 caption
@@ -93,7 +117,7 @@ export default class Register extends Component {
             </Button>
           </Block>
         </Block>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
@@ -113,10 +137,14 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.accent
   },
   button:{
-    backgroundColor: '#0DB665',
-    height: 50,
-    borderRadius: 10,
-    marginHorizontal: 25
+    backgroundColor: '#0CD3A4',
+    height: 60,
+    borderRadius: 20,
+    marginHorizontal: 25,
+    shadowOpacity: 0.6,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 3,
+
   },
   error: {
     color: "#E9446A",
@@ -129,6 +157,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 30
-  }
+  },
+  input: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#fff",
+    backgroundColor: "#fff",
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 3,
+    height: 60,
+    shadowColor: "#a5a5a5"
+
+    // borderBottomColor: theme.colors.gray2,
+    //borderBottomWidth: StyleSheet.hairlineWidth
+  },
   
 });

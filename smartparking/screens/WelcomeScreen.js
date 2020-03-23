@@ -232,7 +232,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-around',
     padding: 100,
-    backgroundColor: "#38BC7C"
+    //backgroundColor: "#38BC7C",
+    backgroundColor:"#0CD3A4"
     //flexDirection: 'row'
   },
   title: {

@@ -47,14 +47,6 @@ class Map extends React.Component {
 
     //firebase = require("firebase");
 
-    var config = {
-      databaseURL: "https://smartparking-19214.firebaseio.com",
-      projectId: "smartparking-19214",
-    };
-    
-    if (!firebase.apps.length) {
-      firebase.initializeApp(config);
-  }
   
 
     this.state = {

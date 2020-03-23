@@ -16,6 +16,7 @@ import Register from "../screens/Register";
 import HomePage from "../screens/HomePage";
 import Profile from "../screens/Profile";
 import Filter from "../screens/Filter";
+import Test from "../screens/Test";
 import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
 import { theme } from "../constants";
@@ -23,6 +24,7 @@ import { Button } from "../components";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
 import SearchHeader from "../components/SearchHeader";
 import { zoomOut, zoomIn } from 'react-navigation-transitions';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 var firebaseConfig = {
   apiKey: "AIzaSyDrUppJZiKvyUvcLUau9iUsDKcZJIGLZuQ",
@@ -34,7 +36,6 @@ var firebaseConfig = {
   appId: "1:663247712461:web:6e8d3ad439233bdb4a7984",
   measurementId: "G-L5G3YNNYH4"
 };
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 //firebase.analytics();
 
@@ -65,15 +66,6 @@ const tab = createBottomTabNavigator(
       screen: Login,
       navigationOptions: {
         tabBarIcon: <ActionButton buttonColor="rgba(231,76,60,1)">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-            <Icone name="android-create" />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => { }}>
-            <Icone name="android-notifications-none" />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => { }}>
-            <Icone name="android-done-all" />
-          </ActionButton.Item>
 
         </ActionButton>
       }
@@ -112,15 +104,24 @@ const screens = createStackNavigator(
             header: null
           }
     },
+    Test: {
+      screen: Test,
+      navigationOptions: {
+        header: null,
+      }
+    },
     Login: {
       screen: Login,
       navigationOptions: {
-        title: 'Login',
+        headerStyle:{
+          shadowOpacity: 0.8,
+          elevation: 6,
+        },
         headerTitleStyle: {
           textAlign: "center",
           flex: 1,
           fontSize: 26,
-          fontWeight: 'bold'
+          fontWeight: 'bold',
         },
         headerRight: (<View />)
       },
@@ -128,7 +129,10 @@ const screens = createStackNavigator(
     Register: {
       screen: Register,
       navigationOptions: {
-        title: 'Sign Up',
+        headerStyle:{
+          shadowOpacity: 0.8,
+          elevation: 6,
+        },
         headerTitleStyle: {
           textAlign: "center",
           flex: 1,
@@ -178,15 +182,6 @@ const screens = createStackNavigator(
           screen: Login,
           navigationOptions: {
             tabBarIcon: <ActionButton buttonColor="rgba(231,76,60,1)">
-              <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-                <Icone name="android-create" />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => { }}>
-                <Icone name="android-notifications-none" />
-              </ActionButton.Item>
-              <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => { }}>
-                <Icone name="android-done-all" />
-              </ActionButton.Item>
     
             </ActionButton>
           }
@@ -225,11 +220,11 @@ const screens = createStackNavigator(
     defaultNavigationOptions: {
     headerStyle: {
       height: theme.sizes.base * 6,
-        backgroundColor: theme.colors.white, // or 'white
+        backgroundColor: "#fff", // or 'white
           borderBottomColor: "transparent",
             elevation: 0 // for android
     },
-    headerBackImage: <Image source={require("../assets/icons/back.png")} />,
+    headerBackImage: <Icon name="long-arrow-left" color="#a5a5a5" size = {20} />,
       headerBackTitle: null,
         headerLeftContainerStyle: {
       alignItems: "center",
