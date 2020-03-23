@@ -82,7 +82,7 @@ export default class Login extends Component {
             />
             <Button style={styles.forget}>
               <Text
-                gray2
+                gray
                 h4
                 right
                 style={{ textDecorationLine: "underline" }}>

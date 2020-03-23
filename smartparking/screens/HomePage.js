@@ -470,6 +470,9 @@ addReservation(){
         </Modal>
       </View>
 
+      <ActionButton buttonColor="#38BC7C" >
+      
+      </ActionButton>
 
             {/*
              <ActionButton buttonColor="#38BC7C">
@@ -542,6 +545,10 @@ const styles = StyleSheet.create({
     height: 60,
     //bottom: HEIGHT*5/6
 
+  },
+  bottonedemmerda:{
+    position: "absolute",
+    right: 10
   }
 });
   

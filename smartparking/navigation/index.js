@@ -169,27 +169,20 @@ const screens = createStackNavigator(
           screen: HomePage,
           
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="home" size={24} color="#CDCCCE" />
+            tabBarIcon: () => <FontAwesome5 name="home" size={24} color="#ff69b4" />
         }
         },
         Filter: {
           screen: Filter,
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="band-aid" size={24} color="#CDCCCE" />
+            tabBarIcon: () => <FontAwesome5 name="list-alt" size={24} color="#CDCCCE" />
         }
         },
-        Add: {
-          screen: Login,
-          navigationOptions: {
-            tabBarIcon: <ActionButton buttonColor="rgba(231,76,60,1)">
-    
-            </ActionButton>
-          }
-        },
+        
         List: {
           screen: Filter,
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="heartbeat" size={24} color="#CDCCCE" />
+            tabBarIcon: () => <FontAwesome5 name="search-location" size={24} color="#CDCCCE" />
         }
         },
         Profile: {
@@ -216,7 +209,7 @@ const screens = createStackNavigator(
   },
   
 {
-  transitionConfig: () => zoomIn(),
+  transitionConfig: () => zoomOut(),
     defaultNavigationOptions: {
     headerStyle: {
       height: theme.sizes.base * 6,
