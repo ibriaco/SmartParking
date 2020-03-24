@@ -4,7 +4,7 @@ import { Image, View } from "react-native";
 import * as firebase from 'firebase';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
-import { createBottomTabNavigator } from 'react-navigation-tabs';
+import { createBottomTabNavigator, createMaterialTopTabNavigator } from 'react-navigation-tabs';
 import { createSwitchNavigator } from 'react-navigation';
 import { FontAwesome5 } from 'react-native-vector-icons';
 
@@ -135,13 +135,34 @@ const screens = createStackNavigator(
         }
         },
         Profile: {
-          screen: Profile,
+          screen: createMaterialTopTabNavigator({
+            Profile: {
+              screen: Filter,
+              navigationOptions: {
+                tabBarIcon: () => <FontAwesome5 name="list-alt" size={24} color="#CDCCCE" />
+            }
+            },
+            
+            Vehicle: {
+              screen: Filter,
+              navigationOptions: {
+                tabBarIcon: () => <FontAwesome5 name="search-location" size={24} color="#CDCCCE" />
+            },
+            Payments: {
+              screen: Filter,
+              navigationOptions: {
+                tabBarIcon: () => <FontAwesome5 name="list-alt" size={24} color="#CDCCCE" />
+            }
+            }
+
+            }}),
             
           navigationOptions: {
             tabBarIcon: () => <FontAwesome5 name="user" size={24} color="#CDCCCE" />,
             
         }
         }
+        
       },
       {
         tabBarOptions: {
