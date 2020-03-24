@@ -25,9 +25,10 @@ export default class Register extends Component {
   handleSignUp() {
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(userCredentials => {
-      return userCredentials.user.updateProfile({
-        displayName: this.state.name
+        userCredentials.user.updateProfile({
+        displayName: this.state.name        
       })
+      this.props.navigation.navigate("Home");
     })
     .catch(error => this.setState({errorMessage: error.message}));
 

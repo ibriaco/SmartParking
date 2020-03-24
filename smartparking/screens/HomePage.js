@@ -27,6 +27,8 @@ import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
 import TabNavigator from "./TabNavigator.js";
 import * as firebase from 'firebase';
+import * as Animatable from 'react-native-animatable';
+
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -50,6 +52,8 @@ class Map extends React.Component {
   
 
     this.state = {
+
+      //buttonAnimation: new Animated.Value(0),
 
       email: "",
       displayName: "",
@@ -444,7 +448,8 @@ addReservation(){
             <Image source={require('../assets/icons/car_marker.png')} style={{height: 35, width:35 }} />
           </Marker.Animated>
         </MapView>
-          
+
+       {/*   
         <Searchbar
           placeholder="Where are you going?"
           placeholderTextColor = 'rgba(165, 165, 165, 0.8)'
@@ -454,7 +459,7 @@ addReservation(){
           style = {styles.searchbar}
         />
         
-
+*/}
       
       
         
@@ -470,10 +475,10 @@ addReservation(){
         </Modal>
       </View>
 
+
       <ActionButton buttonColor="#38BC7C" >
       
       </ActionButton>
-
             {/*
              <ActionButton buttonColor="#38BC7C">
           <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
