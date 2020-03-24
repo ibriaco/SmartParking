@@ -39,57 +39,6 @@ var firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 //firebase.analytics();
 
-const tab = createBottomTabNavigator(
-  {
-    Map: {
-      screen: HomePage,
-      navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="book-medical" size={24} color="#CDCCCE" />,
-
-      },
-      title: 'Login',
-      headerTitleStyle: {
-        textAlign: "center",
-        flex: 1,
-        fontSize: 26,
-        fontWeight: 'bold'
-      },
-      headerRight: (<View />)
-    },
-    List: {
-      screen: Filter,
-      navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="heartbeat" size={24} color="#CDCCCE" />
-      }
-    },
-    Add: {
-      screen: Login,
-      navigationOptions: {
-        tabBarIcon: <ActionButton buttonColor="rgba(231,76,60,1)">
-
-        </ActionButton>
-      }
-    },
-    Filter: {
-      screen: () => Login,
-      navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="band-aid" size={24} color="#CDCCCE" />
-      }
-    },
-    Profile: {
-      screen: Profile,
-      navigationOptions: {
-        tabBarIcon: () => <FontAwesome5 name="user" size={24} color="#CDCCCE" />
-      }
-    }
-  },
-  {
-    tabBarOptions: {
-      showLabel: false
-    }
-  }
-);
-
 const screens = createStackNavigator(
   {
     Splash: {
@@ -169,7 +118,7 @@ const screens = createStackNavigator(
           screen: HomePage,
           
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="home" size={24} color="#ff69b4" />
+            tabBarIcon: () => <FontAwesome5 name="map" size={24} color="#ff69b4" />
         }
         },
         Filter: {
