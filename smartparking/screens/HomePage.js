@@ -21,14 +21,15 @@ import Button from "../components/Button.js";
 import { Icon, Block } from "../components"
 import Text from "../components/Text.js"
 import FloatingButton from "../components/FloatingButton.js";
-import {mapStyle} from "./mapStyle.json";
+//import {mapStyle} from "./mapStyle.json";
 import DrawerButton from "../components/DrawerButton.js";
 import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
 import TabNavigator from "./TabNavigator.js";
 import * as firebase from 'firebase';
 import * as Animatable from 'react-native-animatable';
-
+import { YellowBox } from 'react-native';
+import _ from 'lodash';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -37,23 +38,28 @@ const LONGITUDE_DELTA = 0.0009;
 const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
+const mapStyle = require('./mapStyle.json');
+const filt = require('./filteringParameters.json');
+
 
 var tappedArea;
 var tappedParking;
 var tappedParkingCoords;
 //var firebase;
 
+YellowBox.ignoreWarnings(['Setting a timer']);
+const _console = _.clone(console);
+console.warn = message => {
+  if (message.indexOf('Setting a timer') <= -1) {
+    _console.warn(message);
+  }
+};
+
 class Map extends React.Component {
   constructor(props) {
     super(props);
 
-    //firebase = require("firebase");
-
-  
-
     this.state = {
-
-      //buttonAnimation: new Animated.Value(0),
 
       email: "",
       displayName: "",
@@ -134,10 +140,15 @@ class Map extends React.Component {
         }
         ],
   
-      //variable containing the initial region viewed by the user (europe)
+      //variable containing the initial region viewed by the user
       region:  {
-        latitude: 45.4,
-        longitude: 9.8,
+        //EUROPE
+        //latitude: 45.4,
+        //longitude: 9.8,
+        
+        //MILAN
+        latitude: 45.464664,
+        longitude: 9.188540,
         latitudeDelta: 10,
         longitudeDelta: 10
       },
@@ -163,6 +174,12 @@ firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('valu
   this.setState({receivedAreas: snapshot.val()});
   })        
   
+//PROVA LETTURA FILTRI
+  console.log(filt);
+  if(filt.active)
+    console.log("FILTRO ON");
+  else
+    console.log("FILTRO OFF");
 
 }
 
@@ -218,7 +235,7 @@ async readAndDrawParkings (area) {
         this.setState({routeCoordinates: newArray});
 
         this.setState({currentCoordinates : newCoordinate});
-        this.updateCamera()
+        this.updateCamera();
 
       },
       error => alert('Please give us the permission!'),
@@ -277,6 +294,11 @@ async readAndDrawParkings (area) {
 
     tappedArea = area;
 
+
+    //get the CURRENT number of reservations for that specific parking, better to create an async function
+    firebase.database().ref('Cities/' + this.state.selectedCity + '/Reservations/Reservations' + tappedArea.id).on('value', (snapshot) => {    
+      console.log(snapshot.numChildren())
+    });
     //polygon è proprio il vettore di coordinate che rappresenta quella determinata area (o parte di area)
 
     //showo le informazioni dell'area (ora è un alert, poi sarà un drawer)
@@ -301,25 +323,7 @@ async readAndDrawParkings (area) {
 
   }
 
-  showParkingInfo(parking) {
-
-    tappedParking = parking;
-
-
-    this.setState({isModalVisible: true});
-
-    alert("Tap su Parcheggio di Tipo: " + parking.type);
-
-    tappedParkingCoords = {
-      latitude : ((tappedParking.rectangle[0].latitude + tappedParking.rectangle[1].latitude + tappedParking.rectangle[2].latitude + tappedParking.rectangle[3].latitude)/4),
-      longitude : ((tappedParking.rectangle[0].longitude + tappedParking.rectangle[1].longitude + tappedParking.rectangle[2].longitude + tappedParking.rectangle[3].longitude)/4),
-    }
-   
-
-//get the CURRENT number of reservations for that specific parking, better to create an async function
-    firebase.database().ref('Cities/' + this.state.selectedCity + '/Reservations/Reservations' + tappedArea.id + '-' + tappedParking.id).on('value', (snapshot) => {    
-      console.log(snapshot.numChildren())
-   })   
+ 
 
 /*
     let newArray = [...this.state.routeCoordinates];
@@ -327,7 +331,7 @@ async readAndDrawParkings (area) {
     this.setState({routeCoordinates: newArray});
     */
 
-  }
+  
 
   showParkingRoute() {
    
