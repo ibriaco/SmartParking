@@ -11,6 +11,8 @@ import * as Permissions from 'expo-permissions';
 import * as firebase from 'firebase'
 import * as Facebook from "expo-facebook";
 import * as Constants from "expo-constants";
+import * as Google from 'expo-google-app-auth';
+
 
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
@@ -40,6 +42,25 @@ class Login extends Component {
       //this.props.navigation.navigate("Home")
 
     Keyboard.dismiss();
+  }
+
+  async signInWithGoogle() {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId: "712869520957-b7t4ngd62o00dnps2q6fprb5c4k8d8qp.apps.googleusercontent.com",
+        //iosClientId: YOUR_CLIENT_ID_HERE,
+        scopes: ['profile', 'email'],
+      });
+  
+      if (result.type === 'success') {
+        this.props.navigation.navigate("Home")
+        return result.accessToken;
+      } else {
+        console.log("cancelled")
+      }
+    } catch (e) {
+      console.log("error")
+    }
   }
 
 
@@ -122,7 +143,7 @@ class Login extends Component {
               <Text center gray2 h4>login with</Text>
 
               <View style={styles.social}>
-                <Button style={styles.facebook} >
+                <Button style={styles.facebook} onPress={()=>this.signInWithGoogle()} >
                   <SocialIcon
                     type="google"
                     light
