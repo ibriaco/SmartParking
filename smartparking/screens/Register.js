@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.accent
   },
   button:{
-    backgroundColor: '#0CD3A4',
+    backgroundColor: '#03A696',
     height: 60,
     borderRadius: 20,
     marginHorizontal: 25,

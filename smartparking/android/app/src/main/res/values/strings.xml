@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">smartparking</string>
+    <string name="app_name">SmartParking</string>
+    <string name="facebook_app_id">280118969668120</string>
+    <string name="app_name">SmartParking</string>
+    <string name="fb_app_id">280118969668120</string>
+    <string name="fb_login_protocol_scheme">fb280118969668120</string>
 </resources>

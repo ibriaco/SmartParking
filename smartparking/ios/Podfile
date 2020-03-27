@@ -32,4 +32,6 @@ target 'smartparking' do
 
   use_unimodules!
 
+  pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
+
 end

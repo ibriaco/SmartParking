@@ -49,9 +49,9 @@ const screens = createStackNavigator(
     },
     Welcome: {
       screen: WelcomeScreen,
-          navigationOptions: {
-            header: null
-          }
+      navigationOptions: {
+        header: null
+      }
     },
     Test: {
       screen: Test,
@@ -62,7 +62,7 @@ const screens = createStackNavigator(
     Login: {
       screen: Login,
       navigationOptions: {
-        headerStyle:{
+        headerStyle: {
           shadowOpacity: 0.8,
           elevation: 6,
         },
@@ -78,7 +78,7 @@ const screens = createStackNavigator(
     Register: {
       screen: Register,
       navigationOptions: {
-        headerStyle:{
+        headerStyle: {
           shadowOpacity: 0.8,
           elevation: 6,
         },
@@ -116,91 +116,100 @@ const screens = createStackNavigator(
       screen: createBottomTabNavigator({
         Home: {
           screen: HomePage,
-          
+
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="map" size={24} color="#ff69b4" />
-        }
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+          }
         },
         Filter: {
           screen: Filter,
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="list-alt" size={24} color="#CDCCCE" />
-        }
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="list-alt" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+          }
         },
-        
+
         List: {
           screen: Filter,
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="search-location" size={24} color="#CDCCCE" />
-        }
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="search-location" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+          }
         },
         Profile: {
           screen: createMaterialTopTabNavigator({
             Profile: {
               screen: Filter,
               navigationOptions: {
-                tabBarIcon: () => <FontAwesome5 name="list-alt" size={24} color="#CDCCCE" />
-            }
+                tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
+                backgroundColor: "#03A696",
+                height: theme.sizes.base * 6,
+              }
             },
-            
+
             Vehicle: {
               screen: Filter,
               navigationOptions: {
-                tabBarIcon: () => <FontAwesome5 name="search-location" size={24} color="#CDCCCE" />
-            },
-            Payments: {
-              screen: Filter,
-              navigationOptions: {
-                tabBarIcon: () => <FontAwesome5 name="list-alt" size={24} color="#CDCCCE" />
-            }
-            }
+                tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
+                backgroundColor: "#03A696",
+                height: theme.sizes.base * 6,
+              },
+              Payments: {
+                screen: Filter,
+                navigationOptions: {
+                  tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
+                  backgroundColor: "#03A696",
+                  height: theme.sizes.base * 6,
+                }
+              },
 
-            }}),
-            
+
+            },
+          },
+          ),
+
           navigationOptions: {
-            tabBarIcon: () => <FontAwesome5 name="user" size={24} color="#CDCCCE" />,
-            
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+
+          }
         }
-        }
-        
+
       },
-      {
-        tabBarOptions: {
-          showLabel: false
-      }
-      }
+        {
+          tabBarOptions: {
+            showLabel: false
+          }
+        }
       ),
       navigationOptions: {
         header: null
       },
-      
+
     },
-    
+
   },
-  
-{
-  transitionConfig: () => zoomOut(),
+
+  {
+    transitionConfig: () => zoomOut(),
     defaultNavigationOptions: {
-    headerStyle: {
-      height: theme.sizes.base * 6,
+      headerStyle: {
+        height: theme.sizes.base * 6,
         backgroundColor: "#fff", // or 'white
-          borderBottomColor: "transparent",
-            elevation: 0 // for android
-    },
-    headerBackImage: <Icon name="long-arrow-left" color="#a5a5a5" size = {20} />,
+        borderBottomColor: "transparent",
+        elevation: 0 // for android
+      },
+      headerBackImage: <Icon name="long-arrow-left" color="#a5a5a5" size={20} />,
       headerBackTitle: null,
-        headerLeftContainerStyle: {
-      alignItems: "center",
+      headerLeftContainerStyle: {
+        alignItems: "center",
         marginLeft: theme.sizes.base,
-          paddingRight: theme.sizes.base
-    },
-    headerRightContainerStyle: {
-      alignItems: "center",
+        paddingRight: theme.sizes.base
+      },
+      headerRightContainerStyle: {
+        alignItems: "center",
         marginLeft: theme.sizes.base,
-          paddingRight: theme.sizes.base
-    },
+        paddingRight: theme.sizes.base
+      },
+    }
   }
-}
 );
 
 

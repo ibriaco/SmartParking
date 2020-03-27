@@ -4,6 +4,7 @@
     "slug": "smartparking",
     "privacy": "public",
     "sdkVersion": "36.0.0",
+    
     "platforms": [
       "ios",
       "android",
@@ -23,11 +24,23 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    
     "ios": {
       "supportsTablet": true
     },
     "entryPoint": "node_modules/expo/AppEntry.js"
   },
   "displayName": "smartparking",
-  "name": "smartparking"
+  "name": "smartparking",
+  "extra": {
+    "firebase": {
+      "apiKey": "AIzaSyDrUppJZiKvyUvcLUau9iUsDKcZJIGLZuQ",
+      "authDomain": "smartparking-19214.firebaseapp.com",
+      "databaseURL": "https://smartparking-19214.firebaseio.com",
+      "projectId": "smartparking-19214"
+    },
+    "facebook": {
+      "appId": "280118969668120"
+    }
+  }
 }

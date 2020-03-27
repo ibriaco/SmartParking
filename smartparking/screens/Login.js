@@ -7,8 +7,10 @@ import {
   View,
   Image
 } from "react-native";
-
+import * as Permissions from 'expo-permissions';
 import * as firebase from 'firebase'
+import * as Facebook from "expo-facebook";
+import * as Constants from "expo-constants";
 
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
@@ -17,7 +19,9 @@ import { SocialIcon } from 'react-native-elements'
 
 import { Input, Icon } from "galio-framework"
 
-export default class Login extends Component {
+ 
+
+class Login extends Component {
   state = {
     email: "",
     password: "",
@@ -33,10 +37,32 @@ export default class Login extends Component {
       .signInWithEmailAndPassword(email, password)
       .then(() => this.props.navigation.navigate("Home"))
       .catch(error => this.setState({ errorMessage: error.message }));
+      //this.props.navigation.navigate("Home")
 
     Keyboard.dismiss();
   }
 
+
+  signInWithFacebook = async () => {
+    //const appId = "280118969668120"
+    const permissions = ["public_profile", "email"]; 
+    await Facebook.initializeAsync("280118969668120");
+    const { type, token } = await Facebook.logInWithReadPermissionsAsync({
+      permissions
+    });
+    if (type == "success") {
+      await firebase.auth().setPersistence(firebase.auth.Auth.Persistence.LOCAL);
+      const credential = firebase.auth.FacebookAuthProvider.credential(token);
+      await firebase
+        .auth()
+        .signInWithCredential(credential)
+        .then(() => this.props.navigation.navigate("Home"))
+        .catch(error => this.setState({ errorMessage: error.message }));; // Sign in with Facebook credential
+      //console.log(facebookProfileData);
+    }
+  };
+
+  
   render() {
     const { navigation } = this.props;
 
@@ -49,7 +75,7 @@ export default class Login extends Component {
           Login
           </Text>
           <Text gray2 h3>Enter your credentials to sign in</Text>
-          <Block middle>
+          <Block top>
             <View style={styles.errorMessage}>
               {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
             </View>
@@ -82,7 +108,7 @@ export default class Login extends Component {
             />
             <Button style={styles.forget}>
               <Text
-                gray
+                gray2
                 h4
                 right
                 style={{ textDecorationLine: "underline" }}>
@@ -96,14 +122,14 @@ export default class Login extends Component {
               <Text center gray2 h4>login with</Text>
 
               <View style={styles.social}>
-                <Button style={styles.facebook}>
+                <Button style={styles.facebook} >
                   <SocialIcon
                     type="google"
                     light
                   />
                 </Button>
                 <Text center gray2 h4>      </Text>
-                <Button style={styles.google}>
+                <Button style={styles.google} onPress={()=>this.signInWithFacebook()}>
                   <SocialIcon
                     type="facebook"
                     light
@@ -138,7 +164,6 @@ const styles = StyleSheet.create({
   login: {
     flex: 1,
     justifyContent: "center",
-    backgroundColor: '#ffffff',
   },
   input: {
     borderRadius: 20,
@@ -157,7 +182,7 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.accent
   },
   loginButton: {
-    backgroundColor: '#0CD3A4',
+    backgroundColor: '#03A696',
     height: 60,
     borderRadius: 20,
     marginHorizontal: 25,
@@ -222,3 +247,5 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   }
 });
+
+export default Login;

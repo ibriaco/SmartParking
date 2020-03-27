@@ -60,17 +60,17 @@ class Filter extends Component {
     <View style = {styles.container}>
       <Block style = {{marginTop: 30}}>
         <Block flex={false} row center space="between" style={styles.header}>
-        <Button style = {{backgroundColor: '#0DB665'}}>
+        <Button style = {{backgroundColor: '#03A696'}}>
               <Icon
                   name = "times"
-                  color = "#0DB665"
+                  color = "#03A696"
                   size = {24}
               />
           </Button>
           <Text center h1 bold white >
             Filter
           </Text>
-          <Button style = {{backgroundColor: '#0DB665', height: 40}} onPress = {()=>this.handleApply()}>
+          <Button style = {{backgroundColor: '#03A696', height: 40}} onPress = {()=>this.handleApply()}>
               <Icon
                   name = "times"
                   color = "#fff"
@@ -81,7 +81,7 @@ class Filter extends Component {
 
           <Block style={styles.sliders}>
             <Block margin={[10, 0]}>
-              <Text h3 white style={{ marginBottom: 10, opacity: 0.8 }}>
+              <Text h3 white style={{ marginBottom: 10, }}>
                 Price
               </Text>
               <Slider
@@ -99,7 +99,7 @@ class Filter extends Component {
                 10€
               </Text>
                 <Text></Text>
-              <Text h3 white style={{ marginBottom: 10, opacity: 0.8 }}>
+              <Text h3 white style={{ marginBottom: 10, }}>
                 Range
               </Text>
               <Slider
@@ -117,7 +117,7 @@ class Filter extends Component {
                 6 km
               </Text>
               <Text></Text>
-              <Text h3 white style={{ marginBottom: 10, opacity: 0.8 }}>
+              <Text h3 white style={{ marginBottom: 10,  }}>
                 Availability
               </Text>
               <Slider
@@ -135,13 +135,18 @@ class Filter extends Component {
                 High
               </Text>
             </Block>
+            <Block bottom center>
+            <Text center h1 bold white >
+            Type
+          </Text>
+            </Block>
           </Block>
 
 
           <Block bottom>
           <Button style = {styles.button} onPress = {()=>this.handleApply()}>
-                <Text h3 bold secondary center>
-                  Apply
+                <Text h1 bold secondary center>
+                  Save
                 </Text>
             </Button>
           </Block>
@@ -161,7 +166,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#0DB665',
+        backgroundColor: '#03A696',
     },
   header: {
     paddingHorizontal: theme.sizes.base * 2
@@ -187,13 +192,16 @@ const styles = StyleSheet.create({
     borderRadius: theme.sizes.base,
     borderColor: "white",
     borderWidth: 3,
-    backgroundColor: theme.colors.secondary
+    backgroundColor: theme.colors.accent
   },
   button:{
-    backgroundColor: '#fff',
-    height: 50,
-    borderRadius: 10,
-    marginHorizontal: 25,
+    backgroundColor: '#ffffff',
+    height: 60,
+    borderRadius: 16,
+    marginHorizontal: 45,
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 6,
     marginBottom: 30
   },
 });
