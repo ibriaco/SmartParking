@@ -38,15 +38,14 @@ const LONGITUDE_DELTA = 0.0009;
 const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
-const mapStyle = require('./mapStyle.json');
 const filt = require('./filteringParameters.json');
 
-
+var mapStyle = require('./mapStyle.json');
 var tappedArea;
 var tappedParking;
 var tappedParkingCoords;
-//var firebase;
 
+//fuck those useless warnings
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
 console.warn = message => {
@@ -61,6 +60,7 @@ class Map extends React.Component {
 
     this.state = {
 
+      darkMode: false,
       email: "",
       displayName: "",
 
@@ -165,21 +165,29 @@ class Map extends React.Component {
     };
   }
 
-
+  componentDidUpdate(prevProps) {
+    // Typical usage (don't forget to compare props):
+    if (this.props.userID !== prevProps.userID) {
+      console.log("UPDATE")
+    }
+  }
+  
 async readAndDrawAreas () {
-
-//leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
-
-firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {    
-  this.setState({receivedAreas: snapshot.val()});
-  })        
   
 //PROVA LETTURA FILTRI
   console.log(filt);
-  if(filt.active)
-    console.log("FILTRO ON");
-  else
-    console.log("FILTRO OFF");
+  if(filt.active){
+
+
+  }
+  else{
+
+    //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
+
+    firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {    
+      this.setState({receivedAreas: snapshot.val()});
+    })      
+  }  
 
 }
 
@@ -355,6 +363,11 @@ toggleModal = () => {
   this.setState({ isModalVisible: !this.state.isModalVisible });
 };
 
+toggleDarkMode(){
+
+  this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle.json'));
+  this.setState({darkMode: !this.state.darkMode});
+}
 
 addReservation(){
 
@@ -363,6 +376,7 @@ addReservation(){
     timestampS: firebase.database.ServerValue.TIMESTAMP, //in milliseconds
 })
 }
+
 
   
   render() {
@@ -480,7 +494,7 @@ addReservation(){
       </View>
 
 
-      <ActionButton buttonColor="#38BC7C" >
+      <ActionButton buttonColor="#38BC7C" onPress={() => this.toggleDarkMode()}>
       
       </ActionButton>
             {/*
