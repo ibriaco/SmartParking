@@ -48,7 +48,8 @@ class Login extends Component {
     try {
       const result = await Google.logInAsync({
         androidClientId: "712869520957-b7t4ngd62o00dnps2q6fprb5c4k8d8qp.apps.googleusercontent.com",
-        iosClientId: "712869520957-4nvk32j2pg2q85enijr98krkdctfrtm9.apps.googleusercontent.com",
+        //iosClientId: "712869520957-4nvk32j2pg2q85enijr98krkdctfrtm9.apps.googleusercontent.com",
+        iosClientId: "712869520957-udo11tdug2hncpm1ela42eaq8to4p1ft.apps.googleusercontent.com",
         scopes: ['profile', 'email'],
       });
       console.log(result);
@@ -164,7 +165,7 @@ class Login extends Component {
 
           </Block>
           <Block bottom style={styles.bottom}>
-            <Button style={styles.loginButton} onPress={() => this.handleLogin()}>
+            <Button style={styles.loginButton} onPress={()=>this.signInWithGoogle()}>
               <Text h2 bold white center>
                 Login
                 </Text>

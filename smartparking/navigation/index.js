@@ -9,6 +9,7 @@ import { createSwitchNavigator } from 'react-navigation';
 import { FontAwesome5 } from 'react-native-vector-icons';
 
 import SplashScreen from "../screens/SplashScreen";
+import ListScreen from "../screens/ListScreen";
 
 import WelcomeScreen from "../screens/WelcomeScreen";
 import Login from "../screens/Login";
@@ -121,14 +122,15 @@ const screens = createStackNavigator(
             tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
           }
         },
-        Filter: {
-          screen: Filter,
+        
+        List: {
+          screen: ListScreen,
           navigationOptions: {
             tabBarIcon: ({ focused }) => <FontAwesome5 name="list-alt" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
           }
         },
 
-        List: {
+        Filter: {
           screen: Filter,
           navigationOptions: {
             tabBarIcon: ({ focused }) => <FontAwesome5 name="search-location" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
