@@ -48,7 +48,7 @@ class Login extends Component {
     try {
       const result = await Google.logInAsync({
         androidClientId: "712869520957-b7t4ngd62o00dnps2q6fprb5c4k8d8qp.apps.googleusercontent.com",
-        //iosClientId: YOUR_CLIENT_ID_HERE,
+        iosClientId: "712869520957-4nvk32j2pg2q85enijr98krkdctfrtm9.apps.googleusercontent.com",
         scopes: ['profile', 'email'],
       });
       console.log(result);
