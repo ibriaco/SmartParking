@@ -30,6 +30,9 @@ import * as firebase from 'firebase';
 import * as Animatable from 'react-native-animatable';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
+import { connect } from 'react-redux';
+import { updateAreas, updateFilters } from '../actions/actions';
+import { bindActionCreators } from 'redux';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -575,4 +578,19 @@ const styles = StyleSheet.create({
   }
 });
   
+/*
+const mapStateToProps = state => ({
+  areas: state.areas,
+});
+
+const ActionCreators = Object.assign(
+  {},
+  updateAreas,
+  updateFilters
+);
+const mapDispatchToProps = dispatch => ({
+  actions: bindActionCreators(ActionCreators, dispatch),
+});
+*/
+
 export default Map;

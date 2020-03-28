@@ -51,7 +51,7 @@ class Login extends Component {
         //iosClientId: YOUR_CLIENT_ID_HERE,
         scopes: ['profile', 'email'],
       });
-  
+      console.log(result);
       if (result.type === 'success') {
         this.props.navigation.navigate("Home")
         return result.accessToken;

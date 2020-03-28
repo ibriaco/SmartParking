@@ -1,0 +1,6 @@
+export const DEFAULT_AVAILABILITY = 0;
+export const DEFAULT_PRICE = 0;
+export const DEFAULT_DISTANCE = 0;
+export const ACTION_UPDATE_AREAS = 'UPDATE_AREAS';
+export const ACTION_UPDATE_FILTERS = 'UPDATE_FILTERS';
+
