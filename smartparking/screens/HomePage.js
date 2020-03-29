@@ -30,8 +30,6 @@ import * as Animatable from 'react-native-animatable';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { updateAreas, updateFilters } from '../actions/actions';
-import { bindActionCreators } from 'redux';
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -209,7 +207,8 @@ async readAndDrawParkings (area) {
 
   async componentDidMount() {
 
-
+  console.log(this.props.counter)
+    
   //authentication
 
   const {email, displayName} = firebase.auth().currentUser
@@ -366,7 +365,7 @@ toggleModal = () => {
 };
 
 toggleDarkMode(){
-
+  
   this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle.json'));
   this.setState({darkMode: !this.state.darkMode});
 }
@@ -577,20 +576,12 @@ const styles = StyleSheet.create({
   }
 });
   
+function mapStateToProps(state) {
+  return {
+    //state.counter gets data from the store
+    //and we are mapping that data to the prop named counter
+    counter: state.counter 
+  }
+}
 
-const mapStateToProps = state => ({
-  areas: state.areas,
-});
-
-const ActionCreators = Object.assign(
-  {},
-  updateAreas,
-  updateFilters
-);
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(ActionCreators, dispatch),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Map)
-
-//export default Map;
+export default connect(mapStateToProps)(Map);

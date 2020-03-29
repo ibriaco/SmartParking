@@ -1,8 +1,7 @@
 import { ACTION_UPDATE_AREAS, ACTION_UPDATE_FILTERS } from '../constants/redux_constants';
 
 const initialState = {
-    areas: {},
-    filters: {}
+    areas: 0
 };
 
 const reducer = (state = initialState, action) => {
@@ -11,11 +10,6 @@ const reducer = (state = initialState, action) => {
         return {
         ...state,
         areas: action.payload
-    };
-    case ACTION_UPDATE_FILTERS:
-        return {
-        ...state,
-        filters: action.payload
     };
     
     default:

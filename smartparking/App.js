@@ -56,9 +56,17 @@ import Navigation from "./navigation/index.js";
 import { Block } from "./components";
 import { Provider } from 'react-redux';
 
-import configureStore from './store/store';
+import { createStore } from 'redux';
 
-const store = configureStore()
+
+const initialState = {
+  counter: "DIOCANE"
+}
+const reducer = (state = initialState) => {
+  return state;
+}
+
+const store = createStore(reducer)
 
 // import all used images
 const images = [

@@ -7,9 +7,3 @@ export function updateAreas(areas) {
     }
 }
 
-export function updateFilters(filters) {
-    return {
-        type: ACTION_UPDATE_FILTERS,
-        payload: filters
-    }
-}
