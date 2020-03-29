@@ -54,6 +54,11 @@ import { Asset } from "expo-asset";
 
 import Navigation from "./navigation/index.js";
 import { Block } from "./components";
+import { Provider } from 'react-redux';
+
+import configureStore from './store/store';
+
+const store = configureStore()
 
 // import all used images
 const images = [
@@ -88,9 +93,11 @@ export default class App extends React.Component {
     }
 
     return (
+      <Provider store = { store }>
       <Block white>
         <Navigation />
       </Block>
+      </Provider>
     );
   }
 }

@@ -577,7 +577,7 @@ const styles = StyleSheet.create({
   }
 });
   
-/*
+
 const mapStateToProps = state => ({
   areas: state.areas,
 });
@@ -590,6 +590,7 @@ const ActionCreators = Object.assign(
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(ActionCreators, dispatch),
 });
-*/
 
-export default Map;
+export default connect(mapStateToProps, mapDispatchToProps)(Map)
+
+//export default Map;
