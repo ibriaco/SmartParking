@@ -25,7 +25,6 @@ import FloatingButton from "../components/FloatingButton.js";
 import DrawerButton from "../components/DrawerButton.js";
 import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
-import TabNavigator from "./TabNavigator.js";
 import * as firebase from 'firebase';
 import * as Animatable from 'react-native-animatable';
 import { YellowBox } from 'react-native';
@@ -578,7 +577,7 @@ const styles = StyleSheet.create({
   }
 });
   
-/*
+
 const mapStateToProps = state => ({
   areas: state.areas,
 });
@@ -591,6 +590,7 @@ const ActionCreators = Object.assign(
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(ActionCreators, dispatch),
 });
-*/
 
-export default Map;
+export default connect(mapStateToProps, mapDispatchToProps)(Map)
+
+//export default Map;

@@ -22,4 +22,4 @@ const reducer = (state = initialState, action) => {
         return state;
     }
 }
-export default countReducer;
+export default reducer;
