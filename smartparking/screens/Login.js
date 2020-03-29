@@ -48,7 +48,6 @@ class Login extends Component {
     try {
       const result = await Google.logInAsync({
         androidClientId: "712869520957-b7t4ngd62o00dnps2q6fprb5c4k8d8qp.apps.googleusercontent.com",
-        //iosClientId: "712869520957-4nvk32j2pg2q85enijr98krkdctfrtm9.apps.googleusercontent.com",
         iosClientId: "712869520957-udo11tdug2hncpm1ela42eaq8to4p1ft.apps.googleusercontent.com",
         scopes: ['profile', 'email'],
       });
@@ -66,7 +65,6 @@ class Login extends Component {
 
 
   signInWithFacebook = async () => {
-    //const appId = "280118969668120"
     const permissions = ["public_profile", "email"]; 
     await Facebook.initializeAsync("280118969668120");
     const { type, token } = await Facebook.logInWithReadPermissionsAsync({
@@ -139,19 +137,18 @@ class Login extends Component {
             </Button>
 
             <Text></Text>
-            <Block >
-              <Text></Text>
-              <Text center gray2 h4>login with</Text>
 
-              <View style={styles.social}>
-                <Button style={styles.facebook} onPress={()=>this.signInWithGoogle()} >
+          </Block>
+          <Block bottom style={styles.bottom}>
+          <View style={styles.social}>
+                <Button style={styles.google} onPress={()=>this.signInWithGoogle()} >
                   <SocialIcon
                     type="google"
                     light
                   />
                 </Button>
                 <Text center gray2 h4>      </Text>
-                <Button style={styles.google} onPress={()=>this.signInWithFacebook()}>
+                <Button style={styles.facebook} onPress={()=>this.signInWithFacebook()}>
                   <SocialIcon
                     type="facebook"
                     light
@@ -159,12 +156,6 @@ class Login extends Component {
                 </Button>
 
               </View>
-
-
-            </Block>
-
-          </Block>
-          <Block bottom style={styles.bottom}>
             <Button style={styles.loginButton} onPress={()=>this.signInWithGoogle()}>
               <Text h2 bold white center>
                 Login
@@ -240,21 +231,24 @@ const styles = StyleSheet.create({
     //justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
-    shadowOpacity: 0.2,
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
     elevation: 6,
   },
   facebook: {
     backgroundColor: '#fff',
-    height: 40,
-    width: 40,
+    height: 50,
+    width: 50,
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
-    shadowOpacity: 0.2,
+    borderRadius: 25,
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
     elevation: 6,
   },
   forget: {
-    height: 3,
+    height: 20,
+    backgroundColor: "#fff"
   },
   error: {
     color: "#F14336",
