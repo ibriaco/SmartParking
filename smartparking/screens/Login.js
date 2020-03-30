@@ -44,7 +44,7 @@ class Login extends Component {
     Keyboard.dismiss();
   }
 
-  async signInWithGoogle() {
+  /*async signInWithGoogle() {
     try {
       const result = await Google.logInAsync({
         androidClientId: "712869520957-b7t4ngd62o00dnps2q6fprb5c4k8d8qp.apps.googleusercontent.com",
@@ -61,10 +61,36 @@ class Login extends Component {
     } catch (e) {
       console.log("error")
     }
-  }
+  }*/
+
+    _loginWithGoogle = async () => {
+    try {
+      const result = await Google.logInAsync({
+        androidClientId:"663247712461-6phn0s7ga57vlqjmub2sf972npnutabt.apps.googleusercontent.com",
+        iosClientId:"663247712461-se8kfcpofh6qr458l8u266no50h42dij.apps.googleusercontent.com",
+        scopes: ["profile", "email"]
+      });
+  
+      if (result.type === "success") {
+        const { idToken, accessToken } = result;
+        const credential = firebase.auth.GoogleAuthProvider.credential(idToken, accessToken);
+        firebase
+          .auth()
+          .signInWithCredential(credential)
+          .then(() => this.props.navigation.navigate("Home"))
+          .catch(error => {
+            console.log("firebase cred err:", error);
+          });
+      } else {
+        return { cancelled: true };
+      }
+    } catch (err) {
+      console.log("err:", err);
+    }
+  };
 
 
-  signInWithFacebook = async () => {
+  _loginWithFacebook = async () => {
     const permissions = ["public_profile", "email"]; 
     await Facebook.initializeAsync("280118969668120");
     const { type, token } = await Facebook.logInWithReadPermissionsAsync({
@@ -141,14 +167,14 @@ class Login extends Component {
           </Block>
           <Block bottom style={styles.bottom}>
           <View style={styles.social}>
-                <Button style={styles.google} onPress={()=>this.signInWithGoogle()} >
+                <Button style={styles.google} onPress={()=>this._loginWithGoogle()} >
                   <SocialIcon
                     type="google"
                     light
                   />
                 </Button>
                 <Text center gray2 h4>      </Text>
-                <Button style={styles.facebook} onPress={()=>this.signInWithFacebook()}>
+                <Button style={styles.facebook} onPress={()=>this._loginWithFacebook()}>
                   <SocialIcon
                     type="facebook"
                     light
@@ -156,7 +182,7 @@ class Login extends Component {
                 </Button>
 
               </View>
-            <Button style={styles.loginButton} onPress={()=>this.signInWithGoogle()}>
+            <Button style={styles.loginButton} onPress={()=>this.handleLogin()}>
               <Text h2 bold white center>
                 Login
                 </Text>
