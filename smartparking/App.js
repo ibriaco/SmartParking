@@ -60,9 +60,16 @@ import { createStore } from 'redux';
 
 
 const initialState = {
-  counter: "DIOCANE"
+  areas: {
+    latitude: 0,
+    longitude: 0
+  }
 }
-const reducer = (state = initialState) => {
+const reducer = (state = initialState, action) => {
+  switch(action.type){
+    case "UPDATE_AREA": 
+      return {areas: action.param};
+  }
   return state;
 }
 

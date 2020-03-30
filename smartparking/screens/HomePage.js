@@ -60,17 +60,10 @@ class Map extends React.Component {
 
     this.state = {
 
+      isLoading: true,
       darkMode: false,
       email: "",
       displayName: "",
-
-      firstQuery: '',
-      isModalVisible: false,
-
-      tappedParkingCoords: {
-        latitude: 0,
-        longitude: 0
-      },
 
       currentCoordinates: {
         latitude: LATITUDE,
@@ -79,39 +72,8 @@ class Map extends React.Component {
 
       followUser: true,
 
-      //variable containing the tapped area
-      tappedParking: {
-        color: '',
-        type: '',
-        rectangle:[ {latitude: 0, longitude: 0},{latitude: 0, longitude: 0},{latitude: 0, longitude: 0},{latitude: 0, longitude: 0}],
-      },
+    
 
-      //variable containing the fetched parkings belonging to the tapped area
-      tappedAreaParkings: [
-        {
-          id: 0,
-          color: '',
-          type: '',
-          rectangle:[ {latitude: 0, longitude: 0}],
-        } 
-      ],
-
-      //variable containing the tapped area, this one is deleted from the receivedAreas so i have to save the data
-      /*
-      tappedArea:{
-        id: 0,
-        color: "",
-        nCS: 0,
-        nFree: 0,
-        nHandicap: 0,
-        nPay: 0,
-        nTot: 0,
-        price: 0,
-        points: [
-        [{latitude: 0, longitude: 0}],
-        ],
-      },
-*/
       //variable containing (initially) the city where the user is, may be changed if the user inserts a different city
       selectedCity: "Sondrio",
 
@@ -122,23 +84,7 @@ class Map extends React.Component {
       //at index 0 i have the user coordinates (always updated), at index 1 i have the "destination" coordinates (tapped parking)
       routeCoordinates: [],
 
-      //variable containing the fetched areas belonging to the selected city
-      
-      receivedAreas: [ 
-        {
-          id: 0,
-          color: "",
-          nCS: 0,
-          nFree: 0,
-          nHandicap: 0,
-          nPay: 0,
-          nTot: 0,
-          price: 0,
-          points: [
-          [{latitude: 0, longitude: 0}],
-          ],
-        }
-        ],
+    
   
       //variable containing the initial region viewed by the user
       region:  {
@@ -175,31 +121,19 @@ class Map extends React.Component {
 async readAndDrawAreas () {
   
 //PROVA LETTURA FILTRI
-  console.log(filt);
-  if(filt.active){
-
-
-  }
-  else{
+  
 
     //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
 
-    firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {    
-      this.setState({receivedAreas: snapshot.val()});
-    })      
-  }  
+    firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {
+    this.props.updateArea(snapshot.val());
+    this.setState({isLoading: false});
+  })      
+    console.log("FINITO")
 
 }
 
-async readAndDrawParkings (area) {
 
-  //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
-  firebase.database().ref('Cities/' + this.state.selectedCity + '/Parkings/Parkings' + area.id).on('value', (snapshot) => {    
-    this.setState({tappedAreaParkings: snapshot.val()});  
-
- })        
-  
-  }
 
   signoutUser = () => {
     firebase.auth().signOut();
@@ -207,7 +141,7 @@ async readAndDrawParkings (area) {
 
   async componentDidMount() {
 
-  console.log(this.props.counter)
+  console.log(this.props.areas)
     
   //authentication
 
@@ -215,7 +149,9 @@ async readAndDrawParkings (area) {
 
   this.setState({email, displayName});
   //when everything is mounted i fetch the db to get areas to render
-  this.readAndDrawAreas();
+    await this.readAndDrawAreas();
+    console.log(this.props.areas)
+
 
 
   //guardare questa istruzione
@@ -299,83 +235,29 @@ async readAndDrawParkings (area) {
   }
 
 
-  showAreaInfo(area){
-
-    tappedArea = area;
-
-
-    //get the CURRENT number of reservations for that specific parking, better to create an async function
-    firebase.database().ref('Cities/' + this.state.selectedCity + '/Reservations/Reservations' + tappedArea.id).on('value', (snapshot) => {    
-      console.log(snapshot.numChildren())
-    });
-    //polygon è proprio il vettore di coordinate che rappresenta quella determinata area (o parte di area)
-
-    //showo le informazioni dell'area (ora è un alert, poi sarà un drawer)
-    alert("Tap su Area " + area.id + ", Prezzo " + area.price + "Numero posti TOT: " + area.nTot);
-
-    //salvo l'area tappata, mi servirà per cancellarla quando verrà tappato un parcheggio 
-    //controllare il tap di due aree consecutive
-    
-    
-    //this.removeArea(area)
-    //this.readAndDrawParkings(area);
-    
-    
-    /*
-    if(areaHasBeenDeleted()){
-      //se non è gia stata cancellata un area (nascosta temporaneamente) allora faccio tutto normale
-      //se invece è nascosta, devo prima resettare le aree e poi faccio tutto
-      //RIMETTERE TAPPEDAREA IN RECEIVEDAREAS
-      //probably l'if lo posso fare su tappedArea
-    }
-*/
-
+  onAreaTapped(area){
+    console.log("AREA TAPPATA: " + area);
   }
-
- 
-
-/*
-    let newArray = [...this.state.routeCoordinates];
-    newArray[1] = {latitude: parking.rectangle[0].latitude, longitude: parking.rectangle[0].longitude};
-    this.setState({routeCoordinates: newArray});
-    */
-
-  
 
   showParkingRoute() {
    
-    this.setState({isModalVisible: false});
-
     let newArray = [...this.state.routeCoordinates];
-    newArray[1] = {latitude: tappedParkingCoords.latitude, longitude: tappedParkingCoords.longitude};
+    newArray[1] = {latitude: this.props.tappedArea.latitude, longitude: this.props.tappedArea.longitude};
     this.setState({routeCoordinates: newArray});  
 
   }
 
-  removeArea(a) {
-    //questo funziona perfettamente OKKK
-    this.setState({receivedAreas: this.state.receivedAreas.filter(function(area) { 
-        return area !== a;
-    })});
-
-}
-
-toggleModal = () => {
-  this.setState({ isModalVisible: !this.state.isModalVisible });
-};
-
 toggleDarkMode(){
   
+  console.log("PROVA: ")
+  this.props.areas.map((area, index) => (
+    console.log(area.longitude)
+  ));
+
+
+  console.log(this.props.areas)
   this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle.json'));
   this.setState({darkMode: !this.state.darkMode});
-}
-
-addReservation(){
-
-
-  firebase.database().ref('Cities/' + this.state.selectedCity + '/Reservations/Reservations' + tappedArea.id + '-' + tappedParking.id).set( {    
-    timestampS: firebase.database.ServerValue.TIMESTAMP, //in milliseconds
-})
 }
 
 
@@ -399,30 +281,15 @@ addReservation(){
           initialRegion={this.state.region}    
         >
  
-        {this.state.receivedAreas.map((area => (
-          area.points.map((polygon, index) => (
-            <View key={index}>
-              <Polygon
-                coordinates={polygon}
-                //fillColor={polygon.color}
-                fillColor="rgba(3,100,255,0.3)"
+        {!this.state.isLoading && this.props.areas.map((area, index) => (
+              <MapView.Marker key={index}
+                coordinate={{latitude: area.latitude, longitude: area.longitude}}
                 tappable={true}
-                strokeWidth={0}
-                onPress={() => this.showAreaInfo(area)}
+                onPress={() => this.onAreaTapped(area)}
 				        />              
-            </View>
-          )))))}
-
-          {this.state.tappedAreaParkings.map((parking, index) => (
-            <View key={index}>
-              <Polygon
-                coordinates={parking.rectangle}
-                //fillColor={parking.color}
-                tappable={true}
-                onPress={() => this.showParkingInfo(parking)}
-                />              
-            </View>
           ))}
+
+          
 
           
 
@@ -468,31 +335,9 @@ addReservation(){
           </Marker.Animated>
         </MapView>
 
-       {/*   
-        <Searchbar
-          placeholder="Where are you going?"
-          placeholderTextColor = 'rgba(165, 165, 165, 0.8)'
-          iconColor = 'rgba(165, 165, 165, 0.8)'
-          onChangeText={query => { this.setState({ firstQuery: query }); }}
-          value={firstQuery}
-          style = {styles.searchbar}
-        />
-        
-*/}
-      
-      
         
 
-        <View>
-        <Modal isVisible={this.state.isModalVisible}>
-          <View style={styles.modalView}>
-            <Text>Hello!</Text> 
-            <Button title="i parked here" onPress={() => this.addReservation()}></Button>
-            <Button title="path" onPress={() => this.showParkingRoute()}></Button>
-            <Button title="google maps" onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + tappedParkingCoords.latitude + ',' + tappedParkingCoords.longitude + '&dir_action=navigate')}></Button>           
-          </View>
-        </Modal>
-      </View>
+        
 
 
       <ActionButton buttonColor="#38BC7C" onPress={() => this.toggleDarkMode()}>
@@ -578,10 +423,16 @@ const styles = StyleSheet.create({
   
 function mapStateToProps(state) {
   return {
-    //state.counter gets data from the store
-    //and we are mapping that data to the prop named counter
-    counter: state.counter 
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    areas: state.areas 
   }
 }
 
-export default connect(mapStateToProps)(Map);
+function mapDispatchToProps(dispatch) {
+  return {
+    updateArea: (param) => dispatch({type: "UPDATE_AREA", param: param}),    
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Map);
