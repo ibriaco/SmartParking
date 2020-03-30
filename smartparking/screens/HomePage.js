@@ -4,29 +4,18 @@ import {
   View,  
   Image,
   Dimensions,
-  Linking
+  Text
 } from "react-native";
 import MapView, {
   Marker,
   AnimatedRegion,
-  Polygon,
-  Animated,
   PROVIDER_GOOGLE
 } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
 import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
-import { Searchbar } from 'react-native-paper';
-import Button from "../components/Button.js";
-import { Icon, Block } from "../components"
-import Text from "../components/Text.js"
-import FloatingButton from "../components/FloatingButton.js";
-//import {mapStyle} from "./mapStyle.json";
-import DrawerButton from "../components/DrawerButton.js";
 import ActionButton from 'react-native-circular-action-menu';
-import Icone from 'react-native-vector-icons/Ionicons';
 import * as firebase from 'firebase';
-import * as Animatable from 'react-native-animatable';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -60,6 +49,7 @@ class Map extends React.Component {
 
     this.state = {
 
+      isModalVisible: false,
       isLoading: true,
       darkMode: false,
       email: "",
@@ -236,6 +226,7 @@ async readAndDrawAreas () {
 
 
   onAreaTapped(area){
+    this.props.updateTappedArea(area);
     console.log("AREA TAPPATA: " + area);
   }
 
@@ -244,11 +235,13 @@ async readAndDrawAreas () {
     let newArray = [...this.state.routeCoordinates];
     newArray[1] = {latitude: this.props.tappedArea.latitude, longitude: this.props.tappedArea.longitude};
     this.setState({routeCoordinates: newArray});  
+    console.log(this.state.routeCoordinates);
 
   }
 
 toggleDarkMode(){
   
+  this.setState({isModalVisible: true})
   console.log("PROVA: ")
   this.props.areas.map((area, index) => (
     console.log(area.longitude)
@@ -283,6 +276,7 @@ toggleDarkMode(){
  
         {!this.state.isLoading && this.props.areas.map((area, index) => (
               <MapView.Marker key={index}
+              stopPropagation={true}
                 coordinate={{latitude: area.latitude, longitude: area.longitude}}
                 tappable={true}
                 onPress={() => this.onAreaTapped(area)}
@@ -336,29 +330,17 @@ toggleDarkMode(){
         </MapView>
 
         
-
+        <Modal isVisible={this.state.isModalVisible}>
+          <View style={{ flex: 1 }}>
+            <Text>I am the modal content!</Text>
+          </View>
+        </Modal>
         
 
 
-      <ActionButton buttonColor="#38BC7C" onPress={() => this.toggleDarkMode()}>
+      <ActionButton buttonColor="#38BC7C" onPress={() => this.toggleDarkMode()}/>
       
-      </ActionButton>
-            {/*
-             <ActionButton buttonColor="#38BC7C">
-          <ActionButton.Item buttonColor='#9b59b6' title="New Task" onPress={() => console.log("notes tapped!")}>
-            <Icone name="android-create" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#3498db' title="Notifications" onPress={() => {}}>
-            <Icone name="android-notifications-none" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          <ActionButton.Item buttonColor='#1abc9c' title="All Tasks" onPress={() => {}}>
-            <Icone name="android-done-all" style={styles.actionButtonIcon} />
-          </ActionButton.Item>
-          
-        </ActionButton>
-        
-             */}
-     
+            
 
       </View>
       
@@ -425,13 +407,15 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
-    areas: state.areas 
+    areas: state.areas, 
+    tappedArea: state.tappedArea
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateArea: (param) => dispatch({type: "UPDATE_AREA", param: param}),    
+    updateArea: (param) => dispatch({type: "UPDATE_AREA", param: param}), 
+    updateTappedArea: (param) => dispatch({type: "UPDATE_TAPPED_AREA", param: param}),    
   }
 }
 

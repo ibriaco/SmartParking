@@ -63,12 +63,23 @@ const initialState = {
   areas: {
     latitude: 0,
     longitude: 0
+  },
+  tappedArea: {
+    latitude: 0,
+    longitude: 0
   }
 }
 const reducer = (state = initialState, action) => {
   switch(action.type){
     case "UPDATE_AREA": 
-      return {areas: action.param};
+      return {
+        ...state,
+        areas: action.param};
+    case "UPDATE_TAPPED_AREA": 
+      return {
+        ...state,
+        tappedArea: action.param};
+
   }
   return state;
 }
