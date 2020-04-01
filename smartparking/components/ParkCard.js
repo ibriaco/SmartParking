@@ -37,7 +37,7 @@ export default class ParkCard extends React.Component{
           color: "rgb(51, 51, 51)"
         }}
       >
-        Latitude and Longitude: {this.props.item.lat} {this.props.item.lon}
+        Latitude and Longitude: {this.props.item.latitude} {this.props.item.longitude}
       </Text>
     </View>
   </View>

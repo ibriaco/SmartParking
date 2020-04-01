@@ -12,45 +12,17 @@ class ListScreen extends Component {
     this.state = {
       parkCards: []
     }
-
-  }
-
-  componentDidMount(){
-    const desiredNumberOfObjects = 2;
-    let cards = [];
-
-    for(let i = 0; i < desiredNumberOfObjects; i++) {
-      console.log("Area: " + this.props.areas[i].id + this.props.areas[i].latitude+ this.props.areas[i].longitude )
-      cards[i] = {
-        id: this.props.areas[i].id,
-        lat: this.props.areas[i].latitude,
-        lon: this.props.areas[i].longitude,
-        image: {
-          uri: "https://www.venetoformazione.it/wp-content/uploads/2016/12/ottimizzare-immagini-display-retina.jpg"
-        },
-        renderItem: ({ item }) => <ParkCard item={item}/>
-  };
-
-  this.setState({parkCards: cards})
-
-  console.log(cards)
-
-}
     
-  }
+  }   
+  
     render() {
         return (
           <CardList    
-          data={this.state.parkCards}
+          data={this.props.areas}
           renderItem={({ item, index }) => {
             //Render card per item
-            if (item.renderItem) return item.renderItem({ item, index });
-
-            //Default card when not specified 
             return (
-              <View>
-                <Text>Default Content</Text>
-              </View>
+              <ParkCard item={item}/>
             );
           }}
           renderDetails={({ item, index }) => (
