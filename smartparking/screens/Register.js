@@ -3,9 +3,9 @@ import {
   Alert,
   ActivityIndicator,
   Keyboard,
-  KeyboardAvoidingView,
   StyleSheet,
-  View
+  View,
+  KeyboardAvoidingView
 } from "react-native";
 import * as firebase from 'firebase'
 
@@ -46,7 +46,7 @@ export default class Register extends Component {
     const { navigation } = this.props;
 
     return (
-      <KeyboardAvoidingView style={styles.signup} behavior="padding">
+      <View style={styles.signup}>
         <Block middle padding={[0, theme.sizes.base * 2]}>
         <Text h1 bold>
           </Text>
@@ -118,7 +118,7 @@ export default class Register extends Component {
             </Button>
           </Block>
         </Block>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 }

@@ -139,7 +139,7 @@ const screens = createStackNavigator(
         Profile: {
           screen: createMaterialTopTabNavigator({
             Profile: {
-              screen: Filter,
+              screen: Profile,
               navigationOptions: {
                 tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
                 backgroundColor: "#03A696",

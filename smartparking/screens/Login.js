@@ -44,24 +44,7 @@ class Login extends Component {
     Keyboard.dismiss();
   }
 
-  /*async signInWithGoogle() {
-    try {
-      const result = await Google.logInAsync({
-        androidClientId: "712869520957-b7t4ngd62o00dnps2q6fprb5c4k8d8qp.apps.googleusercontent.com",
-        iosClientId: "712869520957-udo11tdug2hncpm1ela42eaq8to4p1ft.apps.googleusercontent.com",
-        scopes: ['profile', 'email'],
-      });
-      console.log(result);
-      if (result.type === 'success') {
-        this.props.navigation.navigate("Home")
-        return result.accessToken;
-      } else {
-        console.log("cancelled")
-      }
-    } catch (e) {
-      console.log("error")
-    }
-  }*/
+
 
     _loginWithGoogle = async () => {
     try {
@@ -101,10 +84,9 @@ class Login extends Component {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
       await firebase
         .auth()
-        .signInWithCredential(credential)
+        .signInWithCredential(credential) //signInWithReadCredential is deprecated!
         .then(() => this.props.navigation.navigate("Home"))
-        .catch(error => this.setState({ errorMessage: error.message }));; // Sign in with Facebook credential
-      //console.log(facebookProfileData);
+        .catch(error => this.setState({ errorMessage: error.message }));; 
     }
   };
 
