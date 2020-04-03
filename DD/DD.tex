@@ -66,13 +66,23 @@
 \tableofcontents
 \newpage
 
+\section{Document Structure}
+\begin{enumerate}
+
+\item \texttt{Introduction}: This section introduces the Design Document. It explains the Purpose, the Scope and the conventions of the document.
+\item \texttt{Architectural Design}: This section describes the components used for the system and the relations between them, providing information about their deployment and how they works. It also specifies the architectural styles and the design patterns chosen to design the system.
+\item \texttt{User Interface Design}: This section provides an overview on how the User Interface will look like. This section will be accurate enough to explain all our decisions about the design and the UI of the Mobile Application. 
+\item \texttt{Implementation, Integration and Testing}: This section contains the order of the system's subcomponents implementation, integration and testing.
+
+\end{enumerate}
+
 \section{Introduction}
 
 \subsection{Purpose}
 This document represents the Design Document (DD) for SmartParking mobile application. The purpose of this document is to provide an overall guidance to the architecture of the software product and the interaction between all the components of the system to be developed, following the requirements and the goals that the software must satisfy.
 
 \subsection{Scope}
-SmartParking is a crowd-sourced application where users can view all the street parkings around them, together with detailed information. Users can also filter the parkings in several ways: the closest to the city center, the cheapest, etc... Moreover, users can pay the fee directly from the app, chosing the payment type and how much they want to stop.
+SmartParking is a crowd-sourced application where users can view all the street parkings around them, together with detailed information. Users can also filter the parkings in several ways: searching for a specific address, a specific type, a maximum distance, etc... Moreover, users can pay the fee directly from the app, chosing the payment type and how much they want to stop.
 
 \subsection{Definition, Acronyms, Abbreviations}
 
@@ -88,7 +98,6 @@ SmartParking is a crowd-sourced application where users can view all the street 
 \item DD: Design Document.
 \item API: Application Programming Interface.
 \item GPS: Global Positioning System.
-\item DMZ: Demilitarized Zone.
 \end{itemize}
 
 \subsubsection{Abbreviations}
@@ -99,7 +108,7 @@ SmartParking is a crowd-sourced application where users can view all the street 
 
 \subsection{Revision History}
 \begin{itemize}
-\item 2/12/2019: First Version of DD Document.
+\item 3/04/2020: First Version of DD Document.
 \end{itemize}
 
 \subsection{Reference Documents and Used Tools}
@@ -115,70 +124,34 @@ SmartParking is a crowd-sourced application where users can view all the street 
 \item \textit{LucidChart}: https://www.lucidchart.com/
 \end{itemize}
 
-\subsection{Document Structure}
-\begin{enumerate}
-
-\item \texttt{Introduction}: This section introduces the Design Document. It explains the Purpose, the Scope and the conventions of the document.
-\item \texttt{Architectural Design}: This section describes the components used for the system and the relations between them, providing information about their deployment and how they works. It also specifies the architectural styles and the design patterns chosen to design the system.
-\item \texttt{User Interface Design}: This section provides an overview on how the User Interface will look like. This section will be brief because the most important UI designs are specified in the RASD: we will add some more Screens and describe them. 
-\item \texttt{Requirements Traceability}: This section explains how the requirements specified in the RASD correspond to those specified in this document.
-\item \texttt{Implementation, Integration and Test Plan}: This section contains the order of the system's subcomponents implementation, integration and testing.
-
-\end{enumerate}
-
 
 \section{Architectural Design}
+Our application is composed by two main components: a Front End, developed with the React Native framework, and a Back End that relies on Firebase, and in particular on Firebase Realtime Database.\\
+These two components are highly connected: in fact, the mobile application has the role to show to the user all the data stored in the Database, and also to respond to the user's behaviour.
 
-\subsection{Overview: High Level Components and their Interactions}
+HIGH LEVEL DIAGRAM - app e db
 
+\subsection{Front End: Mobile Application}
+The Mobile Application is a React Native application.
 
-\subsection{Component View}
+\subsection{Back End: Firebase}
+The Firebase back end is where all the parkings, users and reservations data are stored. 
 
-\subsection{Deployment View}
-
-\subsection{Runtime View}
-\subsection{Component Interfaces}
-\subsection{Architectural styles and patterns}
-\subsection{Other Design decisions}
+\subsection{Third Party interaction}
+\begin{itemize}
+\item Google : login
+\item Facebook : login
+\item Paypal : parking payments
+\item Stripe : parking payments with credit cards
+\item Redux : persistent storage of data
+\item Google Maps APIs : directions, distance matrix, geocoding
+\end{itemize}
 
 \section{User Interface Design}
 
-\section{Requirements Traceability}
 
 \section{Implementation, Integration and test plan}
 
-\section{Effort Spent}
-\begin{itemize}
 
-\item Gregorio Galletti
-\begin{center}
-	\begin{table}[H]
-	\noindent\resizebox{\textwidth}{!}{%
-	\begin{tabular}{|c|c|c|}
-	 \hline
-	 \textbf{Date} &  \textbf{Subject} & \textbf{Hours}   \\
-	 \hline
-	 Total &  & 0 \\
-	 \hline
-	\end{tabular}
-	}
-	\end{table}
-\end{center}
-
-\item Ibrahim El Shemy
-\begin{center}
-	\begin{table}[H]
-	\noindent\resizebox{\textwidth}{!}{%
-	\begin{tabular}{|c|c|c|}
-	 \hline
-	 \textbf{Date} &  \textbf{Subject} & \textbf{Hours}   \\
-	 Total &  & 0 \\
-	 \hline
-	\end{tabular}
-	}
-	\end{table}
-\end{center}
-
-\end{itemize}
 
 \end{document}
