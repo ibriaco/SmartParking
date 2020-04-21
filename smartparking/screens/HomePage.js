@@ -52,6 +52,8 @@ class Map extends React.Component {
 
     this.state = {
 
+      tappedAreaAddress: "",
+      tappedAreaDistance: 0,
       parkCards: [],
       isModalVisible: false,
       isLoading: true,
@@ -235,10 +237,15 @@ class Map extends React.Component {
   /*
   DA QUA DEVO GESTIRE LA MADONNA DEL MODAL
   */
-  onAreaTapped(area) {
-    this.props.updateTappedArea(area);
+  async onAreaTapped(area) {
+
+    
+    await this.props.updateTappedArea(area);
+    this.getAddressFromLatLon();
+    this.calculateDistance();
     console.log("AREA TAPPATA: " + area);
     this.setState({ isModalVisible: true })
+    //console.log(this.tappedAreaDistance)
   }
 
   showParkingRoute() {
@@ -268,6 +275,27 @@ class Map extends React.Component {
     this.setState({
       isModalVisible: visible,
     })
+  }
+
+  async calculateDistance(){
+    try {
+      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+      let json = await response.json();
+      this.setState({tappedAreaDistance: json.rows[0].elements[0].distance.text});
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async getAddressFromLatLon(){
+    try {
+      let response = await fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+      let json = await response.json();
+      //this.setState({tappedAreaAddress: json.results[1].formatted_address});
+      this.setState({tappedAreaAddress:json.results[1].formatted_address});
+    } catch (error) {
+      console.error(error);
+    }
   }
 
 
@@ -357,11 +385,11 @@ class Map extends React.Component {
 
               <View style={{ justifyContent: "space-evenly", alignItems: "space-between", marginTop: 5, flexDirection: "row" }}>
                 <FontAwesome5 name="map-pin" size={18} color="#F25D27">
-                  <Text h3 gray2>   Piazza Leonardo da Vinci, 22</Text>
+                  <Text h3 gray2>   {this.state.tappedAreaAddress}</Text>
                 </FontAwesome5>
               </View>
               <View style={{justifyContent:"center", flexDirection:"column", alignSelf:"center"}}>
-                <Text bold h2 gray2>Distance<Text h3>  2 Km</Text></Text>
+                <Text bold h2 gray2>Distance<Text h3>  {this.state.tappedAreaDistance}</Text></Text>
               </View>
               <View style={{ justifyContent: "space-between", flexDirection: "row", marginHorizontal: 40 }}>
                 <Button style={styles.modalContent}>
@@ -379,7 +407,7 @@ class Map extends React.Component {
               </View>
               <View style={{ justifyContent: "space-evenly", flexDirection: "row", marginHorizontal: 40 }}>
                 <Button style={styles.modalContentLowLeft}>
-                  <FontAwesome5 name="paypal" size={18} color="#3b7bbf "><Text h3 bold white> Pay</Text></FontAwesome5>
+                  <FontAwesome5 name="paypal" size={18} color="#3b7bbf "><Text h3 bold > Pay</Text></FontAwesome5>
                 </Button>
                 <Button style={styles.modalContentLowRight}>
                   <Text h3 bold white>Directions</Text>
