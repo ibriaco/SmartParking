@@ -10,7 +10,6 @@ import MapView, {
   AnimatedRegion,
   PROVIDER_GOOGLE
 } from "react-native-maps";
-import Slider from "react-native-slider";
 import MapViewDirections from 'react-native-maps-directions';
 import * as Permissions from 'expo-permissions';
 import Modal from "react-native-modal";
@@ -19,7 +18,6 @@ import * as firebase from 'firebase';
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
 import { connect } from 'react-redux';
-import { theme, mocks } from "../constants";
 import { Block, Text, Button, Divider } from "../components";
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -28,14 +26,11 @@ const LONGITUDE_DELTA = 0.0009;
 const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
-const filt = require('./filteringParameters.json');
-import CardList from "react-native-card-animated-modal";
 import { FontAwesome5 } from 'react-native-vector-icons';
 
 var mapStyle = require('./mapStyle.json');
-var tappedArea;
-var tappedParking;
-var tappedParkingCoords;
+var showRoute = false;
+var initialPosition = true;
 
 //fuck those useless warnings
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -49,6 +44,8 @@ console.warn = message => {
 class Map extends React.Component {
   constructor(props) {
     super(props);
+
+    this._showParkingRoute = this._showParkingRoute.bind(this);
 
     this.state = {
 
@@ -67,10 +64,6 @@ class Map extends React.Component {
         longitude: LONGITUDE,
       },
 
-      followUser: true,
-
-
-
       //variable containing (initially) the city where the user is, may be changed if the user inserts a different city
       selectedCity: "Sondrio",
 
@@ -78,10 +71,7 @@ class Map extends React.Component {
       latitude: LATITUDE,
       longitude: LONGITUDE,
 
-      //at index 0 i have the user coordinates (always updated), at index 1 i have the "destination" coordinates (tapped parking)
-      routeCoordinates: [],
-
-
+     
 
       //variable containing the initial region viewed by the user
       region: {
@@ -108,29 +98,15 @@ class Map extends React.Component {
     };
   }
 
-  componentDidUpdate(prevProps) {
-    // Typical usage (don't forget to compare props):
-    if (this.props.userID !== prevProps.userID) {
-      console.log("UPDATE")
-    }
-  }
 
   async readAndDrawAreas() {
-
-    //PROVA LETTURA FILTRI
-
-
-    //leggo tutte le aree del DB, assegnandole a receivedAreas le renderizzo anche
 
     firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
       this.setState({ isLoading: false });
     })
-    console.log("FINITO")
 
   }
-
-
 
   signoutUser = () => {
     firebase.auth().signOut();
@@ -138,19 +114,12 @@ class Map extends React.Component {
 
   async componentDidMount() {
 
-
-    console.log(this.props.areas)
-
     //authentication
-
     const { email, displayName } = firebase.auth().currentUser
-
     this.setState({ email, displayName });
+
     //when everything is mounted i fetch the db to get areas to render
     await this.readAndDrawAreas();
-    console.log(this.props.areas)
-
-
 
     //guardare questa istruzione
     const { coordinate } = this.state;
@@ -167,18 +136,17 @@ class Map extends React.Component {
             longitude
           };
 
+         
           //when position changes, animate the marker
           coordinate.timing(newCoordinate).start();
-          console.log("NEW: " + newCoordinate);
-          console.log("Coord: " + coordinate);
 
           //and update the route at index 0
-          let newArray = [...this.state.routeCoordinates];
-          newArray[0] = newCoordinate;
-          this.setState({ routeCoordinates: newArray });
 
           this.setState({ currentCoordinates: newCoordinate });
-          this.updateCamera();
+          if(initialPosition){
+            initialPosition = !initialPosition
+            this.updateCamera();
+          }
 
         },
         error => alert('Please give us the permission!'),
@@ -202,29 +170,12 @@ class Map extends React.Component {
   async updateCamera() {
 
     //funziona solo cosi? pazzesco
-    if (this.state.followUser && this.mapView !== null)
+    if (this.mapView !== null)
       this.mapView.animateCamera({ center: this.state.currentCoordinates, zoom: 16 }, { duration: 2000 });
 
   }
 
-  updateRegion(event) {
-
-
-    if (this.state.followUser) {
-      this.setState({
-        region: {
-          latitude: this.state.coordinate.latitude,
-          longitude: this.state.coordinate.longitude,
-          latitudeDelta: 0,
-          longitudeDelta: 0
-        }
-      });
-    }
-
-  }
-
-
-
+ 
   getMapRegion() {
     return {
       latitude: this.state.coordinate.longitude,
@@ -240,22 +191,21 @@ class Map extends React.Component {
   */
   async onAreaTapped(area) {
 
-    
+    if(showRoute)
+      showRoute = !showRoute;
+
     await this.props.updateTappedArea(area);
     this.getAddressFromLatLon();
     this.calculateDistance();
 
     setTimeout(() => {this.setState({isModalVisible: true})}, 200)
     //this.setState({ isModalVisible: true })
-    //console.log(this.tappedAreaDistance)
   }
 
-  showParkingRoute() {
+  _showParkingRoute() {
 
-    let newArray = [...this.state.routeCoordinates];
-    newArray[1] = { latitude: this.props.tappedArea.latitude, longitude: this.props.tappedArea.longitude };
-    this.setState({ routeCoordinates: newArray });
-    console.log(this.state.routeCoordinates);
+    this.setState({isModalVisible: false})
+    showRoute = true;
 
   }
 
@@ -303,7 +253,6 @@ class Map extends React.Component {
 
 
   render() {
-    const { firstQuery } = this.state;
     return (
 
       <View style={styles.container}>
@@ -312,9 +261,6 @@ class Map extends React.Component {
           style={styles.map}
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19}
-          //migliorare questa cosa
-          //zoomEnabled = {!this.state.followUser}
-          //scrollEnabled = {!this.state.followUser}
           loadingEnabled={true}
           customMapStyle={mapStyle}
           ref={ref => { this.mapView = ref }}
@@ -335,11 +281,12 @@ class Map extends React.Component {
 
 
 
-          {(this.state.routeCoordinates.length >= 2) && (
+          {(showRoute) && (
             <MapViewDirections
-              origin={this.state.routeCoordinates[0]}
-              waypoints={(this.state.routeCoordinates.length > 2) ? this.state.routeCoordinates.slice(1, -1) : null}
-              destination={this.state.routeCoordinates[this.state.routeCoordinates.length - 1]}
+              origin={this.state.currentCoordinates}
+              destination={{
+                latitude: this.props.tappedArea.latitude,
+                longitude: this.props.tappedArea.longitude}}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
               strokeColor="#F25D27"
@@ -349,17 +296,10 @@ class Map extends React.Component {
               }}
               onReady={result => {
 
-                this.mapView.fitToCoordinates([{
-                  latitude: result.coordinates[0].latitude,
-                  longitude: result.coordinates[0].longitude
-                },
-                {
-                  latitude: result.coordinates[result.coordinates.length - 1].latitude,
-                  longitude: result.coordinates[result.coordinates.length - 1].longitude
-                }], {
+                this.mapView.fitToCoordinates(result.coordinates), {
                   edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
                   animated: true,
-                });
+                };
 
 
               }}
@@ -388,7 +328,7 @@ class Map extends React.Component {
             <View style={{ flex: 0.3, backgroundColor: "#fff", borderRadius: 20, justifyContent: "space-evenly", flexDirection: "column", }}>
 
               <View style={{ justifyContent: "space-evenly", alignItems: "space-between", marginTop: 5, flexDirection: "row" }}>
-                <FontAwesome5 name="map-pin" size={18} color="#F25D27" >
+                <FontAwesome5 name="map-pin" size={18} color="#F25D27">
                   <Text h3 gray2>  {this.state.tappedAreaAddress}</Text>
                 </FontAwesome5>
               </View>
@@ -416,30 +356,15 @@ class Map extends React.Component {
                 <Button style={styles.modalContentLowLeft}>
                   <FontAwesome5 name="paypal" size={18} color="#3b7bbf"><Text h3 bold > Pay</Text></FontAwesome5>
                 </Button>
-                <Button style={styles.modalContentLowRight}>
+                <Button style={styles.modalContentLowRight} onPress={this._showParkingRoute}>
                   <FontAwesome5 name="route" size={18} color="#3b7bbf"><Text h3 bold > Show</Text></FontAwesome5>
                 </Button>
               </View>
-              {/*
-         
-          <Text center>INDIRIZZO</Text>
-          <Text center>DISTANZA</Text>
-          <Text center>DISPONIBILITA'</Text>
-          <Text center>TIPO DI PARCHEGGIO</Text>
-          */}
-
-
             </View>
           </Modal>
         </Block>
 
-
-
-
-        <ActionButton buttonColor="#03A696" onPress={() => this.toggleDarkMode()} />
-
-
-
+      <ActionButton buttonColor="#03A696" onPress={() => this.toggleDarkMode()} />
       </View>
 
     );
