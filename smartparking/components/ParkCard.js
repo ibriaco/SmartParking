@@ -27,17 +27,16 @@ export default class ParkCard extends React.Component{
           color: "rgba(0, 0, 0, 0.5)"
         }}
       >
-        {this.props.item.id}
+        {this.props.item.distance}, {this.props.item.time}
       </Text>
       <Text
         style={{
-          fontSize: 26,
-          maxWidth: "60%",
+          fontSize: 25,
           fontWeight: "bold",
           color: "rgb(51, 51, 51)"
         }}
       >
-        Latitude and Longitude: {this.props.item.latitude} {this.props.item.longitude}
+        {this.props.item.address} 
       </Text>
     </View>
   </View>
