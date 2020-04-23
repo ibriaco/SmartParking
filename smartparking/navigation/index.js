@@ -37,7 +37,10 @@ var firebaseConfig = {
   appId: "1:663247712461:web:6e8d3ad439233bdb4a7984",
   measurementId: "G-L5G3YNNYH4"
 };
-firebase.initializeApp(firebaseConfig);
+if(!firebase.apps.length){
+  firebase.initializeApp(firebaseConfig);
+}
+
 //firebase.analytics();
 
 const screens = createStackNavigator(
@@ -137,42 +140,20 @@ const screens = createStackNavigator(
           }
         },
         Profile: {
-          screen: createMaterialTopTabNavigator({
-            Profile: {
-              screen: Profile,
-              navigationOptions: {
-                tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
-                backgroundColor: "#03A696",
-                height: theme.sizes.base * 6,
-              }
-            },
-
-            Vehicle: {
-              screen: Filter,
-              navigationOptions: {
-                tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
-                backgroundColor: "#03A696",
-                height: theme.sizes.base * 6,
-              },
-              Payments: {
-                screen: Filter,
-                navigationOptions: {
-                  tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
-                  backgroundColor: "#03A696",
-                  height: theme.sizes.base * 6,
-                }
-              },
-
-
-            },
+            screen: Profile,
+            navigationOptions: {
+              tabBarIcon: ({ focused }) => <FontAwesome5 name="user-alt" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
+              backgroundColor: "#03A696",
+              height: theme.sizes.base * 6,
+            }
           },
-          ),
-
+        
+        Settings: {
+          screen: Filter,
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
-
-          }
+          tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
         }
+        },
 
       },
         {

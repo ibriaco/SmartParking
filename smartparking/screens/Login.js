@@ -2,12 +2,10 @@ import React, { Component } from "react";
 import {
   ActivityIndicator,
   Keyboard,
-  KeyboardAvoidingView,
   StyleSheet,
   View,
   Image
 } from "react-native";
-import * as Permissions from 'expo-permissions';
 import * as firebase from 'firebase'
 import * as Facebook from "expo-facebook";
 import * as Constants from "expo-constants";
@@ -16,7 +14,6 @@ import * as Google from 'expo-google-app-auth';
 
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
-import { AntDesign, Entypo, FontAwesome } from "@expo/vector-icons";
 import { SocialIcon } from 'react-native-elements'
 
 import { Input, Icon } from "galio-framework"
@@ -195,9 +192,6 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     elevation: 3,
     height: 60
-
-    // borderBottomColor: theme.colors.gray2,
-    //borderBottomWidth: StyleSheet.hairlineWidth
   },
   hasErrors: {
     borderBottomColor: theme.colors.accent
@@ -236,7 +230,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     height: 50,
     width: 50,
-    //justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
     shadowOpacity: 0.3,
@@ -247,7 +240,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     height: 50,
     width: 50,
-    //justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 25,
     shadowOpacity: 0.3,
