@@ -3,7 +3,8 @@ import {
   StyleSheet,
   View,
   Image,
-  Dimensions
+  Dimensions,
+  Linking
 } from "react-native";
 import MapView, {
   Marker,
@@ -31,6 +32,7 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 var mapStyle = require('./mapStyle.json');
 var showRoute = false;
 var initialPosition = true;
+var tempAreas = [];
 
 //fuck those useless warnings
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -49,7 +51,6 @@ class Map extends React.Component {
 
     this.state = {
 
-      tappedAreaAddress: "",
       tappedAreaTime: "", 
       tappedAreaDistance: "",
       parkCards: [],
@@ -104,13 +105,15 @@ class Map extends React.Component {
     firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
       this.setState({ isLoading: false });
-    })
+    })   
 
   }
 
+ 
   signoutUser = () => {
     firebase.auth().signOut();
   }
+
 
   async componentDidMount() {
 
@@ -120,6 +123,7 @@ class Map extends React.Component {
 
     //when everything is mounted i fetch the db to get areas to render
     await this.readAndDrawAreas();
+  
 
     //guardare questa istruzione
     const { coordinate } = this.state;
@@ -147,6 +151,10 @@ class Map extends React.Component {
             initialPosition = !initialPosition
             this.updateCamera();
           }
+          
+            this.updateDist()
+          
+          
 
         },
         error => alert('Please give us the permission!'),
@@ -159,7 +167,7 @@ class Map extends React.Component {
         }
       );
 
-
+      
     }
   }
 
@@ -195,8 +203,8 @@ class Map extends React.Component {
       showRoute = !showRoute;
 
     await this.props.updateTappedArea(area);
-    this.getAddressFromLatLon();
     this.calculateDistance();
+    
 
     setTimeout(() => {this.setState({isModalVisible: true})}, 200)
     //this.setState({ isModalVisible: true })
@@ -240,16 +248,48 @@ class Map extends React.Component {
     }
   }
 
-  async getAddressFromLatLon(){
+  async calculateDistanceAndTime(){
     try {
-      let response = await fetch('https://maps.googleapis.com/maps/api/geocode/json?latlng=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
       let json = await response.json();
-      this.setState({tappedAreaAddress: json.results[1].address_components[1].long_name + ', '+ json.results[1].address_components[0].long_name});
+
+      distanceAndTime.push({
+        distance: json.rows[0].elements[0].distance.text,
+        time: json.rows[0].elements[0].duration.text
+      });
+
     } catch (error) {
       console.error(error);
     }
   }
 
+  async updateDist(){
+
+    var tempAreas = this.props.areas;
+    var newAreas = [];
+    for (var area of tempAreas){
+     
+      try {
+      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + area.latitude + ',' + area.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+      let json = await response.json();
+
+      area = {
+        ...area,
+        distance: json.rows[0].elements[0].distance.text,
+        time: json.rows[0].elements[0].duration.text
+      };
+
+      newAreas.push(area);
+    
+    } catch (error) {
+      console.error(error);
+    
+  };
+}
+console.log(newAreas)
+this.props.updateArea(newAreas)
+
+  }
 
 
   render() {
@@ -270,10 +310,9 @@ class Map extends React.Component {
           {!this.state.isLoading && this.props.areas.map((area, index) => (
             <MapView.Marker key={index}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
-              onPress={() => this.onAreaTapped(area)}
-            >
+              onPress={() => this.onAreaTapped(area)}>
                 <FontAwesome5 name="map-marker-alt" color="#F25D27" size={35} />
-                </MapView.Marker>
+            </MapView.Marker>
           ))}
 
 
@@ -329,17 +368,17 @@ class Map extends React.Component {
 
               <View style={{ justifyContent: "space-evenly", alignItems: "space-between", marginTop: 5, flexDirection: "row" }}>
                 <FontAwesome5 name="map-pin" size={18} color="#F25D27">
-                  <Text h3 gray2>  {this.state.tappedAreaAddress}</Text>
+                  <Text h3 gray2>  {this.props.tappedArea.address}</Text>
                 </FontAwesome5>
               </View>
               <View style={{justifyContent:"center", flexDirection:"column", alignSelf:"center"}}>
               <FontAwesome5 name="directions" color="#F25D27" size={18} > 
-                <Text h3>  {this.state.tappedAreaDistance}, {this.state.tappedAreaTime}</Text>
+                <Text h3>  {this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
               </FontAwesome5>
               </View>
               <View style={{ justifyContent: "space-between", flexDirection: "row", marginHorizontal: 40 }}>
                 <Button style={styles.modalContent}>
-                  <FontAwesome5 name="map-marked" color="#03A696" size={18} />
+                  <FontAwesome5 name="map-marked" color="#03A696" size={18} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
                 </Button>
                 <Button style={styles.modalContent}>
                   <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h3 color="#03A696">{this.props.tappedArea.price != 0 && "€/h"}</Text></Text> 
@@ -364,7 +403,8 @@ class Map extends React.Component {
           </Modal>
         </Block>
 
-      <ActionButton buttonColor="#03A696" onPress={() => this.toggleDarkMode()} />
+      <ActionButton buttonColor="#03A696"/>
+
       </View>
 
     );

@@ -4,21 +4,35 @@ import { connect } from 'react-redux';
 import ParkCard from "../components/ParkCard";
 import CardList from "react-native-card-animated-modal";
 
+const now = new Date();
 
 class ListScreen extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      parkCards: []
-    }
     
   }   
   
     render() {
         return (
-          <CardList    
+          <CardList  
+          listProps={{
+            ListHeaderComponent: () => (
+              <View style={{ padding: 16, paddingBottom: 0 }}>
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: "rgba(0, 0, 0, 0.5)"
+                  }}
+                >
+                  {now.toDateString()}
+                </Text>
+                <Text style={{ fontSize: 32, fontWeight: "bold" }}>Parkings</Text>
+              </View>
+            )
+          }} 
           data={this.props.areas}
+          
           renderItem={({ item, index }) => {
             //Render card per item
             return (
@@ -28,7 +42,7 @@ class ListScreen extends Component {
           renderDetails={({ item, index }) => (
             <View style={{ paddingVertical: 30, paddingHorizontal: 16 }}>
               <Text style={{ color: "rgba(0, 0, 0, 0.7)", fontSize: 18 }}>
-                Id Area: {item.id}
+              PORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIOPORCODIO
               </Text>
             </View>
           )}
