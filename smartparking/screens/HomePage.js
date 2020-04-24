@@ -102,9 +102,11 @@ class Map extends React.Component {
 
   async readAndDrawAreas() {
 
-    firebase.database().ref('Cities/' + this.state.selectedCity + '/Areas').on('value', (snapshot) => {
+
+    firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
       this.setState({ isLoading: false });
+      console.log(snapshot.val())
     })   
 
   }
@@ -147,6 +149,8 @@ class Map extends React.Component {
           //and update the route at index 0
 
           this.setState({ currentCoordinates: newCoordinate });
+          this.props.updateCoordinates(newCoordinate);
+
           if(initialPosition){
             initialPosition = !initialPosition
             this.updateCamera();
@@ -510,12 +514,16 @@ function mapStateToProps(state) {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
     areas: state.areas,
-    tappedArea: state.tappedArea
+    tappedArea: state.tappedArea,
+    currentCity: state.currentCity,
+    userCoordinates: state.userCoordinates
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
+    updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),
     updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),
     updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
   }
