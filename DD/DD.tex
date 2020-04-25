@@ -56,13 +56,19 @@
 
 %%% The "real" document content comes below...
 
-\title{DD}
+\title{Design Document}
 \author{Gregorio Galletti - Ibrahim El Shemy}
 \date{A.A. 2019/2020 - Prof. Luciano Baresi} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
+
 \begin{document}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{architecture.png}
+\end{figure}
 \maketitle
+
 \tableofcontents
 \newpage
 
@@ -100,11 +106,6 @@ SmartParking is a crowd-sourced application where users can view all the street 
 \item GPS: Global Positioning System.
 \end{itemize}
 
-\subsubsection{Abbreviations}
-\begin{itemize}
-\item {}[Gn]: n-goal.
-\item {}[Rn]: n-functional requirement.
-\end{itemize}
 
 \subsection{Revision History}
 \begin{itemize}
@@ -127,31 +128,46 @@ SmartParking is a crowd-sourced application where users can view all the street 
 
 \section{Architectural Design}
 Our application is composed by two main components: a Front End, developed with the React Native framework, and a Back End that relies on Firebase, and in particular on Firebase Realtime Database.\\
-These two components are highly connected: in fact, the mobile application has the role to show to the user all the data stored in the Database, and also to respond to the user's behaviour.
+These two components are highly connected: in fact, the mobile application has the role to show to the user all the data stored in the Database, and also to respond to the user's behaviour.\\
+We can say that the mobile App represents the View of the system (in a Model-View-Controller like architecture), the Database represents the Model, and the entire Back End represent the Controller. That is, the App just shows the relevant data to the user, and provide the possibility to choose between some options to modify the shown data.
 
 HIGH LEVEL DIAGRAM - app e db
 
 \subsection{Front End: Mobile Application}
-The Mobile Application is a React Native application.
+The Mobile Application is a React Native application composed by several screens, each one will be described in the User Interface Design Section. The choiche of React Native frameworks comes from the fact that, being SmartParking an application that will be mainly used "in real time", smartphones will be the target devices: it's more reasonable that a user is using his smartphone when driving (obviously respecting the street law code) rather than a tablet or a smartwatch. A \textbf{cross-platform} framework has been identified as the smartest choiche in this case, in order to reach the largest number of users.\\
+This Application will obviously be a \textbf{multi-thread} application. This because we need to be able to handle all user actions and at the same time to keep the Google Map and the shown parkings updated, without having blocking instructions and so performing all the actions in parallel.  
 
 \subsection{Back End: Firebase}
-The Firebase back end is where all the parkings, users and reservations data are stored. 
+The Firebase back end is where all the parkings, users and reservations data are stored. The back end is also encharged of authentication and user session management (a well implemented and tested functionality of Firebase). 
 
 \subsection{Third Party interaction}
 \begin{itemize}
-\item Google : login
-\item Facebook : login
-\item Paypal : parking payments
-\item Stripe : parking payments with credit cards
-\item Redux : persistent storage of data
-\item Google Maps APIs : directions, distance matrix, geocoding
+\item \textit{Google}: Login
+\item \textit{Facebook}: Login
+\item \textit{Paypal}: Parking payments
+\item \textit{Stripe}: Parking payments with credit cards
+\item \textit{Redux}: Persistent storage of data
+\item \textit{Google Maps APIs}: Directions, Distance matrix, Geocoding
 \end{itemize}
 
 \section{User Interface Design}
-
+In this section we will describe, page by page, all the Screens of the Mobile Application and their functionalities, along with the decisions we made to provide a nice and pleasant User Experience.
+\subsection{Splash Screen}
+\subsection{Intro Screen}
+\subsection{Login Screen}
+\subsection{Registration Screen}
+\subsection{Home-Map Screen}
+\subsection{List Screen}
+\subsection{Filter Screen}
+\subsection{Profile Screen}
+\subsection{Vehicle Screen}
+\subsection{Payment Screen}
 
 \section{Implementation, Integration and test plan}
-
+We can split this section in three main phases: 
+\subsection{Front End implementation}
+\subsection{Back End implementation}
+\subsection{Front End and Back End integration}
 
 
 \end{document}
