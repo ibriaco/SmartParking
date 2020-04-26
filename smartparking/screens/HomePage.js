@@ -111,7 +111,10 @@ class Map extends React.Component {
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
       this.setState({ isLoading: false });
-      console.log(snapshot.val())
+      console.log("DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO1")
+      console.log(this.props.areas)
+      console.log("DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO2")
+
     })   
 
   }
@@ -236,13 +239,11 @@ class Map extends React.Component {
   toggleDarkMode() {
 
     this.setState({ isModalVisible: true })
-    console.log("PROVA: ")
     this.props.areas.map((area, index) => (
       console.log(area.longitude)
     ));
 
 
-    console.log(this.props.areas)
     this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle.json'));
     this.setState({ darkMode: !this.state.darkMode });
   }
