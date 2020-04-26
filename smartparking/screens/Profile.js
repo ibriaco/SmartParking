@@ -49,12 +49,11 @@ class Profile extends Component {
 
     return (
       <Block>
-        <Block flex={false} space="between" style={styles.header}>
+        <Block flex={false} top space="between" style={styles.header}>
           <Text h1 bold>
             Profile
           </Text>
         </Block>
-
         <ScrollView showsVerticalScrollIndicator={false}>
           <Block style={styles.inputs}>
             <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
@@ -173,8 +172,6 @@ class Profile extends Component {
             </Block>
 
           </Block>
-
-          <Divider/>
           <Block style = {styles.toggles}>
 
           <Block
@@ -216,7 +213,7 @@ const styles = StyleSheet.create({
     width: theme.sizes.base * 2.2
   },
   inputs: {
-    marginTop: theme.sizes.base * 0.7,
+    //marginTop: theme.sizes.base * 0.7,
     paddingHorizontal: theme.sizes.base * 2
   },
   inputRow: {

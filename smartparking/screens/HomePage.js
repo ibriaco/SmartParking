@@ -4,7 +4,8 @@ import {
   View,
   Image,
   Dimensions,
-  Linking
+  Linking,
+  StatusBar
 } from "react-native";
 import MapView, {
   Marker,
@@ -29,7 +30,7 @@ const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 import { FontAwesome5 } from 'react-native-vector-icons';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-
+import {Searchbar} from 'react-native-paper'
 
 var mapStyle = require('./mapStyle.json');
 var showRoute = false;
@@ -54,7 +55,7 @@ class Map extends React.Component {
 
 
     this.state = {
-
+      searchQuery: '',
       tappedAreaTime: "", 
       tappedAreaDistance: "",
       parkCards: [],
@@ -308,12 +309,13 @@ this.props.updateArea(newAreas)
 
 
   render() {
+    const {searchQuery} = this.state;
     return (
 
       <View style={styles.container}>
         <View style={{ position: 'absolute', width: 1000, zIndex: 9999, top: 10, left:   10, }}>
                     <GooglePlacesAutocomplete
-                        istViewDisplayed='false'
+                        istViewDisplayed='true'
                         styles={{
                             textInputContainer: {
                                 width: 1000 - 40,
@@ -339,7 +341,7 @@ this.props.updateArea(newAreas)
             <MapView.Marker key={index}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
               onPress={() => this.onAreaTapped(area)}>
-                <FontAwesome5 name="parking" color="#F25D27" size={25} />
+                <FontAwesome5 name="parking" color="#FF5252" size={25} />
             </MapView.Marker>
           ))}
 
@@ -390,49 +392,51 @@ this.props.updateArea(newAreas)
 
 
         <Block>
-          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", }}
+          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end" }}
             onBackdropPress={() => { this.setModalVisible(false) }}>
-            <View style={{ flex: 0.3, backgroundColor: "#fff", borderRadius: 20, justifyContent: "space-evenly", flexDirection: "column", }}>
+            <View style={{ flex: 0.3  , backgroundColor: "#fff", opacity:0.9, borderRadius: 20, justifyContent: "space-evenly", flexDirection: "row" }}>
 
-              <View style={{ justifyContent: "space-evenly", alignItems: "space-between", marginTop: 5, flexDirection: "row" }}>
-                <FontAwesome5 name="map-pin" size={18} color="#F25D27">
-                  <Text h3 gray2>  {this.props.tappedArea.address}</Text>
-                </FontAwesome5>
+              <View style={{marginTop: 5, flexDirection: "column", justifyContent:"space-between" }}>
+              <View style = {{flexDirection: "column"}}>
+                 <Text h1 bold secondary>  {this.props.tappedArea.address}</Text>
+                  <Text h3>  {this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
               </View>
-              <View style={{justifyContent:"center", flexDirection:"column", alignSelf:"center"}}>
-              <FontAwesome5 name="directions" color="#F25D27" size={18} > 
-                <Text h3>  {this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
-              </FontAwesome5>
-              </View>
-              <View style={{ justifyContent: "space-between", flexDirection: "row", marginHorizontal: 40 }}>
-                <Button style={styles.modalContent}>
+              <View style = {{flexDirection: "row", justifyContent:"space-evenly"}}>
+              <Button style={styles.modalContent}>
                   <FontAwesome5 name="map-marked" color="#03A696" size={18} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
-                </Button>
-                <Button style={styles.modalContent}>
-                  <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h3 color="#03A696">{this.props.tappedArea.price != 0 && "€/h"}</Text></Text> 
-                </Button>
-                <Button style={styles.modalContent}>
-                  <FontAwesome5 name="parking" size={24} color="#03A696"/>
                 </Button>
                 <Button style={styles.modalContent}>
                 {this.props.tappedArea.nHandicap != 0 && <FontAwesome5 name="wheelchair" size={18} color="#03A696"/>}
                 {this.props.tappedArea.nHandicap == 0 && <FontAwesome5 name="wheelchair" size={18} color="gray"/>}
                 </Button>
               </View>
-              <View style={{ justifyContent: "space-evenly", flexDirection: "row", marginHorizontal: 40 }}>
-                <Button style={styles.modalContentLowLeft} onPress={this._handlePayment}>
+                
+                 
+                   
+
+                  <View style = {{flexDirection: "column", justifyContent:"center", alignSelf:"center"}}>
+                
+                <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
+                  <FontAwesome5 name="route" size={18} color="#fff"><Text h3 bold white > Show</Text></FontAwesome5>
+                </Button>
+                  </View>
+                  
+              </View>
+              <View style={{ justifyContent: "space-evenly", flexDirection: "column", marginHorizontal: 40 }}>
+              {/*
+              <Button style={styles.modalContentLowRight} >
                   <FontAwesome5 name="paypal" size={18} color="#3b7bbf"><Text h3 bold > Pay</Text></FontAwesome5>
                 </Button>
-                <Button style={styles.modalContentLowRight} onPress={this._showParkingRoute}>
-                  <FontAwesome5 name="route" size={18} color="#3b7bbf"><Text h3 bold > Show</Text></FontAwesome5>
+               */}
+               <Text h1 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h1 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text> 
+               <Button style={styles.modalContentLowRight} >
+                  <FontAwesome5 name="paypal" size={18} color="#ffff"><Text h2 bold white > Pay</Text></FontAwesome5>
                 </Button>
               </View>
             </View>
           </Modal>
         </Block>
-
       <ActionButton buttonColor="#03A696"/>
-
       </View>
 
     );
@@ -506,30 +510,28 @@ const styles = StyleSheet.create({
     elevation: 3,
   },
   modalContentLowLeft:{
-    //backgroundColor: '#FFCC00',
-    height: 50,
-    width: 100,
+    backgroundColor: '#03A696',
+    height: 40,
+    width: 140,
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 14,
-    borderWidth: 1,
-    borderColor: "#03A696",
+    borderRadius: 18,
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
   },
   modalContentLowRight:{
-    //backgroundColor: '#03A696',
-    height: 50,
-    width: 100,
+    backgroundColor: '#03A696',
+    height: 100,
+    width: 80,
+    flexDirection: "column",
     //justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 20,
-    borderWidth: 1,
-    borderColor: "#03A696",
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
+    shadowColor: '#03A696'
   }
 });
 

@@ -16,7 +16,7 @@
     "expo-facebook": "^8.1.0",
     "expo-google-app-auth": "^8.1.0",
     "expo-linear-gradient": "~8.0.0",
-    "firebase": "^7.6.0",
+    "firebase": "^7.14.2",
     "galio-framework": "^0.6.3",
     "lottie-react-native": "^3.3.2",
     "native-base": "^2.13.8",

@@ -10,7 +10,7 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 
 import SplashScreen from "../screens/SplashScreen";
 import ListScreen from "../screens/ListScreen";
-
+import Parkings from "../screens/Parkings";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import Login from "../screens/Login";
 import Register from "../screens/Register";
@@ -124,27 +124,27 @@ const screens = createStackNavigator(
           screen: HomePage,
 
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#000" : "#CDCCCE"} />
           }
         },
         
         List: {
-          screen: ListScreen,
+          screen: Parkings,
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="list-alt" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="list-alt" size={24} color={focused ? "#000" : "#CDCCCE"} />
           }
         },
 
         Filter: {
           screen: Filter,
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="search-location" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="search-location" size={24} color={focused ? "#000" : "#CDCCCE"} />
           }
         },
         Profile: {
             screen: Profile,
             navigationOptions: {
-              tabBarIcon: ({ focused }) => <FontAwesome5 name="user-alt" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />,
+              tabBarIcon: ({ focused }) => <FontAwesome5 name="user-alt" size={24} color={focused ? "#000" : "#CDCCCE"} />,
               backgroundColor: "#03A696",
               height: theme.sizes.base * 6,
             }
@@ -153,7 +153,7 @@ const screens = createStackNavigator(
         Settings: {
           screen: Payment,
           navigationOptions: {
-          tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
+          tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={24} color={focused ? "#000" : "#CDCCCE"} />
         }
         },
 

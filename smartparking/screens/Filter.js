@@ -13,7 +13,7 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 
 class Filter extends Component {
   state = {
-    initialAddress,
+    initialAddress:"",
     initialPrice: 0,
     initialDistanceRange: 0,
     initialTimeRange: 0,
