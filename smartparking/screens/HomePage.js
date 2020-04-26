@@ -28,6 +28,8 @@ const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 import { FontAwesome5 } from 'react-native-vector-icons';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
 
 var mapStyle = require('./mapStyle.json');
 var showRoute = false;
@@ -48,6 +50,8 @@ class Map extends React.Component {
     super(props);
 
     this._showParkingRoute = this._showParkingRoute.bind(this);
+    this._handlePayment = this._handlePayment.bind(this);
+
 
     this.state = {
 
@@ -221,6 +225,13 @@ class Map extends React.Component {
 
   }
 
+  _handlePayment(){
+
+    this.setState({ isModalVisible: false })
+
+    this.props.navigation.navigate("Payment");
+  }
+
   toggleDarkMode() {
 
     this.setState({ isModalVisible: true })
@@ -300,6 +311,19 @@ this.props.updateArea(newAreas)
     return (
 
       <View style={styles.container}>
+        <View style={{ position: 'absolute', width: 1000, zIndex: 9999, top: 10, left:   10, }}>
+                    <GooglePlacesAutocomplete
+                        istViewDisplayed='false'
+                        styles={{
+                            textInputContainer: {
+                                width: 1000 - 40,
+                                borderRadius: 5,
+                                borderWidth: 1,
+                                borderColor: '#eee',
+                                marginHorizontal: 20,
+                            },
+                        }} />
+                </View>
 
         <MapView
           style={styles.map}
@@ -315,7 +339,7 @@ this.props.updateArea(newAreas)
             <MapView.Marker key={index}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
               onPress={() => this.onAreaTapped(area)}>
-                <FontAwesome5 name="map-marker-alt" color="#F25D27" size={35} />
+                <FontAwesome5 name="parking" color="#F25D27" size={25} />
             </MapView.Marker>
           ))}
 
@@ -396,7 +420,7 @@ this.props.updateArea(newAreas)
                 </Button>
               </View>
               <View style={{ justifyContent: "space-evenly", flexDirection: "row", marginHorizontal: 40 }}>
-                <Button style={styles.modalContentLowLeft}>
+                <Button style={styles.modalContentLowLeft} onPress={this._handlePayment}>
                   <FontAwesome5 name="paypal" size={18} color="#3b7bbf"><Text h3 bold > Pay</Text></FontAwesome5>
                 </Button>
                 <Button style={styles.modalContentLowRight} onPress={this._showParkingRoute}>

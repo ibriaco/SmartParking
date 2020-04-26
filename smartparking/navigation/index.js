@@ -18,6 +18,8 @@ import HomePage from "../screens/HomePage";
 import Profile from "../screens/Profile";
 import Filter from "../screens/Filter";
 import Test from "../screens/Test";
+import Payment from "../screens/Payment";
+
 import ActionButton from 'react-native-circular-action-menu';
 import Icone from 'react-native-vector-icons/Ionicons';
 import { theme } from "../constants";
@@ -149,7 +151,7 @@ const screens = createStackNavigator(
           },
         
         Settings: {
-          screen: Filter,
+          screen: Payment,
           navigationOptions: {
           tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={24} color={focused ? "#F25D27" : "#CDCCCE"} />
         }
