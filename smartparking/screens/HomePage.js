@@ -52,6 +52,8 @@ class Map extends React.Component {
 
     this._showParkingRoute = this._showParkingRoute.bind(this);
     this._handlePayment = this._handlePayment.bind(this);
+    this._centerMap = this._centerMap.bind(this);
+
 
 
     this.state = {
@@ -111,10 +113,6 @@ class Map extends React.Component {
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
       this.setState({ isLoading: false });
-      console.log("DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO1")
-      console.log(this.props.areas)
-      console.log("DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO2")
-
     })   
 
   }
@@ -236,6 +234,14 @@ class Map extends React.Component {
     this.props.navigation.navigate("Payment");
   }
 
+  _centerMap() {
+
+    //funziona solo cosi? pazzesco
+    if (this.mapView !== null)
+      this.mapView.animateCamera({ center: this.state.currentCoordinates, zoom: 16 }, { duration: 1000 });
+
+  }
+
   toggleDarkMode() {
 
     this.setState({ isModalVisible: true })
@@ -314,19 +320,7 @@ this.props.updateArea(newAreas)
     return (
 
       <View style={styles.container}>
-        <View style={{ position: 'absolute', width: 1000, zIndex: 9999, top: 10, left:   10, }}>
-                    <GooglePlacesAutocomplete
-                        istViewDisplayed='true'
-                        styles={{
-                            textInputContainer: {
-                                width: 1000 - 40,
-                                borderRadius: 5,
-                                borderWidth: 1,
-                                borderColor: '#eee',
-                                marginHorizontal: 20,
-                            },
-                        }} />
-                </View>
+        
 
         <MapView
           style={styles.map}
@@ -336,6 +330,7 @@ this.props.updateArea(newAreas)
           customMapStyle={mapStyle}
           ref={ref => { this.mapView = ref }}
           initialRegion={this.state.region}
+          showsUserLocation={true}
         >
 
           {!this.state.isLoading && this.props.areas.map((area, index) => (
@@ -390,6 +385,33 @@ this.props.updateArea(newAreas)
           </Marker.Animated>
         </MapView>
 
+        <View style={{ backgroundColor: '#fff', position: 'absolute', width: 400, zIndex: 9999, top: 40, left:   1, borderRadius: 20, borderWidth: 2, borderColor: "#03A696"}}>
+                    <GooglePlacesAutocomplete
+                    minLength={2}
+                    fetchDetails={true}
+                    query={{
+                      key: GOOGLE_MAPS_APIKEY,
+                      language: 'en', 
+                    }}
+                    onPress={(data, details) => console.log(data)}
+
+                        istViewDisplayed='false'
+                        styles={{
+                         container: {
+                            backgroundColor: 'rgba(0,0,0,0)',
+                          },
+                         textInputContainer: {
+                          borderTopWidth: 0,
+                          borderBottomWidth: 0,
+
+                          backgroundColor: 'rgba(0,0,0,0)',
+                         
+                        },
+                        description: {
+                          fontWeight: 'bold'
+                        },
+                        }} />
+                </View>
 
 
         <Block>
@@ -437,7 +459,7 @@ this.props.updateArea(newAreas)
             </View>
           </Modal>
         </Block>
-      <ActionButton buttonColor="#03A696"/>
+      <ActionButton buttonColor="#03A696" onPress={this._centerMap}/>
       </View>
 
     );
