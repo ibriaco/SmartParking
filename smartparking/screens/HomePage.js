@@ -386,7 +386,7 @@ class Map extends React.Component {
           </Marker.Animated>
         </MapView>
 
-        <View style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 50, borderRadius: 10, borderColor:"#fff", alignSelf: 'center' }}>
+        <View style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 50, borderRadius: 20, borderColor:"#fff", alignSelf: 'center' }}>
         <GooglePlacesAutocomplete
 
             minLength={2} // minimum length of text to search
@@ -411,8 +411,7 @@ class Map extends React.Component {
 
             styles={{
               container: {
-                  borderRadius: 8,
-                  //borderWidth: 20,
+                  borderRadius: 20,
                   borderColor: '#fff',
                   backgroundColor: "#ffff",
                   height: '100%',
@@ -426,8 +425,10 @@ class Map extends React.Component {
                 height: 0
               },
               textInputContainer: {
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
                 borderWidth: 10,
-                borderRadius: 10,
+                borderRadius: 20,
                 borderColor: '#fff',
                 backgroundColor: "#ffff",
                 height: 50,

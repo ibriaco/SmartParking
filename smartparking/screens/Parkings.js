@@ -11,7 +11,7 @@ class Parkings extends Component {
             <Container style={{ marginVertical: 20 }}>
                 <Content >
                      {this.props.areas.map((area, index) => (
-                         <TouchableWithoutFeedback onPress={() => console.log("diocane")}>
+                         <TouchableWithoutFeedback key={index} onPress={() => console.log("diocane")}>
                          <Card key={index} >
                          <CardItem >
                              <Text bold h2>{area.address}</Text>
