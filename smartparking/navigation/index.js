@@ -9,7 +9,6 @@ import { createSwitchNavigator } from 'react-navigation';
 import { FontAwesome5 } from 'react-native-vector-icons';
 
 import SplashScreen from "../screens/SplashScreen";
-import ListScreen from "../screens/ListScreen";
 import Parkings from "../screens/Parkings";
 import WelcomeScreen from "../screens/WelcomeScreen";
 import Login from "../screens/Login";
@@ -19,13 +18,8 @@ import Profile from "../screens/Profile";
 import Filter from "../screens/Filter";
 import Test from "../screens/Test";
 import Payment from "../screens/Payment";
-
-import ActionButton from 'react-native-circular-action-menu';
-import Icone from 'react-native-vector-icons/Ionicons';
 import { theme } from "../constants";
-import { Button } from "../components";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
-import SearchHeader from "../components/SearchHeader";
 import { zoomOut, zoomIn } from 'react-navigation-transitions';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -124,27 +118,27 @@ const screens = createStackNavigator(
           screen: HomePage,
 
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={24} color={focused ? "#000" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={28} color={focused ? "#000" : "#CDCCCE"} />
           }
         },
         
         List: {
           screen: Parkings,
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="list-alt" size={24} color={focused ? "#000" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="parking" size={28} color={focused ? "#000" : "#CDCCCE"} />
           }
         },
 
         Filter: {
           screen: Filter,
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="search-location" size={24} color={focused ? "#000" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="sliders-h" size={28} color={focused ? "#000" : "#CDCCCE"} />
           }
         },
         Profile: {
             screen: Profile,
             navigationOptions: {
-              tabBarIcon: ({ focused }) => <FontAwesome5 name="user-alt" size={24} color={focused ? "#000" : "#CDCCCE"} />,
+              tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={28} color={focused ? "#000" : "#CDCCCE"} />,
               backgroundColor: "#03A696",
               height: theme.sizes.base * 6,
             }
@@ -153,7 +147,7 @@ const screens = createStackNavigator(
         Settings: {
           screen: Payment,
           navigationOptions: {
-          tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={24} color={focused ? "#000" : "#CDCCCE"} />
+          tabBarIcon: ({ focused }) => <FontAwesome5 name="wallet" size={28} color={focused ? "#000" : "#CDCCCE"} />
         }
         },
 

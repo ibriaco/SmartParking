@@ -139,20 +139,20 @@ class Filter extends Component {
     <View style = {styles.container}>
       <Block style = {{marginTop: 30}}>
         <Block flex={false} row center space="between" style={styles.header}>
-        <Button style = {{backgroundColor: '#03A696'}}>
-              <Icon
-                  name = "times"
-                  color = "#03A696"
-                  size = {24}
-              />
-          </Button>
-          <Text center h1 bold white >
-            Filter
-          </Text>
-          <Button style = {{backgroundColor: '#03A696', height: 40}} onPress = {()=>this.handleClose()}>
+        <Button style = {{backgroundColor: '#fff'}}>
               <Icon
                   name = "times"
                   color = "#fff"
+                  size = {24}
+              />
+          </Button>
+          <Text center h1 bold >
+            Filter
+          </Text>
+          <Button style = {{backgroundColor: '#fff', height: 40}} onPress = {()=>this.handleClose()}>
+              <Icon
+                  name = "times"
+                  color = "#000"
                   size = {24}
               />
           </Button>
@@ -160,7 +160,7 @@ class Filter extends Component {
 
           <Block style={styles.sliders}>
             <Block margin={[10, 0]}>
-              <Text h3 white style={{ marginBottom: 10, }}>
+              <Text h2 bold style={{ marginBottom: 10, }}>
                 Maximum Price
               </Text>
               <Slider
@@ -168,18 +168,18 @@ class Filter extends Component {
                 maximumValue={5.00}
                 style={{ height: 19 }}
                 thumbStyle={styles.thumb}
-                trackStyle={{ height: 6, borderRadius: 6 }}
-                minimumTrackTintColor={theme.colors.white}
-                maximumTrackTintColor="rgba(255, 255, 255, 0.40)"
+                trackStyle={{ height: 8, borderRadius: 6 }}
+                minimumTrackTintColor={theme.colors.gray}
+                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
                 value={this.state.price}
                 step={0.50}
                 onValueChange={value => this.setState({ price: value })}
               />
-              <Text h3 white right>
+              <Text h2 bold right>
                 {this.state.price}€
               </Text>
                 <Text></Text>
-              <Text h3 white style={{ marginBottom: 10, }}>
+              <Text h2 bold style={{ marginBottom: 10, }}>
                 Distance
               </Text>
               <Slider
@@ -187,18 +187,18 @@ class Filter extends Component {
                 maximumValue={6}
                 style={{ height: 19 }}
                 thumbStyle={styles.thumb}
-                trackStyle={{ height: 6, borderRadius: 6 }}
-                minimumTrackTintColor={theme.colors.white}
-                maximumTrackTintColor="rgba(255, 255, 255, 0.40)"
+                trackStyle={{ height: 8, borderRadius: 6 }}
+                minimumTrackTintColor={theme.colors.gray}
+                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
                 value={this.state.distanceRange}
                 step={1}
 
                 onValueChange={value => this.setState({ distanceRange: value })}
               />
-              <Text h3 white right>
+              <Text h2 bold right>
                 {this.state.distanceRange} km
               </Text>
-              <Text h3 white style={{ marginBottom: 10, }}>
+              <Text h2 bold style={{ marginBottom: 10, }}>
                 Time
               </Text>
               <Slider
@@ -206,19 +206,19 @@ class Filter extends Component {
                 maximumValue={60}
                 style={{ height: 19 }}
                 thumbStyle={styles.thumb}
-                trackStyle={{ height: 6, borderRadius: 6 }}
-                minimumTrackTintColor={theme.colors.white}
-                maximumTrackTintColor="rgba(255, 255, 255, 0.40)"
+                trackStyle={{ height: 8, borderRadius: 6 }}
+                minimumTrackTintColor={theme.colors.gray}
+                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
                 value={this.state.timeRange}
                 step={1}
 
                 onValueChange={value => this.setState({ timeRange: value })}
               />
-              <Text h3 white right>
+              <Text h2 bold right>
                 {this.state.timeRange} min
               </Text>
               <Text></Text>
-              <Text h3 white style={{ marginBottom: 10,  }}>
+              <Text h2 bold style={{ marginBottom: 10,  }}>
                 Availability
               </Text>
               <Slider
@@ -226,28 +226,24 @@ class Filter extends Component {
                 maximumValue={2}
                 style={{ height: 19 }}
                 thumbStyle={styles.thumb}
-                trackStyle={{ height: 6, borderRadius: 6 }}
-                minimumTrackTintColor={theme.colors.white}
-                maximumTrackTintColor="rgba(255, 255, 255, 0.40)"
+                trackStyle={{ height: 8, borderRadius: 6 }}
+                minimumTrackTintColor={theme.colors.gray}
+                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
                 value={this.state.availability}
                 step={1}
                 onValueChange={value => this.setState({ availability: value })}
               />
-              <Text h3 white right>
+              <Text h2 bold right>
                 {this.state.availability == 0 && "Low"}{this.state.availability == 1 && "Medium"}{this.state.availability == 2 && "High"} 
               </Text>
             </Block>
-            <Block bottom center>
-            <Text center h1 bold white >
-            Type
-          </Text>
-            </Block>
+            
           </Block>
 
 
           <Block bottom>
           <Button style = {styles.button} onPress = {()=>this.handleApply()}>
-                <Text h1 bold secondary center>
+                <Text h1 bold white center>
                   Save
                 </Text>
             </Button>
@@ -289,7 +285,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#03A696',
+        backgroundColor: '#fff',
     },
   header: {
     paddingHorizontal: theme.sizes.base * 2
@@ -315,10 +311,10 @@ const styles = StyleSheet.create({
     borderRadius: theme.sizes.base,
     borderColor: "white",
     borderWidth: 3,
-    backgroundColor: theme.colors.accent
+    backgroundColor: theme.colors.gray
   },
   button:{
-    backgroundColor: '#ffffff',
+    backgroundColor: '#03A696',
     height: 60,
     borderRadius: 16,
     marginHorizontal: 45,

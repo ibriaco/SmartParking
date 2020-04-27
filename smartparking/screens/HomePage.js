@@ -30,7 +30,7 @@ const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 import { FontAwesome5 } from 'react-native-vector-icons';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import {Searchbar} from 'react-native-paper'
+import { Searchbar } from 'react-native-paper'
 
 var mapStyle = require('./mapStyle.json');
 var showRoute = false;
@@ -58,7 +58,7 @@ class Map extends React.Component {
 
     this.state = {
       searchQuery: '',
-      tappedAreaTime: "", 
+      tappedAreaTime: "",
       tappedAreaDistance: "",
       parkCards: [],
       isModalVisible: false,
@@ -79,7 +79,7 @@ class Map extends React.Component {
       latitude: LATITUDE,
       longitude: LONGITUDE,
 
-     
+
 
       //variable containing the initial region viewed by the user
       region: {
@@ -113,11 +113,11 @@ class Map extends React.Component {
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
       this.setState({ isLoading: false });
-    })   
+    })
 
   }
 
- 
+
   signoutUser = () => {
     firebase.auth().signOut();
   }
@@ -131,7 +131,7 @@ class Map extends React.Component {
 
     //when everything is mounted i fetch the db to get areas to render
     await this.readAndDrawAreas();
-  
+
 
     //guardare questa istruzione
     const { coordinate } = this.state;
@@ -148,7 +148,7 @@ class Map extends React.Component {
             longitude
           };
 
-         
+
           //when position changes, animate the marker
           coordinate.timing(newCoordinate).start();
 
@@ -157,14 +157,14 @@ class Map extends React.Component {
           this.setState({ currentCoordinates: newCoordinate });
           this.props.updateCoordinates(newCoordinate);
 
-          if(initialPosition){
+          if (initialPosition) {
             initialPosition = !initialPosition
             this.updateCamera();
           }
-          
-            this.updateDist()
-          
-          
+
+          this.updateDist()
+
+
 
         },
         error => alert('Please give us the permission!'),
@@ -177,7 +177,7 @@ class Map extends React.Component {
         }
       );
 
-      
+
     }
   }
 
@@ -193,7 +193,7 @@ class Map extends React.Component {
 
   }
 
- 
+
   getMapRegion() {
     return {
       latitude: this.state.coordinate.longitude,
@@ -209,25 +209,25 @@ class Map extends React.Component {
   */
   async onAreaTapped(area) {
 
-    if(showRoute)
+    if (showRoute)
       showRoute = !showRoute;
 
     await this.props.updateTappedArea(area);
     this.calculateDistance();
-    
 
-    setTimeout(() => {this.setState({isModalVisible: true})}, 200)
+
+    setTimeout(() => { this.setState({ isModalVisible: true }) }, 200)
     //this.setState({ isModalVisible: true })
   }
 
   _showParkingRoute() {
 
-    this.setState({isModalVisible: false})
+    this.setState({ isModalVisible: false })
     showRoute = true;
 
   }
 
-  _handlePayment(){
+  _handlePayment() {
 
     this.setState({ isModalVisible: false })
 
@@ -260,18 +260,18 @@ class Map extends React.Component {
     })
   }
 
-  async calculateDistance(){
+  async calculateDistance() {
     try {
       let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
       let json = await response.json();
-      this.setState({tappedAreaDistance: json.rows[0].elements[0].distance.text});
-      this.setState({tappedAreaTime: json.rows[0].elements[0].duration.text});
+      this.setState({ tappedAreaDistance: json.rows[0].elements[0].distance.text });
+      this.setState({ tappedAreaTime: json.rows[0].elements[0].duration.text });
     } catch (error) {
       console.error(error);
     }
   }
 
-  async calculateDistanceAndTime(){
+  async calculateDistanceAndTime() {
     try {
       let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
       let json = await response.json();
@@ -286,41 +286,41 @@ class Map extends React.Component {
     }
   }
 
-  async updateDist(){
+  async updateDist() {
 
     var tempAreas = this.props.areas;
     var newAreas = [];
-    for (var area of tempAreas){
-     
+    for (var area of tempAreas) {
+
       try {
-      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + area.latitude + ',' + area.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
-      let json = await response.json();
+        let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + area.latitude + ',' + area.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+        let json = await response.json();
 
-      area = {
-        ...area,
-        distance: json.rows[0].elements[0].distance.text,
-        time: json.rows[0].elements[0].duration.text
+        area = {
+          ...area,
+          distance: json.rows[0].elements[0].distance.text,
+          time: json.rows[0].elements[0].duration.text
+        };
+
+        newAreas.push(area);
+
+      } catch (error) {
+        console.error(error);
+
       };
-
-      newAreas.push(area);
-    
-    } catch (error) {
-      console.error(error);
-    
-  };
-}
-console.log(newAreas)
-this.props.updateArea(newAreas)
+    }
+    console.log(newAreas)
+    this.props.updateArea(newAreas)
 
   }
 
 
   render() {
-    const {searchQuery} = this.state;
+    const { searchQuery } = this.state;
     return (
 
       <View style={styles.container}>
-        
+
 
         <MapView
           style={styles.map}
@@ -337,7 +337,7 @@ this.props.updateArea(newAreas)
             <MapView.Marker key={index}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
               onPress={() => this.onAreaTapped(area)}>
-                <FontAwesome5 name="parking" color="#FF5252" size={25} />
+              <FontAwesome5 name="parking" color="#FF5252" size={25} />
             </MapView.Marker>
           ))}
 
@@ -351,7 +351,8 @@ this.props.updateArea(newAreas)
               origin={this.state.currentCoordinates}
               destination={{
                 latitude: this.props.tappedArea.latitude,
-                longitude: this.props.tappedArea.longitude}}
+                longitude: this.props.tappedArea.longitude
+              }}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
               strokeColor="#F25D27"
@@ -379,87 +380,150 @@ this.props.updateArea(newAreas)
           <Marker.Animated
             ref={marker => { this.marker = marker; }}
             coordinate={this.state.coordinate}>
-            
+
             <FontAwesome5 name="car" color="#03A696" size={35} />
 
           </Marker.Animated>
         </MapView>
 
-        <View style={{ backgroundColor: '#fff', position: 'absolute', width: 400, zIndex: 9999, top: 40, left:   1, borderRadius: 20, borderWidth: 2, borderColor: "#03A696"}}>
-                    <GooglePlacesAutocomplete
-                    minLength={2}
-                    fetchDetails={true}
-                    query={{
-                      key: GOOGLE_MAPS_APIKEY,
-                      language: 'en', 
-                    }}
-                    onPress={(data, details) => console.log(data)}
+        <View style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 50, borderRadius: 10, borderColor:"#fff", alignSelf: 'center' }}>
+        <GooglePlacesAutocomplete
 
-                        istViewDisplayed='false'
-                        styles={{
-                         container: {
-                            backgroundColor: 'rgba(0,0,0,0)',
-                          },
-                         textInputContainer: {
-                          borderTopWidth: 0,
-                          borderBottomWidth: 0,
+            minLength={2} // minimum length of text to search
+            autoFocus={false}
+            returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
+            keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
+            listViewDisplayed='auto'    // true/false/undefined
+            fetchDetails={true}
+            renderDescription={row => row.description} // custom description render
+            onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+              console.log(data, details);
+            }}
 
-                          backgroundColor: 'rgba(0,0,0,0)',
-                         
-                        },
-                        description: {
-                          fontWeight: 'bold'
-                        },
-                        }} />
-                </View>
+            getDefaultValue={() => ''}
+
+            query={{
+              // available options: https://developers.google.com/places/web-service/autocomplete
+              key: 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8',
+              language: 'en', // language of the results
+              types: '(cities)' // default: 'geocode'
+            }}
+
+            styles={{
+              container: {
+                  borderRadius: 8,
+                  //borderWidth: 20,
+                  borderColor: '#fff',
+                  backgroundColor: "#ffff",
+                  height: '100%',
+              },
+              poweredContainer:{
+                width: 0,
+                height: 0
+              },
+              powered: {
+                width: 0,
+                height: 0
+              },
+              textInputContainer: {
+                borderWidth: 10,
+                borderRadius: 10,
+                borderColor: '#fff',
+                backgroundColor: "#ffff",
+                height: 50,
+                alignSelf: 'center'
+              },
+              description: {
+                fontWeight: 'bold'
+              },
+              predefinedPlacesDescription: {
+                color: '#000',
+              },
+              textInput: {
+                marginHorizontal: 20,
+                borderWidth: 0,
+                borderColor: '#fff',
+                backgroundColor: "#ffff",
+                alignSelf: 'center',
+              }
+            }}
+
+            //currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+            //currentLocationLabel="Current location"
+            nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+            GoogleReverseGeocodingQuery={{
+              // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+            }}
+            GooglePlacesSearchQuery={{
+              // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+              rankby: 'distance',
+              type: 'cafe'
+            }}
+
+            GooglePlacesDetailsQuery={{
+              // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
+              fields: 'formatted_address',
+            }}
+
+            filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+
+
+            debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
+            renderLeftButton={()  =>  <FontAwesome5 name="map-marker-alt" size={20} color ="#D4D4D4"  style={{alignSelf:'center', }}/>}
+             renderRightButton={()  => <FontAwesome5 name="sliders-h" size={20} color ="#D4D4D4"  style={{alignSelf:'center', }}/>}
+          />
+          
+
+
+        </View>
 
 
         <Block>
           <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end" }}
             onBackdropPress={() => { this.setModalVisible(false) }}>
-            <View style={{ flex: 0.3  , backgroundColor: "#fff", opacity:0.9, borderRadius: 20, justifyContent: "space-evenly", flexDirection: "row" }}>
+            <View style={{ flex: 0.3, backgroundColor: "#fff", opacity: 0.9, borderRadius: 20, justifyContent: "space-evenly", flexDirection: "row" }}>
 
-              <View style={{marginTop: 5, flexDirection: "column", justifyContent:"space-between" }}>
-              <View style = {{flexDirection: "column"}}>
-                 <Text h1 bold secondary>  {this.props.tappedArea.address}</Text>
+              <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
+                <View style={{ flexDirection: "column" }}>
+                  <Text h1 bold secondary>  {this.props.tappedArea.address}</Text>
                   <Text h3>  {this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
-              </View>
-              <View style = {{flexDirection: "row", justifyContent:"space-evenly"}}>
-              <Button style={styles.modalContent}>
-                  <FontAwesome5 name="map-marked" color="#03A696" size={18} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
-                </Button>
-                <Button style={styles.modalContent}>
-                {this.props.tappedArea.nHandicap != 0 && <FontAwesome5 name="wheelchair" size={18} color="#03A696"/>}
-                {this.props.tappedArea.nHandicap == 0 && <FontAwesome5 name="wheelchair" size={18} color="gray"/>}
-                </Button>
-              </View>
-                
-                 
-                   
+                </View>
+                <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
+                  <Button style={styles.modalContent}>
+                    <FontAwesome5 name="map-marked" color="#03A696" size={18} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
+                  </Button>
+                  <Button style={styles.modalContent}>
+                    {this.props.tappedArea.nHandicap != 0 && <FontAwesome5 name="wheelchair" size={18} color="#03A696" />}
+                    {this.props.tappedArea.nHandicap == 0 && <FontAwesome5 name="wheelchair" size={18} color="gray" />}
+                  </Button>
+                </View>
 
-                  <View style = {{flexDirection: "column", justifyContent:"center", alignSelf:"center"}}>
-                
-                <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
-                  <FontAwesome5 name="route" size={18} color="#fff"><Text h3 bold white > Show</Text></FontAwesome5>
-                </Button>
-                  </View>
-                  
+
+
+
+                <View style={{ flexDirection: "column", justifyContent: "center", alignSelf: "center" }}>
+
+                  <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
+                    <FontAwesome5 name="route" size={18} color="#fff"><Text h3 bold white > Show</Text></FontAwesome5>
+                  </Button>
+                </View>
+
               </View>
               <View style={{ justifyContent: "space-evenly", flexDirection: "column", marginHorizontal: 40 }}>
-              {/*
+                {/*
               <Button style={styles.modalContentLowRight} >
                   <FontAwesome5 name="paypal" size={18} color="#3b7bbf"><Text h3 bold > Pay</Text></FontAwesome5>
                 </Button>
                */}
-               <Text h1 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h1 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text> 
-               <Button style={styles.modalContentLowRight} >
+                <Text h1 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h1 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text>
+                <Button style={styles.modalContentLowRight} >
                   <FontAwesome5 name="paypal" size={18} color="#ffff"><Text h2 bold white > Pay</Text></FontAwesome5>
                 </Button>
               </View>
             </View>
           </Modal>
         </Block>
-      <ActionButton buttonColor="#03A696" onPress={this._centerMap}/>
+        <ActionButton buttonColor="#03A696" onPress={this._centerMap} />
       </View>
 
     );
@@ -532,7 +596,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
   },
-  modalContentLowLeft:{
+  modalContentLowLeft: {
     backgroundColor: '#03A696',
     height: 40,
     width: 140,
@@ -543,7 +607,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
   },
-  modalContentLowRight:{
+  modalContentLowRight: {
     backgroundColor: '#03A696',
     height: 100,
     width: 80,
