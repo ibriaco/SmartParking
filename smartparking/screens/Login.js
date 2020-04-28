@@ -4,7 +4,8 @@ import {
   Keyboard,
   StyleSheet,
   View,
-  Image
+  Image,
+  KeyboardAvoidingView
 } from "react-native";
 import * as firebase from 'firebase'
 import * as Facebook from "expo-facebook";
@@ -92,7 +93,10 @@ class Login extends Component {
     const { navigation } = this.props;
 
     return (
-      <View style={styles.login}>
+      <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.login}
+    >
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
           </Text>
@@ -173,7 +177,7 @@ class Login extends Component {
             </Button>
           </Block>
         </Block>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }

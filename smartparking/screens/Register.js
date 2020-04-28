@@ -46,7 +46,10 @@ export default class Register extends Component {
     const { navigation } = this.props;
 
     return (
-      <View style={styles.signup}>
+      <KeyboardAvoidingView
+      behavior={Platform.OS == "ios" ? "padding" : "height"}
+      style={styles.signup}
+    >
         <Block middle padding={[0, theme.sizes.base * 2]}>
         <Text h1 bold>
           </Text>
@@ -118,7 +121,7 @@ export default class Register extends Component {
             </Button>
           </Block>
         </Block>
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 }
