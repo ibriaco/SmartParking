@@ -21,6 +21,10 @@ import { YellowBox } from 'react-native';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Block, Text, Button, Divider } from "../components";
+import { FontAwesome5 } from 'react-native-vector-icons';
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import * as Animatable from 'react-native-animatable';
+
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 const LATITUDE_DELTA = 0.0009;
@@ -28,12 +32,8 @@ const LONGITUDE_DELTA = 0.0009;
 const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
-import { FontAwesome5 } from 'react-native-vector-icons';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import { Searchbar } from 'react-native-paper'
 
 var mapStyle = require('./mapStyle.json');
-var showRoute = false;
 var initialPosition = true;
 var tempAreas = [];
 
@@ -209,8 +209,8 @@ class Map extends React.Component {
   */
   async onAreaTapped(area) {
 
-    if (showRoute)
-      showRoute = !showRoute;
+    if (this.props.showRoute)
+      this.props.updateShowRoute(false);
 
     await this.props.updateTappedArea(area);
     this.calculateDistance();
@@ -223,7 +223,7 @@ class Map extends React.Component {
   _showParkingRoute() {
 
     this.setState({ isModalVisible: false })
-    showRoute = true;
+    this.props.updateShowRoute(true);
 
   }
 
@@ -322,7 +322,6 @@ class Map extends React.Component {
 
       <View style={styles.container}>
 
-
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -336,18 +335,14 @@ class Map extends React.Component {
 
           {!this.state.isLoading && this.props.areas.map((area, index) => (
             <MapView.Marker key={index}
+              stopPropagation={true}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
               onPress={() => this.onAreaTapped(area)}>
               <FontAwesome5 name="parking" color="#FF9800" size={30} />
             </MapView.Marker>
           ))}
 
-
-
-
-
-
-          {(showRoute) && (
+          {(this.props.showRoute) && (
             <MapViewDirections
               origin={this.state.currentCoordinates}
               destination={{
@@ -381,9 +376,9 @@ class Map extends React.Component {
          
         </MapView>
 
-        <View style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 70, borderRadius: 20, borderColor:"#fff", alignSelf: 'center',shadowOpacity: 0.3,
-    shadowOffset: {width: 0, height: 2},
-    elevation: 3, }}>
+        <Animatable.View animation="slideInRight" duration={600} delay={1000} style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 70, borderRadius: 20, borderColor:"#fff", alignSelf: 'center',shadowOpacity: 0.3,
+              shadowOffset: {width: 0, height: 2},
+              elevation: 3, }}>
         <GooglePlacesAutocomplete
 
             minLength={2} // minimum length of text to search
@@ -478,7 +473,7 @@ class Map extends React.Component {
           
 
 
-        </View>
+        </Animatable.View>
 
 
         <Block>
@@ -629,6 +624,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    showRoute: state.showRoute,
     areas: state.areas,
     tappedArea: state.tappedArea,
     currentCity: state.currentCity,
@@ -638,6 +634,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateShowRoute: (param) => dispatch({type: "UPDATE_SHOW_ROUTE", param: param}), 
     updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
     updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),
     updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),

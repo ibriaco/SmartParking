@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { Dimensions, StyleSheet, View, Animated, Image } from 'react-native'
 import * as Animatable from 'react-native-animatable';
+import { theme, mocks } from "../constants";
+
 
 const SCREEN_WIDTH = Dimensions.get('window').width;
 const SCREEN_HEIGHT = Dimensions.get('window').height;
@@ -15,11 +17,6 @@ export default class SplashScreen extends Component {
     }
 
   }
-
-toggleNavigation(){
-  console.log("djksnfkcjsd");
-  navigation.navigate("Welcome");
-}
 
     render() {
       const { navigation } = this.props;
@@ -38,7 +35,7 @@ toggleNavigation(){
 const styles = StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: '#38BC7C',
+      backgroundColor: theme.colors.secondary,
       flexDirection: 'column',
       alignItems: 'center'
     },

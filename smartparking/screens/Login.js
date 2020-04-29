@@ -18,6 +18,8 @@ import { theme } from "../constants";
 import { SocialIcon } from 'react-native-elements'
 
 import { Input, Icon } from "galio-framework"
+import * as Animatable from 'react-native-animatable';
+
 
  
 
@@ -150,31 +152,44 @@ class Login extends Component {
           </Block>
           <Block bottom style={styles.bottom}>
           <View style={styles.social}>
+            <Animatable.View animation="zoomIn" duration={700} delay={200}>
                 <Button style={styles.google} onPress={()=>this._loginWithGoogle()} >
                   <SocialIcon
                     type="google"
                     light
                   />
                 </Button>
+                </Animatable.View>
                 <Text center gray2 h4>      </Text>
+            <Animatable.View animation="zoomIn" duration={700} delay={300}>
+
                 <Button style={styles.facebook} onPress={()=>this._loginWithFacebook()}>
                   <SocialIcon
                     type="facebook"
                     light
                   />
                 </Button>
+                </Animatable.View>
 
               </View>
+              <Animatable.View animation="slideInRight" duration={700} delay={400}>
+
             <Button style={styles.loginButton} onPress={()=>this.handleLogin()}>
               <Text h2 bold white center>
                 Login
                 </Text>
             </Button>
+            </Animatable.View>
+
+            <Animatable.View animation="slideInLeft" duration={700} delay={500}>
+
             <Button style={styles.registerButton} onPress={() => navigation.navigate("Register")}>
               <Text h2 bold black center>
                 Register
                 </Text>
             </Button>
+            </Animatable.View>
+
           </Block>
         </Block>
       </KeyboardAvoidingView>
