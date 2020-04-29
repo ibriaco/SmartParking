@@ -147,14 +147,18 @@ const screens = createStackNavigator(
         Settings: {
           screen: Payment,
           navigationOptions: {
-          tabBarIcon: ({ focused }) => <FontAwesome5 name="wallet" size={28} color={focused ? "#000" : "#CDCCCE"} />
+          tabBarIcon: ({ focused }) => <FontAwesome5 name="wallet" size={28} color={focused ? "#000" : "#CDCCCE"} />,
         }
         },
 
       },
         {
           tabBarOptions: {
-            showLabel: false
+            showLabel: false,
+            style: {
+              opacity: 0.9,
+              height: 50,
+            }
           }
         }
       ),

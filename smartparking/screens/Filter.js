@@ -170,7 +170,7 @@ class Filter extends Component {
                 thumbStyle={styles.thumb}
                 trackStyle={{ height: 8, borderRadius: 6 }}
                 minimumTrackTintColor={theme.colors.gray}
-                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
+                maximumTrackTintColor="rgba(212, 212, 212, 0.10)"
                 value={this.state.price}
                 step={0.50}
                 onValueChange={value => this.setState({ price: value })}
@@ -189,7 +189,7 @@ class Filter extends Component {
                 thumbStyle={styles.thumb}
                 trackStyle={{ height: 8, borderRadius: 6 }}
                 minimumTrackTintColor={theme.colors.gray}
-                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
+                maximumTrackTintColor="rgba(212, 212, 212, 0.10)"
                 value={this.state.distanceRange}
                 step={1}
 
@@ -208,7 +208,7 @@ class Filter extends Component {
                 thumbStyle={styles.thumb}
                 trackStyle={{ height: 8, borderRadius: 6 }}
                 minimumTrackTintColor={theme.colors.gray}
-                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
+                maximumTrackTintColor="rgba(212, 212, 212, 0.10)"
                 value={this.state.timeRange}
                 step={1}
 
@@ -228,7 +228,7 @@ class Filter extends Component {
                 thumbStyle={styles.thumb}
                 trackStyle={{ height: 8, borderRadius: 6 }}
                 minimumTrackTintColor={theme.colors.gray}
-                maximumTrackTintColor="rgba(157, 163, 180, 0.10)"
+                maximumTrackTintColor="rgba(212, 212, 212, 0.10)"
                 value={this.state.availability}
                 step={1}
                 onValueChange={value => this.setState({ availability: value })}

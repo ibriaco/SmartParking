@@ -250,7 +250,7 @@ class Map extends React.Component {
     ));
 
 
-    this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle.json'));
+    this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle2.json'));
     this.setState({ darkMode: !this.state.darkMode });
   }
 
@@ -317,6 +317,7 @@ class Map extends React.Component {
 
   render() {
     const { searchQuery } = this.state;
+    const { navigation } = this.props;
     return (
 
       <View style={styles.container}>
@@ -337,7 +338,7 @@ class Map extends React.Component {
             <MapView.Marker key={index}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
               onPress={() => this.onAreaTapped(area)}>
-              <FontAwesome5 name="parking" color="#FF5252" size={25} />
+              <FontAwesome5 name="parking" color="#FF9800" size={30} />
             </MapView.Marker>
           ))}
 
@@ -377,16 +378,12 @@ class Map extends React.Component {
           )}
 
 
-          <Marker.Animated
-            ref={marker => { this.marker = marker; }}
-            coordinate={this.state.coordinate}>
-
-            <FontAwesome5 name="car" color="#03A696" size={35} />
-
-          </Marker.Animated>
+         
         </MapView>
 
-        <View style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 50, borderRadius: 20, borderColor:"#fff", alignSelf: 'center' }}>
+        <View style={{ backgroundColor: '#fff',  position: 'absolute', width: '80%',top: 70, borderRadius: 20, borderColor:"#fff", alignSelf: 'center',shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 3, }}>
         <GooglePlacesAutocomplete
 
             minLength={2} // minimum length of text to search
@@ -411,7 +408,7 @@ class Map extends React.Component {
 
             styles={{
               container: {
-                  borderRadius: 20,
+                  borderRadius: 15,
                   borderColor: '#fff',
                   backgroundColor: "#ffff",
                   height: '100%',
@@ -424,6 +421,10 @@ class Map extends React.Component {
                 width: 0,
                 height: 0
               },
+              loader: {
+                width: '50%',
+                
+              },
               textInputContainer: {
                 borderTopWidth: 0,
                 borderBottomWidth: 0,
@@ -431,14 +432,14 @@ class Map extends React.Component {
                 borderRadius: 20,
                 borderColor: '#fff',
                 backgroundColor: "#ffff",
-                height: 50,
+                height: 60,
                 alignSelf: 'center'
               },
               description: {
-                fontWeight: 'bold'
+                color: '#a5a5a5',
               },
               predefinedPlacesDescription: {
-                color: '#000',
+                color: '#DCDCDC',
               },
               textInput: {
                 marginHorizontal: 20,
@@ -446,6 +447,7 @@ class Map extends React.Component {
                 borderColor: '#fff',
                 backgroundColor: "#ffff",
                 alignSelf: 'center',
+                color: '#a5a5a5',
               }
             }}
 
@@ -471,7 +473,7 @@ class Map extends React.Component {
 
             debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
             renderLeftButton={()  =>  <FontAwesome5 name="map-marker-alt" size={20} color ="#D4D4D4"  style={{alignSelf:'center', }}/>}
-             renderRightButton={()  => <FontAwesome5 name="sliders-h" size={20} color ="#D4D4D4"  style={{alignSelf:'center', }}/>}
+             renderRightButton={()  => <FontAwesome5 name="sliders-h" size={20} color ="#D4D4D4"  style={{alignSelf:'center', }} onPress={() => this.props.navigation.navigate("Filter")}/>}
           />
           
 
@@ -480,13 +482,13 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end" }}
+          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center" }}
             onBackdropPress={() => { this.setModalVisible(false) }}>
-            <View style={{ flex: 0.3, backgroundColor: "#fff", opacity: 0.9, borderRadius: 20, justifyContent: "space-evenly", flexDirection: "row" }}>
+            <View style={{ flex: 0.3, backgroundColor: "#fff",  borderRadius: 20, justifyContent: "space-evenly", flexDirection: "row", width: '100%' }}>
 
               <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "column" }}>
-                  <Text h1 bold secondary>  {this.props.tappedArea.address}</Text>
+                  <Text h2 bold secondary>  {this.props.tappedArea.address}</Text>
                   <Text h3>  {this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-evenly" }}>
@@ -510,7 +512,7 @@ class Map extends React.Component {
                 </View>
 
               </View>
-              <View style={{ justifyContent: "space-evenly", flexDirection: "column", marginHorizontal: 40 }}>
+              <View style={{ justifyContent: "space-evenly", flexDirection: "column", marginHorizontal: 40, }}>
                 {/*
               <Button style={styles.modalContentLowRight} >
                   <FontAwesome5 name="paypal" size={18} color="#3b7bbf"><Text h3 bold > Pay</Text></FontAwesome5>
@@ -524,7 +526,7 @@ class Map extends React.Component {
             </View>
           </Modal>
         </Block>
-        <ActionButton buttonColor="#03A696" onPress={this._centerMap} />
+        <ActionButton buttonColor="rgba(3, 166, 150, 0.9)" onPress={this._centerMap} />
       </View>
 
     );
