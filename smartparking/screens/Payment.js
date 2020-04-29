@@ -1,128 +1,116 @@
 import React, { Component } from "react";
-import { Image, StyleSheet, ScrollView, TextInput, View, FlatList } from "react-native";
-import Slider from "react-native-slider";
-import Card from "react-native-elements"
-
-import { Divider, Button, Block, Text, Switch } from "../components";
-import { theme, mocks } from "../constants";
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { connect } from 'react-redux';
-import * as firebase from 'firebase';
-import RNDateTimePicker from '@react-native-community/datetimepicker';
+import { StyleSheet, View, Switch, ScrollView, KeyboardAvoidingView } from "react-native";
 import { CreditCardInput, LiteCreditCardInput } from "react-native-credit-card-input";
+import { Block, Text, Button, Divider } from "../components";
+import { theme, mocks } from "../constants";
+import {Input} from 'galio-framework'
+
+const s = StyleSheet.create({
+  switch: {
+    alignSelf: "center",
+    marginTop: 20,
+    marginBottom: 20,
+  },
+  container: {
+    backgroundColor: "#ffff",
+    marginTop: 60,
+  },
+  label: {
+    color: "#a5a5a5",
+    fontSize: 12,
+  },
+  input: {
+    fontSize: 16,
+    color: "#a5a5a5",
+    borderBottomColor: '#a5a5a5',
+
+  },
+});
 
 
+export default class Example extends Component {
+  state = { useLiteCreditCardInput: false };
 
-class Filter extends Component {
-    
-  state = {
-    hour: 0,
-    minute: 0,
-    type: 0
-  };
-
-
-  handleApply() {
-    const { navigation } = this.props;
-
-    navigation.navigate("Home");
-  }
-
-
-  handleClose() {
-    const { navigation } = this.props;
-    navigation.navigate("Home");
-  }
-
-  onChange = (event, selectedDate) => {
-    console.log(selectedDate)
-  };
-
-  onCardChange(form) {
-      console.log(form);
-  }
-
-  renderCard = item => {
-    <Card image={item} />
-  }
+  _onChange = (formData) => console.log(JSON.stringify(formData, null, " "));
+  _onFocus = (field) => console.log("focusing", field);
 
   render() {
-
     return (
-    <View style = {styles.container}>
-      <Block style = {{marginTop: 30}}>
-        <Block flex={false} row center space="between" style={styles.header}>
-        
-          <Text center h1 bold black >
-            Payment methods
+      <ScrollView style={styles.header} scrollEnabled={false}>
+        <Block top space="between" >
+          <Text h1 bold>
+            Payment Methods
           </Text>
-          
+          <Text></Text>
         </Block>
+        <Divider/>
+        <Text h2 bold>Paypal</Text>
+        <Text></Text>
+        <Input
+              placeholder ="Email Address"
+              right
+              icon="envelope"
+              family="font-awesome"
+              iconSize={18}
+              iconColor="#a5a5a5"
+              style={styles.input}
+            />
+            <Text></Text>
+          <Text h2 bold>
+            Credit Card
+          </Text>
+          <Text></Text>
+        <CreditCardInput
+          autoFocus
 
-          <Block style={styles.sliders}>
+          requiresName
+          requiresCVC
+          requiresPostalCode
+
+          cardScale={1.0}
+          labelStyle={s.label}
+          inputStyle={s.input}
+          validColor={"black"}
+          invalidColor={"red"}
+          placeholderColor={"darkgray"}
+
+          onFocus={this._onFocus}
+          onChange={this._onChange} />
+
        
-
-            
-          </Block>
-          <CreditCardInput onChange={this.onCardChange} />
-
-          
-          <Block bottom>
-          <Button style = {styles.button} onPress = {()=>this.handleApply()}>
-                <Text h1 bold secondary center>
+        <Block bottom >
+        <Button style = {styles.button} onPress = {()=>this.handleApply()}>
+                <Text h1 bold white center>
                   Save
                 </Text>
             </Button>
-          </Block>
-      </Block>
-      </View>
+          
+        </Block>
+      </ScrollView>
     );
   }
 }
 
-Filter.defaultProps = {
-  profile: mocks.profile
-};
-
-
-function mapStateToProps(state) {
-  return {
-    //state.areas gets data from the store
-    //and we are mapping that data to the prop named areas
-    areas: state.areas,
-    tappedArea: state.tappedArea,
-    currentCity: state.currentCity,
-    userCoordinates: state.userCoordinates
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return {
-    updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
-    updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),
-    updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),
-    updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
-  }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Filter);
-
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        backgroundColor: '#fff',
-    },
   header: {
-    paddingHorizontal: theme.sizes.base * 2
+    paddingHorizontal: theme.sizes.base * 2,
+    paddingVertical: theme.sizes.base * 4,
+    //justifyContent: 'space-between',
+    flex: 1
   },
   avatar: {
     height: theme.sizes.base * 2.2,
     width: theme.sizes.base * 2.2
   },
-  inputs: {
-    marginTop: theme.sizes.base * 0.7,
-    paddingHorizontal: theme.sizes.base * 2
+  input: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: "#fff",
+    backgroundColor: "#fff",
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 3,
+    height: 60
   },
   inputRow: {
     alignItems: "flex-end"
@@ -137,16 +125,20 @@ const styles = StyleSheet.create({
     borderRadius: theme.sizes.base,
     borderColor: "white",
     borderWidth: 3,
-    backgroundColor: theme.colors.accent
+    backgroundColor: theme.colors.secondary
+  },
+  toggles: {
+    paddingHorizontal: theme.sizes.base * 2
   },
   button:{
-    backgroundColor: '#ffffff',
+    backgroundColor: '#03A696',
     height: 60,
     borderRadius: 16,
     marginHorizontal: 45,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
     elevation: 6,
-    marginBottom: 30
+    marginBottom: 30,
+    paddingHorizontal: theme.sizes.base * 2,
   },
 });
