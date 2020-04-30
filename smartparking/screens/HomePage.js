@@ -25,6 +25,8 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Animatable from 'react-native-animatable';
 
+
+
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 const LATITUDE_DELTA = 0.0009;
@@ -37,6 +39,12 @@ var lightMapStyle = require('./mapStyle.json');
 var darkMapStyle = require('./mapStyle2.json');
 
 var initialPosition = true;
+const initialRegion = {
+  latitude: 45.464664,
+  longitude: 9.188540,
+  latitudeDelta: 10,
+  longitudeDelta: 10
+};
 
 //fuck those useless warnings
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -73,29 +81,6 @@ class Map extends React.Component {
         longitude: LONGITUDE,
       },
 
-      //variable containing (initially) the city where the user is, may be changed if the user inserts a different city
-      selectedCity: "Sondrio",
-
-      //idk
-      latitude: LATITUDE,
-      longitude: LONGITUDE,
-
-
-
-      //variable containing the initial region viewed by the user
-      region: {
-        //EUROPE
-        //latitude: 45.4,
-        //longitude: 9.8,
-
-        //MILAN
-        latitude: 45.464664,
-        longitude: 9.188540,
-        latitudeDelta: 10,
-        longitudeDelta: 10
-      },
-
-
       //animated region used to animate the marker representing the user position
       coordinate: new AnimatedRegion({
         latitude: LATITUDE,
@@ -109,7 +94,6 @@ class Map extends React.Component {
 
 
   async readAndDrawAreas() {
-
 
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
@@ -127,11 +111,14 @@ class Map extends React.Component {
   async componentDidMount() {
 
     //authentication
-    const { email, displayName } = firebase.auth().currentUser
+    const { email, displayName, uid } = firebase.auth().currentUser
     this.setState({ email, displayName });
 
+    //welcome message
+    alert("Hello " + uid)
+ 
     //when everything is mounted i fetch the db to get areas to render
-    await this.readAndDrawAreas();
+    //await this.readAndDrawAreas();
 
 
     //guardare questa istruzione
@@ -149,7 +136,6 @@ class Map extends React.Component {
             longitude
           };
 
-
           //when position changes, animate the marker
           coordinate.timing(newCoordinate).start();
 
@@ -158,9 +144,11 @@ class Map extends React.Component {
           this.setState({ currentCoordinates: newCoordinate });
           this.props.updateCoordinates(newCoordinate);
 
+        
           if (initialPosition) {
             initialPosition = !initialPosition
             this.updateCamera();
+            this.readAndDrawAreas();
           }
 
           this.updateDist()
@@ -172,7 +160,7 @@ class Map extends React.Component {
         {
           //this should update position every 1m, mmmmmm
           enableHighAccuracy: true,
-          timeout: 20000,
+          timeout: 2000,
           maximumAge: 0,
           distanceFilter: 1
         }
@@ -214,11 +202,8 @@ class Map extends React.Component {
       this.props.updateShowRoute(false);
 
     await this.props.updateTappedArea(area);
-    this.calculateDistance();
-
 
     setTimeout(() => { this.setState({ isModalVisible: true }) }, 200)
-    //this.setState({ isModalVisible: true })
   }
 
   _showParkingRoute() {
@@ -231,7 +216,6 @@ class Map extends React.Component {
   _handlePayment() {
 
     this.setState({ isModalVisible: false })
-
     this.props.navigation.navigate("Payment");
   }
 
@@ -243,17 +227,7 @@ class Map extends React.Component {
 
   }
 
-  toggleDarkMode() {
-
-    this.setState({ isModalVisible: true })
-    this.props.areas.map((area, index) => (
-      console.log(area.longitude)
-    ));
-
-
-    this.state.darkMode ? (mapStyle = require('./mapStyle2.json')) : (mapStyle = require('./mapStyle2.json'));
-    this.setState({ darkMode: !this.state.darkMode });
-  }
+  
 
   async setModalVisible(visible) {
     this.setState({
@@ -261,36 +235,12 @@ class Map extends React.Component {
     })
   }
 
-  async calculateDistance() {
-    try {
-      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
-      let json = await response.json();
-      this.setState({ tappedAreaDistance: json.rows[0].elements[0].distance.text });
-      this.setState({ tappedAreaTime: json.rows[0].elements[0].duration.text });
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async calculateDistanceAndTime() {
-    try {
-      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
-      let json = await response.json();
-
-      distanceAndTime.push({
-        distance: json.rows[0].elements[0].distance.text,
-        time: json.rows[0].elements[0].duration.text
-      });
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
 
   async updateDist() {
 
     var tempAreas = this.props.areas;
     var newAreas = [];
+
     for (var area of tempAreas) {
 
       try {
@@ -310,7 +260,6 @@ class Map extends React.Component {
 
       };
     }
-    console.log(newAreas)
     this.props.updateArea(newAreas)
 
   }
@@ -330,7 +279,7 @@ class Map extends React.Component {
           loadingEnabled={true}
           customMapStyle={this.props.darkTheme ? darkMapStyle : lightMapStyle}
           ref={ref => { this.mapView = ref }}
-          initialRegion={this.state.region}
+          initialRegion={initialRegion}
           showsUserLocation={true}
         >
 
@@ -390,7 +339,11 @@ class Map extends React.Component {
             fetchDetails={true}
             renderDescription={row => row.description} // custom description render
             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-              console.log(data, details);
+              console.log("Città: " + data.terms[2].value);
+              console.log("Coords: " + details.geometry.location);
+
+              console.log(data)
+              console.log(details)
             }}
 
             getDefaultValue={() => ''}
@@ -399,7 +352,6 @@ class Map extends React.Component {
               // available options: https://developers.google.com/places/web-service/autocomplete
               key: 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8',
               language: 'en', // language of the results
-              types: '(cities)' // default: 'geocode'
             }}
 
             styles={{
@@ -456,15 +408,14 @@ class Map extends React.Component {
             GooglePlacesSearchQuery={{
               // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
               rankby: 'distance',
-              type: 'cafe'
             }}
 
             GooglePlacesDetailsQuery={{
               // available options for GooglePlacesDetails API : https://developers.google.com/places/web-service/details
-              fields: 'formatted_address',
+              fields: 'geometry',
             }}
 
-            filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+            //filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 
 
             debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.

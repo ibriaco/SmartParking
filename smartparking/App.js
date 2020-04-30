@@ -23,7 +23,7 @@ const initialState = {
     latitude: 0,
     longitude: 0
   },
-  currentCity: "Sondrio",
+  currentCity: "Milan",
   showRoute: false,
   darkTheme: false
 }
