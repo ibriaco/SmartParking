@@ -33,9 +33,10 @@ const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 
-var mapStyle = require('./mapStyle.json');
+var lightMapStyle = require('./mapStyle.json');
+var darkMapStyle = require('./mapStyle2.json');
+
 var initialPosition = true;
-var tempAreas = [];
 
 //fuck those useless warnings
 YellowBox.ignoreWarnings(['Setting a timer']);
@@ -327,7 +328,7 @@ class Map extends React.Component {
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19}
           loadingEnabled={true}
-          customMapStyle={mapStyle}
+          customMapStyle={this.props.darkTheme ? darkMapStyle : lightMapStyle}
           ref={ref => { this.mapView = ref }}
           initialRegion={this.state.region}
           showsUserLocation={true}
@@ -359,7 +360,7 @@ class Map extends React.Component {
               onReady={result => {
 
                 this.mapView.fitToCoordinates(result.coordinates), {
-                  edgePadding: { top: 100, right: 100, bottom: 100, left: 100 },
+                  edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
                   animated: true,
                 };
 
@@ -624,6 +625,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    darkTheme: state.darkTheme,
     showRoute: state.showRoute,
     areas: state.areas,
     tappedArea: state.tappedArea,

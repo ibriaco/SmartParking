@@ -5,13 +5,26 @@ import Slider from "react-native-slider";
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from 'react-redux';
+
 
 class Profile extends Component {
-  state = {
-    darkmode: true,
-    editing: null,
-    profile: {}
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      dark: false,
+      editing: null,
+      profile: {},
+    };
   };
+
+  getStyle = function(dTheme) {
+    return {
+      backgroundColor: dTheme ? "black" : "white"
+    }
+  }
+  
 
   componentDidMount() {
     this.setState({ profile: this.props.profile });
@@ -48,7 +61,7 @@ class Profile extends Component {
     const { profile, editing } = this.state;
 
     return (
-      <Block>
+      <Block style={this.getStyle(this.props.darkTheme)}>
         <Block flex={false} top space="between" style={styles.header}>
           <Text h1 bold>
             Profile
@@ -166,8 +179,11 @@ class Profile extends Component {
             >
               <Text gray2>Dark Mode</Text>
               <Switch
-                value={this.state.darkmode}
-                onValueChange={value => this.setState({ darkmode: value })}
+                value={this.state.dark}
+                onValueChange={value => {
+                  this.setState({ dark: value })
+                  this.props.updateDarkTheme(value);
+              }}
               />
             </Block>
 
@@ -201,7 +217,6 @@ Profile.defaultProps = {
   profile: mocks.profile
 };
 
-export default Profile;
 
 const styles = StyleSheet.create({
   header: {
@@ -235,3 +250,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 2
   }
 });
+
+function mapStateToProps(state) {
+  return {
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    darkTheme: state.darkTheme
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateDarkTheme: (param) => dispatch({type: "UPDATE_DARK_THEME", param: param}), 
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);

@@ -24,10 +24,15 @@ const initialState = {
     longitude: 0
   },
   currentCity: "Sondrio",
-  showRoute: false
+  showRoute: false,
+  darkTheme: false
 }
 const reducer = (state = initialState, action) => {
   switch(action.type){
+    case "UPDATE_DARK_THEME": 
+      return {
+        ...state,
+        darkTheme: action.param};
     case "UPDATE_SHOW_ROUTE": 
       return {
         ...state,
