@@ -4,6 +4,9 @@
     "slug": "smartparking",
     "privacy": "public",
     "sdkVersion": "36.0.0",
+    "androidStatusBar": {
+      "backgroundColor": "#000000"
+    },
     
     "platforms": [
       "ios",
