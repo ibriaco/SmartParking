@@ -26,6 +26,7 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import {showMessage} from "react-native-flash-message";
 
 
 
@@ -83,6 +84,8 @@ class Map extends React.Component {
         longitude: LONGITUDE,
       },
 
+      destinationCoordinates: null,
+
       //animated region used to animate the marker representing the user position
       coordinate: new AnimatedRegion({
         latitude: LATITUDE,
@@ -117,7 +120,13 @@ class Map extends React.Component {
     this.setState({ email, displayName });
 
     //welcome message
-    alert("Hello " + uid)
+    showMessage({
+      message: "Welcome!",
+      description: uid,
+      type: "default",
+      backgroundColor: "black", // background color
+      color: "white", // text color
+    });
 
     //when everything is mounted i fetch the db to get areas to render
     //await this.readAndDrawAreas();
@@ -153,7 +162,7 @@ class Map extends React.Component {
             this.readAndDrawAreas();
           }
 
-          this.updateDist()
+          //this.updateDist()
 
 
 
@@ -230,6 +239,17 @@ class Map extends React.Component {
   }
 
 
+  handleSelection(details){
+    
+    this.setState({destinationCoordinates: {
+      latitude: details.geometry.location.lat,
+      longitude: details.geometry.location.lng
+    }});
+
+    if (this.mapView !== null)
+      this.mapView.animateCamera({ center: this.state.destinationCoordinates, zoom: 100 }, { duration: 1000 });
+    
+  }
 
   async setModalVisible(visible) {
     this.setState({
@@ -287,10 +307,11 @@ class Map extends React.Component {
           customMapStyle={this.props.darkTheme ? darkMapStyle : lightMapStyle}
           ref={ref => { this.mapView = ref }}
           initialRegion={initialRegion}
-          showsUserLocation={true}
+          showsUserLocation={false}
         >
 
           {!this.state.isLoading && this.props.areas.map((area, index) => (
+
             <MapView.Marker key={index}
               stopPropagation={true}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
@@ -299,6 +320,17 @@ class Map extends React.Component {
             </MapView.Marker>
           ))}
 
+          {(this.state.destinationCoordinates != null) && (
+
+          <MapView.Marker
+              coordinate={{ latitude: this.state.destinationCoordinates.latitude, longitude: this.state.destinationCoordinates.longitude }}>
+                                     <Animatable.View animation="bounceIn" duration={700} delay={2000} >
+<FontAwesome5 name="map-marker-alt" color="#FF9800" size={30} />
+             </Animatable.View></MapView.Marker>
+         
+          )}
+          
+          
           {(this.props.showRoute) && (
             <MapViewDirections
               origin={this.state.currentCoordinates}
@@ -308,7 +340,7 @@ class Map extends React.Component {
               }}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
-              strokeColor="#F25D27"
+              strokeColor="rgba(0,0,0,1)"
               optimizeWaypoints={true}
               onStart={(params) => {
 
@@ -328,12 +360,19 @@ class Map extends React.Component {
 
             />
           )}
+        
+        <Marker.Animated
+            ref={marker => { this.marker = marker; }}
+            coordinate={this.state.coordinate}>
 
+            <FontAwesome5 name="car" color="#03A696" size={35} />
+
+          </Marker.Animated>
 
 
         </MapView>
 
-        <Animatable.View animation="slideInRight" duration={600} delay={1000} style={{
+        <Animatable.View animation="slideInDown" duration={800} delay={1800} style={{
           backgroundColor: '#fff', position: 'absolute', width: '80%', top: 80, borderRadius: 20, borderColor: "#fff", alignSelf: 'center', shadowOpacity: 0.3,
           shadowOffset: { width: 0, height: 2 },
           elevation: 3,
@@ -344,15 +383,13 @@ class Map extends React.Component {
             autoFocus={false}
             returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
             keyboardAppearance={'light'} // Can be left out for default keyboardAppearance https://facebook.github.io/react-native/docs/textinput.html#keyboardappearance
-            listViewDisplayed='auto'    // true/false/undefined
+            listViewDisplayed='false'    // true/false/undefined
             fetchDetails={true}
             renderDescription={row => row.description} // custom description render
-            onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-              console.log("Città: " + data.terms[2].value);
-              console.log("Coords: " + details.geometry.location);
+            onPress={(data, details) => { // 'details' is provided when fetchDetails = true
+              
+              this.handleSelection(details);
 
-              console.log(data)
-              console.log(details)
             }}
 
             getDefaultValue={() => ''}
@@ -424,7 +461,7 @@ class Map extends React.Component {
               fields: 'geometry',
             }}
 
-            //filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+            filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 
 
             debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
@@ -461,15 +498,14 @@ class Map extends React.Component {
                     <Text>disables</Text>
                   </Button>
                   <Button style={styles.labels}>
+                    <Text>disables</Text>
+                  </Button>
+                  <Button style={styles.labels}>
                     <Text>electric</Text>
                   </Button>
                 </View>
 
-
-
-
                 <View style={{ flexDirection: "column", justifyContent: "center", alignSelf: "center" }}>
-
                   <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
                     <FontAwesome5 name="route" size={18} color="#fff"><Text h3 bold white > Show</Text></FontAwesome5>
                   </Button>
@@ -492,7 +528,14 @@ class Map extends React.Component {
             </View>
           </Modal>
         </Block>
+
+        <Animatable.View animation="zoomIn" duration={800} delay={2100} style={{
+          position: 'absolute', bottom: 40, elevation: 3,
+        }}>
+          
         <ActionButton buttonColor="#000" onPress={this._centerMap} />
+        
+        </Animatable.View>
       </View>
 
     );

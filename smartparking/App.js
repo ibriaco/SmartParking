@@ -9,6 +9,8 @@ import { Block } from "./components";
 import { Provider } from 'react-redux';
 
 import { createStore } from 'redux';
+import FlashMessage from "react-native-flash-message";
+
 
 const initialState = {
   areas: {
@@ -96,6 +98,7 @@ export default class App extends React.Component {
       <Provider store = { store }>
       <Block white>
         <Navigation />
+        <FlashMessage position="top" /> 
       </Block>
       </Provider>
     );
