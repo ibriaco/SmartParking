@@ -14,7 +14,7 @@ import MapView, {
   PROVIDER_GOOGLE
 } from "react-native-maps";
 import MapViewDirections from 'react-native-maps-directions';
-import * as Permissions from 'expo-permissions';
+import * as Location from 'expo-location';
 import Modal from "react-native-modal";
 import ActionButton from 'react-native-circular-action-menu';
 import * as firebase from 'firebase';
@@ -66,7 +66,6 @@ class Map extends React.Component {
     this._showParkingRoute = this._showParkingRoute.bind(this);
     this._handlePayment = this._handlePayment.bind(this);
     this._centerMap = this._centerMap.bind(this);
-
 
 
     this.state = {
@@ -123,7 +122,7 @@ class Map extends React.Component {
     //welcome message
     showMessage({
       message: "Welcome!",
-      description: uid,
+      description: displayName,
       type: "default",
       backgroundColor: "black", // background color
       color: "white", // text color
@@ -137,7 +136,7 @@ class Map extends React.Component {
     const { coordinate } = this.state;
 
     //ask for gps permission and watch for position changes
-    let { status } = await Permissions.askAsync(Permissions.LOCATION);
+    let { status } = await Location.requestPermissionsAsync();
     if (status === 'granted') {
       this.watchID = navigator.geolocation.watchPosition(
         position => {
@@ -162,10 +161,7 @@ class Map extends React.Component {
             this.updateCamera();
             this.readAndDrawAreas();
           }
-
           //this.updateDist()
-
-
 
         },
         error => alert('Please give us the permission!'),
@@ -190,7 +186,7 @@ class Map extends React.Component {
 
     //funziona solo cosi? pazzesco
     if (this.mapView !== null)
-      this.mapView.animateCamera({ center: this.state.currentCoordinates, zoom: 16 }, { duration: 2000 });
+      this.mapView.animateCamera({ center: this.state.currentCoordinates, zoom: 14 }, { duration: 2000 });
 
   }
 
@@ -222,6 +218,7 @@ class Map extends React.Component {
 
     this.setState({ isModalVisible: false })
     this.props.updateShowRoute(true);
+    
 
   }
 
@@ -235,20 +232,30 @@ class Map extends React.Component {
 
     //funziona solo cosi? pazzesco
     if (this.mapView !== null)
-      this.mapView.animateCamera({ center: this.state.currentCoordinates, zoom: 16 }, { duration: 1000 });
+      this.mapView.animateCamera({ center: this.state.currentCoordinates, zoom: 14 }, { duration: 1000 });
 
+  }
+
+  _linkToGoogleMaps(){
+    console.log("dio")
+    Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude);
   }
 
 
   handleSelection(details){
     
+    //qui serve il calcolo della città reale, ma le api sono fatte con il culo
+    this.props.updateCity("Milan");
+
+    this.readAndDrawAreas();
+
     this.setState({destinationCoordinates: {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng
     }});
 
     if (this.mapView !== null)
-      this.mapView.animateCamera({ center: this.state.destinationCoordinates, zoom: 100 }, { duration: 1000 });
+      this.mapView.animateCamera({ center: this.state.destinationCoordinates, zoom: 14 }, { duration: 1000 });
     
   }
 
@@ -321,14 +328,14 @@ class Map extends React.Component {
             </MapView.Marker>
           ))}
 
-          {(this.state.destinationCoordinates != null) && (
 
+          {(this.state.destinationCoordinates != null) && (
           <MapView.Marker
               coordinate={{ latitude: this.state.destinationCoordinates.latitude, longitude: this.state.destinationCoordinates.longitude }}>
-                                     <Animatable.View animation="bounceIn" duration={700} delay={2000} >
-<FontAwesome5 name="map-marker-alt" color="#FF9800" size={30} />
-             </Animatable.View></MapView.Marker>
-         
+              <Animatable.View animation="bounceIn" duration={700} delay={2000} >
+                <FontAwesome5 name="map-marker-alt" color="#FF9800" size={30} />
+             </Animatable.View>
+          </MapView.Marker>         
           )}
           
           
@@ -344,6 +351,14 @@ class Map extends React.Component {
               strokeColor="rgba(0,0,0,1)"
               optimizeWaypoints={true}
               onStart={(params) => {
+
+                showMessage({
+                  message: "Calculating route to " + this.props.tappedArea.address,
+                  description: this.props.tappedArea.distance + ", " + this.props.tappedArea.time,
+                  type: "default",
+                  backgroundColor: "black", // background color
+                  color: "white", // text color
+                });
 
               }}
               onReady={result => {
@@ -481,7 +496,7 @@ class Map extends React.Component {
 
               <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "column" }}>
-                  <Text h2 bold secondary>Via Washington, 25</Text>
+                  <Text h2 bold secondary>{this.props.tappedArea.address}</Text>
                   <Text h3>{this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
                   <Text h2 bold>Price: <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h2 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
                 </View>
@@ -513,8 +528,8 @@ class Map extends React.Component {
                  <Button style={styles.modalContent}>
                     <Icon name="directions" color="#fff" size={30} onPress={this._showParkingRoute} />
                   </Button>
-                  <Button style={styles.modalContent}>
-                    <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
+                  <Button  style={styles.modalContent}>
+                    <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
                   </Button>
                   <Button style={styles.modalContent}>
                     <Icon name="credit-card" color="#fff" size={30} onPress={this._showParkingRoute} />
