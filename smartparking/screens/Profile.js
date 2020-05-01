@@ -4,7 +4,7 @@ import Slider from "react-native-slider";
 
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 
 
@@ -63,7 +63,7 @@ class Profile extends Component {
     return (
       <Block style={this.getStyle(this.props.darkTheme)}>
         <Block flex={false} top space="between" style={styles.header}>
-          <Text h1 bold>
+          <Text bold style = {{fontSize:32}}>
             Profile
           </Text>
         </Block>
@@ -199,7 +199,7 @@ class Profile extends Component {
               <Text h3 bold>Logout</Text>
               <Button style = {{backgroundColor:"#fff", width: 30, height:30}} center>
               <Icon
-                name ="sign-out"
+                name ="exit-to-app"
                 size = {24}
               />
 
