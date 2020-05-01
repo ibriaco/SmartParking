@@ -21,7 +21,8 @@ import Payment from "../screens/Payment";
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
 import { zoomOut, zoomIn } from 'react-navigation-transitions';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+
 
 var firebaseConfig = {
   apiKey: "AIzaSyDrUppJZiKvyUvcLUau9iUsDKcZJIGLZuQ",
@@ -62,10 +63,6 @@ const screens = createStackNavigator(
     Login: {
       screen: Login,
       navigationOptions: {
-        headerStyle: {
-          shadowOpacity: 0.8,
-          elevation: 6,
-        },
         headerTitleStyle: {
           textAlign: "center",
           flex: 1,
@@ -78,10 +75,6 @@ const screens = createStackNavigator(
     Register: {
       screen: Register,
       navigationOptions: {
-        headerStyle: {
-          shadowOpacity: 0.8,
-          elevation: 6,
-        },
         headerTitleStyle: {
           textAlign: "center",
           flex: 1,
@@ -93,12 +86,6 @@ const screens = createStackNavigator(
     },
     Profile: {
       screen: Profile,
-      navigationOptions: {
-        header: <SearchBar
-          containerStyle={{ marginTop: 40, backgroundColor: theme.colors.white }}
-          style={{ marginTop: 400, paddingTop: 400 }}
-        />,
-      },
       headerStyle: {
         height: theme.sizes.base * 6,
         backgroundColor: theme.colors.white, // or 'white
@@ -155,10 +142,7 @@ const screens = createStackNavigator(
         {
           tabBarOptions: {
             showLabel: false,
-            style: {
-              opacity: 0.9,
-              height: 50,
-            }
+            elevation: 0
           }
         }
       ),
@@ -174,12 +158,12 @@ const screens = createStackNavigator(
     transitionConfig: () => zoomOut(),
     defaultNavigationOptions: {
       headerStyle: {
-        height: theme.sizes.base * 6,
+        height: theme.sizes.base * 4,
         backgroundColor: "#fff", // or 'white
         borderBottomColor: "transparent",
         elevation: 0 // for android
       },
-      headerBackImage: <Icon name="long-arrow-left" color="#a5a5a5" size={20} />,
+      headerBackImage: <Icon name="chevron-left" color="#000" size={32} />,
       headerBackTitle: null,
       headerLeftContainerStyle: {
         alignItems: "center",

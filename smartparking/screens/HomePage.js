@@ -27,6 +27,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {showMessage} from "react-native-flash-message";
+import {Ionicons} from 'react-native-vector-icons'
 
 
 
@@ -364,8 +365,7 @@ class Map extends React.Component {
         <Marker.Animated
             ref={marker => { this.marker = marker; }}
             coordinate={this.state.coordinate}>
-
-            <FontAwesome5 name="car" color="#03A696" size={35} />
+            <Icon name="circle-slice-8" size = {24} color ="#rgba(3, 166, 150,0.7)"/>
 
           </Marker.Animated>
 
@@ -373,7 +373,7 @@ class Map extends React.Component {
         </MapView>
 
         <Animatable.View animation="slideInDown" duration={800} delay={1800} style={{
-          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 80, borderRadius: 20, borderColor: "#fff", alignSelf: 'center', shadowOpacity: 0.3,
+          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, borderRadius: 20, borderColor: "#fff", alignSelf: 'center', shadowOpacity: 0.3,
           shadowOffset: { width: 0, height: 2 },
           elevation: 3,
         }}>
@@ -475,23 +475,24 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center" }}
+          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '70%',}}
             onBackdropPress={() => { this.setModalVisible(false) }}>
-            <View style={{ flex: 0.3, backgroundColor: "#fff", borderRadius: 20, justifyContent: "space-evenly", flexDirection: "row", width: '100%', marginVertical: 5 }}>
+            <View style={{ flex: 0.3, backgroundColor: "#f8f8ff", borderRadius: 15, justifyContent: "space-evenly", flexDirection: "row", width: '100%', marginVertical: 5, alignSelf:"flex-start" }}>
 
               <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "column" }}>
-                  <Text h2 bold secondary>{this.props.tappedArea.address}</Text>
+                  <Text h2 bold secondary>Via Washington, 25</Text>
                   <Text h3>{this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
+                  <Text h2 bold>Price: <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h2 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
                 </View>
-                <View style={{ flexDirection: "column", justifyContent: "space-between", }}>
+                <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
                   {/*
                 <Button style={styles.modalContent}>
                     <FontAwesome5 name="map-marked" color="#03A696" size={18} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
                   </Button>
-                
+                {this.props.tappedArea.address}
                  */}
-                  <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text h3>/10 spots</Text></FontAwesome5>
+                  <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
                   <Button style={styles.labels}>
@@ -500,21 +501,29 @@ class Map extends React.Component {
                   <Button style={styles.labels}>
                     <Text>disables</Text>
                   </Button>
-                  <Button style={styles.labels}>
-                    <Text>electric</Text>
-                  </Button>
                 </View>
 
-                <View style={{ flexDirection: "column", justifyContent: "center", alignSelf: "center" }}>
-                  <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
+                <View style={{ flexDirection: "row", justifyContent: "space-evenly",  }}>
+                {/*
+                
+                <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
                     <FontAwesome5 name="route" size={18} color="#fff"><Text h3 bold white > Show</Text></FontAwesome5>
                   </Button>
+                 */}
+                 <Button style={styles.modalContent}>
+                    <Icon name="directions" color="#fff" size={30} onPress={this._showParkingRoute} />
+                  </Button>
+                  <Button style={styles.modalContent}>
+                    <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
+                  </Button>
+                  <Button style={styles.modalContent}>
+                    <Icon name="credit-card" color="#fff" size={30} onPress={this._showParkingRoute} />
+                  </Button>
                 </View>
 
               </View>
-              <View>
-
-              </View>
+              {/*
+              
               <View style={{ justifyContent: "space-evenly", flexDirection: "column", marginHorizontal: 20, }}>
                 <Text h1 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h1 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text>
                 <Button style={styles.modalContentLowRight} >
@@ -525,16 +534,19 @@ class Map extends React.Component {
                     <Icon name="google-maps" color="#03A696" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
                   </Button>
               </View>
+              
+               */}
+              
             </View>
           </Modal>
         </Block>
 
         <Animatable.View animation="zoomIn" duration={800} delay={2100} style={{
-          position: 'absolute', bottom: 40, elevation: 3,
+          position: 'absolute', bottom: 30, elevation: 3,alignSelf:"center", 
         }}>
-          
-        <ActionButton buttonColor="#000" onPress={this._centerMap} />
-        
+        <Button style = {styles.centerUser} onPress={this._centerMap}>
+        <Icon name="crosshairs-gps" size = {28} color ="#fff"/>
+        </Button>
         </Animatable.View>
       </View>
 
@@ -551,12 +563,16 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
   },
-  bubble: {
-    flex: 1,
-    backgroundColor: "rgba(255,255,255,0.7)",
-    paddingHorizontal: 18,
-    paddingVertical: 12,
-    borderRadius: 20
+  centerUser: {
+    backgroundColor: "#000",
+    width: 50,
+    height: 50,
+    top: 20,
+    borderRadius: 25,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    alignItems: "center"
   },
   latlng: {
     width: 200,
@@ -599,15 +615,15 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   modalContent: {
-    backgroundColor: '#ffffff',
-    height: 50,
-    width: 60,
+    backgroundColor: '#000',
+    height: 40,
+    width: 50,
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 8,
     borderWidth: 1,
-    borderColor: "#03A696",
-    shadowOpacity: 0.3,
+    borderColor: "#000",
+    shadowOpacity: 0.8,
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
   },

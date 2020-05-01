@@ -53,7 +53,7 @@ export default class Register extends Component {
         <Block middle padding={[0, theme.sizes.base * 2]}>
         <Text h1 bold>
           </Text>
-          <Text h1 bold>
+          <Text style = {{fontSize: 32}} bold>
           Register
           </Text>
           <Text gray2 h3>Enter your information to sign up</Text>

@@ -102,7 +102,7 @@ class Login extends Component {
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
           </Text>
-          <Text h1 bold>
+          <Text bold style = {{fontSize: 32}}>
           Login
           </Text>
           <Text gray2 h3>Enter your credentials to sign in</Text>

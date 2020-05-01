@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { theme, mocks } from "../constants";
 import Animated from 'react-native-reanimated';
-import { Button, Block, Text, Switch } from "../components";
+import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 
 
@@ -33,7 +33,9 @@ class Parkings extends Component {
         return (
           
           <View style={{flex: 1}}>
-            <Animated.View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 25, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'rgba(255,255,255,0.8)', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}]}}>
+            <Animated.View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 25, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'rgba(255,255,255,0.9)', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}], shadowOpacity: 0.3,
+    
+    elevation: 6,}}>
               <Text h1 bold black>Parkings</Text>
             </Animated.View>                
            
@@ -59,13 +61,15 @@ class Parkings extends Component {
                                this.props.updateShowRoute(true);
                                this.props.navigation.navigate("Home");
                             }}
-                            color="#841584"
-                        />
+
+                            style = {styles.route}
+                        >
+                          <Text white center bold h3>Show Route</Text>
+                        </Button>
                      </Animatable.View>
                      ))}
 
             </Animated.ScrollView>
-            
           </View>
         );
     }
@@ -83,6 +87,15 @@ const styles = StyleSheet.create({
   card: {
     borderRadius: 20,
     borderWidth: 10
+  },
+  route: {
+    backgroundColor:"#000",
+    width: '50%',
+    alignSelf: "center",
+    borderRadius: 14,
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 6,
   }
 });
 
