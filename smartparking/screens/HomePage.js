@@ -388,7 +388,7 @@ class Map extends React.Component {
         </MapView>
 
         <Animatable.View animation="slideInDown" duration={800} delay={1800} style={{
-          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, borderRadius: 20, borderColor: "#fff", alignSelf: 'center', shadowOpacity: 0.3,
+          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 50,
           shadowOffset: { width: 0, height: 2 },
           elevation: 3,
         }}>
@@ -417,9 +417,9 @@ class Map extends React.Component {
 
             styles={{
               container: {
-                borderRadius: 15,
+                borderRadius: 50,
                 borderColor: '#fff',
-                backgroundColor: "#ffff",
+                backgroundColor: "#fff",
                 height: '100%',
               },
               poweredContainer: {
@@ -432,17 +432,16 @@ class Map extends React.Component {
               },
               loader: {
                 width: '50%',
-
               },
               textInputContainer: {
                 borderTopWidth: 0,
                 borderBottomWidth: 0,
                 borderWidth: 10,
-                borderRadius: 20,
                 borderColor: '#fff',
-                backgroundColor: "#ffff",
+                backgroundColor: "#fff",
                 height: 60,
-                alignSelf: 'center'
+                alignSelf: 'center',
+                borderRadius: 50
               },
               description: {
                 color: '#a5a5a5',
@@ -452,9 +451,9 @@ class Map extends React.Component {
               },
               textInput: {
                 marginHorizontal: 20,
+                marginTop: 0,
                 borderWidth: 0,
-                borderColor: '#fff',
-                backgroundColor: "#ffff",
+                backgroundColor: "#fff",
                 alignSelf: 'center',
                 color: '#a5a5a5',
               }
@@ -501,12 +500,6 @@ class Map extends React.Component {
                   <Text h2 bold>Price: <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h2 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
-                  {/*
-                <Button style={styles.modalContent}>
-                    <FontAwesome5 name="map-marked" color="#03A696" size={18} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
-                  </Button>
-                {this.props.tappedArea.address}
-                 */}
                   <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
@@ -519,12 +512,6 @@ class Map extends React.Component {
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: "space-evenly",  }}>
-                {/*
-                
-                <Button style={styles.modalContentLowLeft} onPress={this._showParkingRoute}>
-                    <FontAwesome5 name="route" size={18} color="#fff"><Text h3 bold white > Show</Text></FontAwesome5>
-                  </Button>
-                 */}
                  <Button style={styles.modalContent}>
                     <Icon name="directions" color="#fff" size={30} onPress={this._showParkingRoute} />
                   </Button>

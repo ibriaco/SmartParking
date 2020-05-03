@@ -7,11 +7,13 @@ import { theme, mocks } from "../constants";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase';
+import { Picker, DatePicker } from 'react-native-wheel-pick';
+
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 
 
-
 class Filter extends Component {
+
   state = {
     initialAddress:"",
     initialPrice: 0,
@@ -32,34 +34,12 @@ class Filter extends Component {
     this.setState({ profile: this.props.profile });
   }
 
-  handleEdit(name, text) {
-    const { profile } = this.state;
-    profile[name] = text;
-
-    this.setState({ profile });
-  }
-
-  toggleEdit(name) {
-    const { editing } = this.state;
-    this.setState({ editing: !editing ? name : null });
-  }
-
-  renderEdit(name) {
-    const { profile, editing } = this.state;
-
-    if (editing === name) {
-      return (
-        <TextInput
-          defaultValue={profile[name]}
-          onChangeText={text => this.handleEdit([name], text)}
-        />
-      );
-    }
-
-    return <Text bold>{profile[name]}</Text>;
-  }
-
   async handleApply() {
+
+
+    
+    console.log("eccolo")
+    /*
     const { navigation } = this.props;
 
     //fetch all areas from the db in the selected city
@@ -73,6 +53,8 @@ class Filter extends Component {
 
 
     navigation.navigate("Home");
+    */
+
   }
 
   async readAreas() {
@@ -182,19 +164,16 @@ class Filter extends Component {
               <Text h2 bold style={{ marginBottom: 10, }}>
                 Distance
               </Text>
-              <Slider
-                minimumValue={0}
-                maximumValue={6}
-                style={{ height: 19 }}
-                thumbStyle={styles.thumb}
-                trackStyle={{ height: 8, borderRadius: 6 }}
-                minimumTrackTintColor={theme.colors.gray}
-                maximumTrackTintColor="rgba(212, 212, 212, 0.10)"
-                value={this.state.distanceRange}
-                step={1}
-
-                onValueChange={value => this.setState({ distanceRange: value })}
+              
+              <Picker
+                style={{ backgroundColor: 'white', width: 300, height: 215 }}
+                selectedValue='item4'
+                pickerData={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7']}
+                onValueChange={value => { }}
+                itemSpace={30} // this only support in android
               />
+
+
               <Text h2 bold right>
                 {this.state.distanceRange} km
               </Text>
