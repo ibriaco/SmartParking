@@ -15,19 +15,14 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 class Filter extends Component {
 
   state = {
-    initialAddress:"",
-    initialPrice: 0,
-    initialDistanceRange: 0,
-    initialTimeRange: 0,
-    initialAvailability: 0,
-    initialType: 0,
-
-    address: "",
-    price: 0.00,
-    distanceRange: 2,
-    timeRange: 4,
-    availability: 0,
-    type: 0
+    maxPrice: 0.00,
+    maxDistance: 0,
+    maxTime: 0,
+    minAvailability: 0,
+    type: 0,
+    hSpot: false,
+    sSpot: false,
+    eSpot: false
   };
 
   componentDidMount() {
@@ -36,75 +31,61 @@ class Filter extends Component {
 
   async handleApply() {
 
+    await this.applyFilters();
+    this.props.navigation.navigate("Home");   
 
-    
-    console.log("eccolo")
-    /*
-    const { navigation } = this.props;
-
-    //fetch all areas from the db in the selected city
-    await this.readAreas();
-
-    //calculate distance and time for all the areas
-    await this.updateDist();
-
-    //iterate areas to apply filters
-    this.applyFilters();
-
-
-    navigation.navigate("Home");
-    */
-
-  }
-
-  async readAreas() {
-
-    firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
-      this.props.updateArea(snapshot.val());
-    })   
-
-  }
-
-  async updateDist(){
-
-    var tempAreas = this.props.areas;
-    var newAreas = [];
-    for (var area of tempAreas){
-     
-      try {
-      let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.props.userCoordinates.latitude + ',' + this.props.userCoordinates.longitude + '&destinations=' + area.latitude + ',' + area.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
-      let json = await response.json();
-
-      area = {
-        ...area,
-        distance: json.rows[0].elements[0].distance.text,
-        time: json.rows[0].elements[0].duration.text
-      };
-
-      newAreas.push(area);
-    
-    } catch (error) {
-      console.error(error);
-    
-    };
   }
   
-  this.props.updateArea(newAreas)
-    console.log(this.props.areas)
+  async applyFilters(){
 
-  }
+    var tempAreas = this.props.allAreas;
 
-  applyFilters(){
-    var tempAreas = this.props.areas;
-    var newAreas = [];
-
+/*
     for (var area of tempAreas){
-      if(area.price < this.state.price){
-        newAreas.push(area);
-
+      if(area.price > this.state.maxPrice){
+        tempAreas.remove(area);
+        continue;
       }
-    };
 
+      if(area.distance > this.state.maxDistance){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      if(area.time > this.state.maxTime){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      if(this.state.type == "free" && area.price != 0){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      if(this.state.type == "pay" && area.price == 0){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      
+      if(this.state.hSpot && area.nHandicap == 0){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      if(this.state.pSpot && area.nPregnant == 0){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      if(this.state.eSpot && area.nElectric == 0){
+        tempAreas.remove(area);
+        continue;
+      }
+
+      
+    };
+*/
     this.props.updateArea(newAreas)
 
   }
@@ -165,6 +146,7 @@ class Filter extends Component {
                 Distance
               </Text>
               
+              {/*
               <Picker
                 style={{ backgroundColor: 'white', width: 300, height: 215 }}
                 selectedValue='item4'
@@ -172,7 +154,7 @@ class Filter extends Component {
                 onValueChange={value => { }}
                 itemSpace={30} // this only support in android
               />
-
+              */}
 
               <Text h2 bold right>
                 {this.state.distanceRange} km
@@ -242,6 +224,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    allAreas: state.allAreas,
     areas: state.areas,
     tappedArea: state.tappedArea,
     currentCity: state.currentCity,

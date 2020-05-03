@@ -102,6 +102,7 @@ class Map extends React.Component {
 
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
       this.props.updateArea(snapshot.val());
+      this.props.updateAllAreas(snapshot.val());
       this.setState({ isLoading: false });
     })
 
@@ -659,6 +660,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    allAreas: state.allAreas,
     darkTheme: state.darkTheme,
     showRoute: state.showRoute,
     areas: state.areas,
@@ -670,6 +672,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateAllAreas: (param) => dispatch({ type: "UPDATE_ALL_AREAS", param: param }),
     updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
     updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),

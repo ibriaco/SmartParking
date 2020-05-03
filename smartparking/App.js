@@ -13,6 +13,10 @@ import FlashMessage from "react-native-flash-message";
 
 
 const initialState = {
+  allAreas: {
+    latitude: 0,
+    longitude: 0
+  },
   areas: {
     latitude: 0,
     longitude: 0
@@ -51,6 +55,10 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         areas: action.param};
+    case "UPDATE_ALL_AREAS": 
+      return {
+        ...state,
+        allAreas: action.param};
     case "UPDATE_TAPPED_AREA": 
       return {
         ...state,
