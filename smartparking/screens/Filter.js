@@ -100,7 +100,8 @@ class Filter extends Component {
     const { profile, editing } = this.state;
 
     return (
-      <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", top: 50 }}>
+    
+    <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", top: 50, }}>
         <View style = {{flexDirection: "row", justifyContent:"space-between"}}>
           <Text bold style={{ fontSize: 32 }}>
           Filters
@@ -110,7 +111,7 @@ class Filter extends Component {
         <Text h3 gray2>Filter parkings according to your needs</Text>
 
         <View style={styles.sliders}>
-            <Text h2 bold style={{ marginBottom: 5, }}>
+            <Text h2 bold style={{ marginBottom: 10, }}>
               Price
               </Text>
             <Slider
@@ -125,8 +126,8 @@ class Filter extends Component {
               step={0.50}
               onValueChange={value => this.setState({ price: value })}
             />
-            <Text h2 bold right secondary>
-              {this.state.price}€
+            <Text h2 bold right>
+              {this.state.price} €
               </Text>
 
             {/*
@@ -139,7 +140,7 @@ class Filter extends Component {
               />
               */}
 
-            <Text  h2 bold style={{ marginBottom: 5, }}>
+            <Text h2 bold style={{ marginBottom: 10, }}>
               Time
               </Text>
             <Slider
@@ -155,13 +156,13 @@ class Filter extends Component {
 
               onValueChange={value => this.setState({ timeRange: value })}
             />
-            <Text h2 bold right secondary>
+            <Text h2 bold right>
               {this.state.timeRange} min
               </Text>
-              <Text h2 bold style={{ marginBottom: 5, }}>
+              <Text h2 bold  style={{ marginBottom: 5, }}>
               Distance
               </Text>
-              <Text h2 bold right secondary>
+              <Text h2 bold right>
               {this.state.distanceRange} km
               </Text>
             <View >
@@ -205,11 +206,12 @@ class Filter extends Component {
         <Block bottom style={{ marginBottom: 50 }}>
           <Button style={styles.button} onPress={() => this.handleApply()}>
             <Text h1 bold white center>
-              Save
+              Apply
                 </Text>
           </Button>
         </Block>
       </Block>
+
     );
   }
 }
@@ -267,12 +269,15 @@ const styles = StyleSheet.create({
     //paddingHorizontal: theme.sizes.base * 2
   },
   thumb: {
-    width: theme.sizes.base ,
-    height: theme.sizes.base ,
-    borderRadius: theme.sizes.base ,
-    borderColor: theme.colors.secondary,
+    width: theme.sizes.base*1.2 ,
+    height: theme.sizes.base*1.2 ,
+    borderRadius: theme.sizes.base*1.2 ,
+    borderColor: "white",
     borderWidth: 3,
-    backgroundColor: "white"
+    backgroundColor:"white",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 6,
   },
   button: {
     backgroundColor: '#03A696',
@@ -282,11 +287,11 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
     elevation: 6,
-    marginBottom: 30
+    marginBottom: 30,
   },
   filterButton: {
     backgroundColor: '#fff',
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "rgba(0,0,0,0.5)",
     height: 40,
     width: 70,
@@ -298,8 +303,8 @@ const styles = StyleSheet.create({
     marginBottom: 30
   },
   filterButtonTriggered: {
-    backgroundColor: 'rgba(3, 166, 150, 0.20)',
-    borderWidth: 2,
+    backgroundColor: 'rgba(3, 166, 150, 0.10)',
+    borderWidth: 1,
     borderColor: "#03A696",
     height: 40,
     width: 70,

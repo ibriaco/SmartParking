@@ -134,7 +134,7 @@ const screens = createStackNavigator(
         Wallet: {
           screen: Payment,
           navigationOptions: {
-          tabBarIcon: ({ focused }) => <FontAwesome5 name="wallet" size={28} color={focused ? "#000" : "#CDCCCE"} />,
+          tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={28} color={focused ? "#000" : "#CDCCCE"} />,
         }
         },
 
@@ -142,7 +142,8 @@ const screens = createStackNavigator(
         {
           tabBarOptions: {
             showLabel: false,
-            elevation: 0
+            elevation: 0,
+            borderBottomColor: "#fff",
           }
         }
       ),

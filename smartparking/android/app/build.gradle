@@ -139,6 +139,7 @@ android {
 }
 
 dependencies {
+    implementation project(':@react-native-community_slider')
     implementation project(':react-native-fbsdk')
   implementation 'com.facebook.fresco:animated-gif:2.0.0'
 

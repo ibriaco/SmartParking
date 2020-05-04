@@ -34,4 +34,6 @@ target 'smartparking' do
 
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
+  pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
 end

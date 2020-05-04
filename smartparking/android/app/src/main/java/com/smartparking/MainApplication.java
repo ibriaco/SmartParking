@@ -3,6 +3,7 @@ package com.smartparking;
 import android.app.Application;
 import com.airbnb.android.react.lottie.LottiePackage;
 import com.facebook.react.ReactApplication;
+import com.reactnativecommunity.slider.ReactSliderPackage;
 import com.facebook.reactnative.androidsdk.FBSDKPackage;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
@@ -43,6 +44,7 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
 		  new LottiePackage(),
           new MainReactPackage(),
+            new ReactSliderPackage(),
             new FBSDKPackage(),
           new ReanimatedPackage(),
           new RNGestureHandlerPackage(),
