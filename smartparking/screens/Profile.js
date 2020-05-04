@@ -61,11 +61,12 @@ class Profile extends Component {
     const { profile, editing } = this.state;
 
     return (
-      <Block style={this.getStyle(this.props.darkTheme)}>
+      <Block style={[this.getStyle(this.props.darkTheme)]}>
         <Block flex={false} top space="between" style={styles.header}>
           <Text bold style = {{fontSize:32}}>
             Profile
           </Text>
+          <Text h3 gray2>Edit your profile information</Text>
         </Block>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Block style={styles.inputs}>

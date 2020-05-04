@@ -109,7 +109,7 @@ const screens = createStackNavigator(
           }
         },
         
-        List: {
+        Parkings: {
           screen: Parkings,
           navigationOptions: {
             tabBarIcon: ({ focused }) => <FontAwesome5 name="parking" size={28} color={focused ? "#000" : "#CDCCCE"} />
@@ -131,7 +131,7 @@ const screens = createStackNavigator(
             }
           },
         
-        Settings: {
+        Wallet: {
           screen: Payment,
           navigationOptions: {
           tabBarIcon: ({ focused }) => <FontAwesome5 name="wallet" size={28} color={focused ? "#000" : "#CDCCCE"} />,

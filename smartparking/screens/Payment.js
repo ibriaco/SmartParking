@@ -154,27 +154,28 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 export default class ListIconExample extends Component {
   render() {
     return (
-      <Block padding={[0, theme.sizes.base * 2]} style={{justifyContent:"space-between", top: 40}}>
+      <Block padding={[0, theme.sizes.base * 2]} style={{justifyContent:"space-between", top: 50}}>
       <Text bold style = {{fontSize: 32}}>
       Payment Methods
       </Text>
       <Text h3 gray2>Add and edit your payment methods</Text>
       <Container>
          <Content>
-          <List itemDivider={true}>
+          <List itemDivider={true} style = {{top: 10, alignContent:"space-between"}}>
             <ListItem thumbnail>
-              <Left>
+              <Left style = {{alignSelf:"center"}}>
                 <Icon name ="credit-card" size = {29} style = {{alignSelf:"flex-start"}}/>
               </Left>
+              
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
             </ListItem>
             <ListItem thumbnail>
@@ -182,14 +183,14 @@ export default class ListIconExample extends Component {
                 <Icon name ="credit-card" size = {29}/>
               </Left>
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart-outline" color="#000" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
             </ListItem>
             <ListItem thumbnail>
@@ -197,14 +198,14 @@ export default class ListIconExample extends Component {
                 <Icon name ="credit-card" size = {29}/>
               </Left>
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart-outline" color="#000" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
             </ListItem>
             <ListItem thumbnail>
@@ -212,14 +213,14 @@ export default class ListIconExample extends Component {
                 <Icon name ="credit-card" size = {29}/>
               </Left>
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart-outline" color="#000" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
             </ListItem>
             <ListItem thumbnail>
@@ -227,14 +228,14 @@ export default class ListIconExample extends Component {
                 <Icon name ="credit-card" size = {29}/>
               </Left>
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart-outline" color="#000" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
             </ListItem>
             <ListItem thumbnail>
@@ -242,14 +243,14 @@ export default class ListIconExample extends Component {
                 <Icon name ="credit-card" size = {29}/>
               </Left>
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart-outline" color="#000" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
             </ListItem>
             <ListItem thumbnail>
@@ -257,76 +258,19 @@ export default class ListIconExample extends Component {
                 <Icon name ="credit-card" size = {29}/>
               </Left>
               <Body>
-                <Text>Card Number</Text>
+                <Text bold>Card Number</Text>
                 <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
               </Body>
               <Right >
                 <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
               </Right>
               <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
+                <Icon name ="heart-outline" color="#000" size = {24} style = {{alignSelf:"flex-start",}}/>
               </Right>
             </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Icon name ="credit-card" size = {29}/>
-              </Left>
-              <Body>
-                <Text>Card Number</Text>
-                <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
-              </Body>
-              <Right >
-                <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-              <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Icon name ="credit-card" size = {29}/>
-              </Left>
-              <Body>
-                <Text>Card Number</Text>
-                <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
-              </Body>
-              <Right >
-                <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-              <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Icon name ="credit-card" size = {29}/>
-              </Left>
-              <Body>
-                <Text>Card Number</Text>
-                <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
-              </Body>
-              <Right >
-                <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-              <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-            </ListItem>
-            <ListItem thumbnail>
-              <Left>
-                <Icon name ="credit-card" size = {29}/>
-              </Left>
-              <Body>
-                <Text>Card Number</Text>
-                <Text note numberOfLines={1}>4242 4242 4242 4242</Text>
-              </Body>
-              <Right >
-                <Icon name ="pencil" color="#03A696" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-              <Right >
-                <Icon name ="heart-outline" color="#FF6347" size = {24} style = {{alignSelf:"flex-start"}}/>
-              </Right>
-            </ListItem>
+           
+            
+            
           </List>
         </Content>
       </Container>
@@ -334,7 +278,7 @@ export default class ListIconExample extends Component {
 
       <View >
       <Button style = {styles.add}>
-        <Icon name="plus" size = {24} color="#000" style = {{alignSelf:"center", fontWeight:"bold"}}/>
+        <Icon name="plus" size = {42} color="#03A696" style = {{alignSelf:"center", fontWeight:"bold", }}/>
       </Button>
       </View>
     </Block>
@@ -353,7 +297,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
     elevation: 6,
-    bottom: 50
+    bottom: 60
 
 
   }

@@ -65,9 +65,9 @@ class Parkings extends Component {
                             borderless
                             shadowColor="black"
                             style={styles.card}
-                            title={area.distance + ", " + area.time}
-                            avatar="http://i.pravatar.cc/100?id=skater"
-                            caption={area.price + " €/h"}
+                            title={"Distance: " + area.distance + ", " + area.time}
+                            avatar="https://i.imgur.com/dQGKmRZ.png"
+                            caption={"Price: " + area.price + " €/h"}
                             location={area.address} 
                             image={area.image.uri}
                             imageStyle={styles.rounded}
@@ -75,21 +75,21 @@ class Parkings extends Component {
                         >
 
 
-                          <View style={{ flexDirection: "row", justifyContent: "center", }}>
+                          <View style={{ flexDirection: "column", justifyContent: "center", alignSelf:"center"}}>
                
                             <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
                           </View>
                             
-                            <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                            <View style={{ flexDirection: "row", justifyContent: "center" }}>
 
                             <Button style={styles.labels}>
                               <Text>disables</Text>
                             </Button>
                             <Button style={styles.labels}>
-                              <Text>disables</Text>
+                              <Text>pregnant</Text>
                             </Button>
                             <Button style={styles.labels}>
-                              <Text>disables</Text>
+                              <Text>electric</Text>
                             </Button>
                           </View>
               
@@ -153,7 +153,8 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 8,
     backgroundColor: "#E5E5E5",
-    alignItems: "center"
+    alignItems: "center",
+    marginHorizontal: 10
   },
 });
 
