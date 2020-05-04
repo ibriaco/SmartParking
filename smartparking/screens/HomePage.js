@@ -388,7 +388,7 @@ class Map extends React.Component {
 
         </MapView>
 
-        <Animatable.View animation="slideInDown" duration={800} delay={1800} style={{
+        <Animatable.View animation="slideInDown" duration={800} delay={1700} style={{
           backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 50,
           shadowOffset: { width: 0, height: 2 },
           elevation: 3,
@@ -544,7 +544,7 @@ class Map extends React.Component {
           </Modal>
         </Block>
 
-        <Animatable.View animation="zoomIn" duration={800} delay={2100} style={{
+        <Animatable.View animation="bounceIn" duration={800} delay={1000} style={{
           position: 'absolute', bottom: 30, elevation: 3,alignSelf:"center", 
         }}>
         <Button style = {styles.centerUser} onPress={this._centerMap}>

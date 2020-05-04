@@ -12,7 +12,8 @@ import { Card } from 'galio-framework';
 const { width } = Dimensions.get('screen');
 
 
-const HEADER_HEIGHT = Platform.OS == 'ios' ? 115 : 70 + StatusBar.currentHeight;
+//const HEADER_HEIGHT = Platform.OS == 'ios' ? 115 : 70 + StatusBar.currentHeight;
+const HEADER_HEIGHT = Platform.OS == 'ios' ? 145 : 100 + StatusBar.currentHeight;
 
 class Parkings extends Component {
   constructor(props) {
@@ -35,10 +36,14 @@ class Parkings extends Component {
         return (
           
           <View style={{flex: 1}}>
-            <Animated.View style={{alignItems: 'center', justifyContent: 'center', paddingTop: 25, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}], shadowOpacity: 0.3,
+            <Animated.View style={{justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}], shadowOpacity: 0.3,
     
     elevation: 6,}}>
-              <Text h1 bold black>Parkings</Text>
+               <Text bold style={{ fontSize: 32 }}>
+          Parkings
+        </Text>
+        <Text h3 gray2>Choose the best parking for you</Text>
+
             </Animated.View>                
            
             <Animated.ScrollView  
@@ -54,7 +59,7 @@ class Parkings extends Component {
               ])}>
 
                 {this.props.areas.map((area, index) => (
-                     <Animatable.View animation="slideInRight" duration={600} delay={100 + index * 300} key={index} style={{height: 350, margin: 20}}>
+                     <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{height: 350, margin: 20}}>
                          <TouchableWithoutFeedback onPress={() => {
                                this.props.updateTappedArea(area);
                                this.props.updateShowRoute(true);
