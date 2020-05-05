@@ -358,8 +358,8 @@ class Filter extends Component {
               </Button>
 
               <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton}  onPress={this._handleAllTypeButton}>
-                  {this.state.allType && <Text center bold secondary>All</Text>}
-                  {!this.state.allType && <Text center bold black>All</Text>}
+                  {this.state.allType && <Text center bold secondary>ALL</Text>}
+                  {!this.state.allType && <Text center bold black>ALL</Text>}
               </Button>
 
               </Block>
