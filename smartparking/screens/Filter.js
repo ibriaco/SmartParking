@@ -18,16 +18,14 @@ const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 const DEFAULT_PRICE = 0;
 const DEFAULT_DISTANCE = 0;
 const DEFAULT_TIME = 0;
-const DEFAULT_LOW = true;
+const DEFAULT_LOW = false;
 const DEFAULT_MEDIUM = false;
 const DEFAULT_HIGH = false;
-const DEFAULT_ALL = true;
-const DEFAULT_PAY = true;
-const DEFAULT_FREE = true;
+const DEFAULT_PAY = false;
+const DEFAULT_FREE = false;
 const DEFAULT_H = false;
 const DEFAULT_P = false;
 const DEFAULT_E = false;
-
 
 
 
@@ -35,8 +33,6 @@ class Filter extends Component {
   constructor(props) {
     super(props);
 
-    this._handleAllTypeButton = this._handleAllTypeButton.bind(this);
-    this._handleFreeTypeButton = this._handleFreeTypeButton.bind(this);
     this._handlePayTypeButton = this._handlePayTypeButton.bind(this);
     this._handleLowButton = this._handleLowButton.bind(this);
     this._handleMediumButton = this._handleMediumButton.bind(this);
@@ -53,7 +49,6 @@ class Filter extends Component {
     mediumAvailability: DEFAULT_MEDIUM,
     highAvailability: DEFAULT_HIGH,
     
-    allType: DEFAULT_ALL,
     freeType: DEFAULT_FREE,
     payType: DEFAULT_PAY,
 
@@ -102,6 +97,13 @@ class Filter extends Component {
         highAvailability: false
       })
     }
+
+    //if it was selected, and now is deselected:
+    if(this.state.lowAvailability){
+      this.setState({
+        lowAvailability: false,
+      })
+    }
     
   }
 
@@ -112,6 +114,13 @@ class Filter extends Component {
         mediumAvailability: true,
         lowAvailability: false,
         highAvailability: false
+      })
+    }
+
+    //if it was selected, and now is deselected:
+    if(this.state.mediumAvailability){
+      this.setState({
+        mediumAvailability: false,
       })
     }
     
@@ -126,117 +135,48 @@ class Filter extends Component {
         lowAvailability: false
       })
     }
-    
-  }
 
-  _handleAllTypeButton(){
-
-    if(!this.state.payType)
-      this.priceView.flipInX(600);
-
-   //if it wasn't selected, and now is selected:
-    
-    if(!this.state.allType){
+    //if it was selected, and now is deselected:
+    if(this.state.highAvailability){
       this.setState({
-        payType: true,
-        freeType: true,
-        allType: true
-      });
+        highAvailability: false,
+      })
     }
-
+    
   }
+
 
   _handlePayTypeButton(){
-
     
   //if PAY wasn't selected, and now is selected:
     
   if(!this.state.payType){
-    //if FREE is selected i have to select also ALL
-    if(this.state.freeType){
-       this.priceView.flipInX(600);
-       console.log("EYA")
-
+    this.priceView.flipInX(600);
       this.setState({
-        payType: true,
-        allType: true
-    });}
-    else{
-      if(this.state.allType)
-      this.setState({
-        payType: true,
-        allType: false
+        payType: true
     });
-    }
-  };
-
+  }
   //if PAY was selected, and now is not selected:
-    
-  if(this.state.payType){
-    
+  else{
+    this.priceView.flipOutX(600);
 
-    if(this.state.freeType){
-      this.priceView.flipOutX(600);
       this.setState({
         payType: false,
-        allType: false
-    });}
-    else{
-      //this.priceView.flipInX(600);
-      this.setState({
-        payType: false,
-        allType: true
-    });}
-  };
+    });
+    } 
 
   
   }
 
-  _handleFreeTypeButton(){
-
-  //if FREE wasn't selected, and now is selected:
-    
-  if(!this.state.freeType){
-    //if PAY is selected i have to select also ALL
-    if(this.state.payType)
-      this.setState({
-        freeType: true,
-        allType: true
-    });
-    else
-    this.setState({
-      freeType: true,
-      allType: false
-    });
-  };
-
-  //if FREE was selected, and now is not selected:
-    
-  if(this.state.freeType){
-    if(this.state.payType)
-      this.setState({
-        freeType: false,
-        allType: false
-    });
-    else{
-      this.priceView.flipInX(600);
-
-      this.setState({
-        freeType: false,
-        allType: true
-    });}
-  };
-
-  }  
-
+  
   async handleApply() {
 
     //filter areas with the inserted parameters
 
-    //await this.applyFilters();
-
+    await this.applyFilters();
+/*
   
-    if(false){
+    if(true){
 
     //if there are remaining areas
 
@@ -262,13 +202,120 @@ class Filter extends Component {
           icon: "danger"
         });
     }
-    
+    */
   }
 
   async applyFilters() {
 
-    var tempAreas = this.props.allAreas;
+    var tempAreas;
 
+    let price = this.state.maxPrice;
+
+    let distance = this.state.maxDistance;
+    let time = this.state.maxTime;
+
+    //POSSIBLE COMBINATIONS, from the most generic to the most specific
+
+    // 1) PAY - FREE = tutti
+    // 2) PAY - !FREE = solo pagamento
+    // 3) !PAY - FREE = solo free
+    // 4) !PAY - !FREE = tutti = 1
+
+    if((this.state.payType && this.state.freeType) || (!this.state.payType && !this.state.freeType)){
+      console.log("PAY and FREE")
+      if(this.state.maxPrice != 0){
+        console.log("PRICE LIMIT")
+        tempAreas = this.props.allAreas.filter(function (area) {
+          return area.price < price;
+        });
+      }
+      else{
+        tempAreas = this.props.allAreas;
+      }
+    }
+
+
+    if(this.state.payType && !this.state.freeType){
+      console.log("PAY")
+     
+      if(this.state.maxPrice != 0){
+        console.log("PRICE LIMIT")
+        tempAreas = this.props.allAreas.filter(function (area) {
+          return (area.price < price) && (area.price > 0);
+        });
+      }
+      
+    }
+
+
+    if(!this.state.payType && this.state.freeType){
+      console.log("FREE")
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return area.price == 0;
+      });
+    }
+
+
+    //DISTANCE
+
+
+    if(this.state.maxDistance != 0){
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return area.distance < distance;
+      });
+    }
+
+    //TIME
+
+    if(this.state.maxTime != 0){
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return area.time < time;
+      });
+    }
+
+
+    //AVAILABILITY: organizzazione
+    //A = ( nTaken / nTot ) * 100 
+    //A da 0 a 33 = LOW
+    //A da 33 a 66 = MEDIUM
+    //A da 66 a 100 = HIGH
+
+    //nessuno selezionato = tutti i parcheggi
+    //LOW = tutti
+    //MEDIUM = A > 33
+    //HIGH = A > 66
+
+    //**********************************************************da modificare
+
+    //MEDIUM
+    if(this.state.mediumAvailability){
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return (area.nTot / area.nTot) * 100 > 33;
+      });
+    }
+
+    //HIGH
+    if(this.state.mediumAvailability){
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return (area.nTot / area.nTot) * 100 > 33;
+      });
+    }
+
+    //************************************************************ */
+    
+
+
+    if(this.state.hSpot){
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return area.nHandicap > 0;
+      });
+    }
+
+
+    console.log(tempAreas)    
+    console.log(tempAreas.length)    
+    
+    
     /*
         for (var area of tempAreas){
           if(area.price > this.state.maxPrice){
@@ -315,7 +362,6 @@ class Filter extends Component {
           
         };
     */
-    this.props.updateArea(newAreas)
 
   }
 
@@ -352,16 +398,12 @@ class Filter extends Component {
                   {!this.state.payType &&<Icon name ="cash" size = {26} style = {{alignSelf:"center"}}/>}
               </Button>
 
-              <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={this._handleFreeTypeButton}>
+              <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => this.setState({freeType: !this.state.freeType})}>
                   {this.state.freeType && <Text center bold secondary>FREE</Text>}
                   {!this.state.freeType && <Text center bold black>FREE</Text>}
               </Button>
 
-              <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton}  onPress={this._handleAllTypeButton}>
-                  {this.state.allType && <Text center bold secondary>ALL</Text>}
-                  {!this.state.allType && <Text center bold black>ALL</Text>}
-              </Button>
-
+              
               </Block>
               
 

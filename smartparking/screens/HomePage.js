@@ -238,7 +238,6 @@ class Map extends React.Component {
   }
 
   _linkToGoogleMaps(){
-    console.log("dio")
     Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude);
   }
 
@@ -490,9 +489,9 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '70%',}}
+          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%',}}
             onBackdropPress={() => { this.setModalVisible(false) }}>
-            <View style={{ flex: 0.3, backgroundColor: "#f8f8ff", borderRadius: 15, justifyContent: "space-evenly", flexDirection: "row", width: '100%', marginVertical: 5, alignSelf:"flex-start" }}>
+            <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderTopLeftRadius: 30, borderTopRightRadius: 30, justifyContent: "space-evenly", flexDirection: "row", width: '100%', marginVertical: -20, alignSelf:"flex-start" }}>
 
               <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "column" }}>
@@ -504,6 +503,9 @@ class Map extends React.Component {
                   <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                  <Button style={styles.labels}>
+                    <Text>disables</Text>
+                  </Button>
                   <Button style={styles.labels}>
                     <Text>disables</Text>
                   </Button>
