@@ -21,6 +21,7 @@ const DEFAULT_TIME = 0;
 const DEFAULT_LOW = false;
 const DEFAULT_MEDIUM = false;
 const DEFAULT_HIGH = false;
+const DEFAULT_ALL = true;
 const DEFAULT_PAY = false;
 const DEFAULT_FREE = false;
 const DEFAULT_H = false;
@@ -49,6 +50,7 @@ class Filter extends Component {
     mediumAvailability: DEFAULT_MEDIUM,
     highAvailability: DEFAULT_HIGH,
     
+    allType: DEFAULT_ALL,
     freeType: DEFAULT_FREE,
     payType: DEFAULT_PAY,
 
@@ -64,6 +66,8 @@ class Filter extends Component {
 
   _resetFields(){
     this.setState({
+
+      disabled: false,
 
       maxPrice: DEFAULT_PRICE,
       maxDistance: DEFAULT_DISTANCE,
@@ -172,42 +176,13 @@ class Filter extends Component {
   async handleApply() {
 
     //filter areas with the inserted parameters
-
     await this.applyFilters();
-/*
-  
-    if(true){
 
-    //if there are remaining areas
-
-    //success message
-        showMessage({
-          message: "Filters applied!",
-          description: "Enjoy your parking",
-          type: "success",
-          icon: "success"
-        });
-        this.props.navigation.navigate("Home");
-
-    }
-    else{
-
-    //if there are no areas with the parameters
-
-        //fail message
-        showMessage({
-          message: "Filters not applied!",
-          description: "No parkings found :(",
-          type: "danger",
-          icon: "danger"
-        });
-    }
-    */
   }
 
   async applyFilters() {
 
-    var tempAreas;
+    var tempAreas = [];
 
     let price = this.state.maxPrice;
 
@@ -216,51 +191,48 @@ class Filter extends Component {
 
     //POSSIBLE COMBINATIONS, from the most generic to the most specific
 
-    // 1) PAY - FREE = tutti
-    // 2) PAY - !FREE = solo pagamento
-    // 3) !PAY - FREE = solo free
-    // 4) !PAY - !FREE = tutti = 1
+    //TYPE
+    if(this.state.allType){
+      console.log("ALL")
+      tempAreas = this.props.allAreas;
 
-    if((this.state.payType && this.state.freeType) || (!this.state.payType && !this.state.freeType)){
-      console.log("PAY and FREE")
+      //PRICE
       if(this.state.maxPrice != 0){
         console.log("PRICE LIMIT")
-        tempAreas = this.props.allAreas.filter(function (area) {
+
+        tempAreas = tempAreas.filter(function (area) {
           return area.price < price;
         });
       }
-      else{
-        tempAreas = this.props.allAreas;
-      }
     }
-
-
-    if(this.state.payType && !this.state.freeType){
+    else if(this.state.payType){
       console.log("PAY")
-     
+      tempAreas = this.props.allAreas.filter(function (area) {
+        return area.price > 0;
+      }); 
+
+      //PRICE
       if(this.state.maxPrice != 0){
         console.log("PRICE LIMIT")
-        tempAreas = this.props.allAreas.filter(function (area) {
-          return (area.price < price) && (area.price > 0);
+
+        tempAreas = tempAreas.filter(function (area) {
+          return area.price < price;
         });
       }
-      
     }
-
-
-    if(!this.state.payType && this.state.freeType){
+    else if(this.state.freeType){
       console.log("FREE")
       tempAreas = this.props.allAreas.filter(function (area) {
         return area.price == 0;
       });
     }
-
-
+  
     //DISTANCE
 
-
     if(this.state.maxDistance != 0){
-      tempAreas = this.props.allAreas.filter(function (area) {
+      console.log("DISTANCE LIMIT")
+
+      tempAreas = tempAreas.filter(function (area) {
         return area.distance < distance;
       });
     }
@@ -268,14 +240,16 @@ class Filter extends Component {
     //TIME
 
     if(this.state.maxTime != 0){
-      tempAreas = this.props.allAreas.filter(function (area) {
+      console.log("TIME LIMIT")
+
+      tempAreas = tempAreas.filter(function (area) {
         return area.time < time;
       });
     }
 
 
     //AVAILABILITY: organizzazione
-    //A = ( nTaken / nTot ) * 100 
+    //A = 1 - ( nTaken / nTot ) * 100 
     //A da 0 a 33 = LOW
     //A da 33 a 66 = MEDIUM
     //A da 66 a 100 = HIGH
@@ -285,84 +259,86 @@ class Filter extends Component {
     //MEDIUM = A > 33
     //HIGH = A > 66
 
-    //**********************************************************da modificare
-
     //MEDIUM
     if(this.state.mediumAvailability){
-      tempAreas = this.props.allAreas.filter(function (area) {
-        return (area.nTot / area.nTot) * 100 > 33;
+
+      tempAreas = tempAreas.filter(function (area) {
+        return (1 - (area.nTaken / area.nTot)) * 100 > 33;
       });
     }
 
     //HIGH
-    if(this.state.mediumAvailability){
-      tempAreas = this.props.allAreas.filter(function (area) {
-        return (area.nTot / area.nTot) * 100 > 33;
+    if(this.state.highAvailability){
+      tempAreas = tempAreas.filter(function (area) {
+        return (1 - (area.nTaken / area.nTot)) * 100 > 66;
       });
     }
-
-    //************************************************************ */
     
-
-
+    /************************** SERVONO TUTTE LE COMBINAZIONI TRA H, P, E
+     * !H   !P   !E   = niente filtri 
+     * !H   !P   E    = solo E
+     * !H   P    !E   = solo P
+     * !H   P    E    = P & E
+     * H    !P   !E   = solo H
+     * H    !P   E    = H & E
+     * H    P    !E   = H & P
+     * H    P    E    = H & P & E
+     */
+    
+    //H
     if(this.state.hSpot){
-      tempAreas = this.props.allAreas.filter(function (area) {
-        return area.nHandicap > 0;
+      console.log("HANDICAP")
+
+      tempAreas = tempAreas.filter(function (area) {
+        return (area.nHandicap != 0);
+      });
+     
+    }
+    
+    if(this.state.pSpot){
+      console.log("PREGNANT")
+
+      tempAreas = tempAreas.filter(function (area) {
+        return (area.nPregnant != 0);
       });
     }
 
+    if(this.state.eSpot){
+      console.log("ELECTRICS")
 
-    console.log(tempAreas)    
-    console.log(tempAreas.length)    
-    
-    
-    /*
-        for (var area of tempAreas){
-          if(area.price > this.state.maxPrice){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          if(area.distance > this.state.maxDistance){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          if(area.time > this.state.maxTime){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          if(this.state.type == "free" && area.price != 0){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          if(this.state.type == "pay" && area.price == 0){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          
-          if(this.state.hSpot && area.nHandicap == 0){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          if(this.state.pSpot && area.nPregnant == 0){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          if(this.state.eSpot && area.nElectric == 0){
-            tempAreas.remove(area);
-            continue;
-          }
-    
-          
-        };
-    */
+      tempAreas = tempAreas.filter(function (area) {
+        return (area.nElectric != 0);
+      });
+    }
 
+console.log(tempAreas.length)
+
+
+    //FINAL CONTROL: TO APPLY OR NOT TO APPLY
+    if(tempAreas.length == 0) {
+
+      showMessage({
+        message: "Filters not applied!",
+        description: "No parkings found :(",
+        type: "danger",
+        icon: "danger"
+      });
+
+    }
+    else{
+
+      this.props.updateArea(tempAreas)
+      showMessage({
+        message: "Filters applied!",
+        description: "We found " + tempAreas.length + " perfect parkings :)",
+        type: "success",
+        icon: "success"
+      });
+
+      this.props.navigation.navigate("Home");
+
+    }
+    
   }
 
   handleClose() {
@@ -393,14 +369,41 @@ class Filter extends Component {
               </Text>
               <Block row center style={{ justifyContent: "space-around" }}>
 
-              <Button style={this.state.payType ? styles.filterButtonTriggered : styles.filterButton}  onPress={this._handlePayTypeButton}>
+              <Button style={this.state.payType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
+                this.setState({
+                  payType: true,
+                  allType: false,
+                  freeType: false,
+                  disabled: false
+                })
+              }}>
                   {this.state.payType &&<Icon name ="cash" size = {26} color="#03A696" style = {{alignSelf:"center"}}/>}
                   {!this.state.payType &&<Icon name ="cash" size = {26} style = {{alignSelf:"center"}}/>}
               </Button>
 
-              <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => this.setState({freeType: !this.state.freeType})}>
+              <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
+                this.setState({
+                  freeType: true,
+                  payType: false,
+                  allType: false,
+                  maxPrice: DEFAULT_PRICE,
+                  disabled: true
+                })
+              }}>
                   {this.state.freeType && <Text center bold secondary>FREE</Text>}
                   {!this.state.freeType && <Text center bold black>FREE</Text>}
+              </Button>
+
+              <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
+                this.setState({
+                  allType: true,
+                  payType: false,
+                  freeType: false,     
+                  disabled: false
+                })
+              }}>
+                  {this.state.allType && <Text center bold secondary>All</Text>}
+                  {!this.state.allType && <Text center bold black>All</Text>}
               </Button>
 
               
@@ -412,6 +415,7 @@ class Filter extends Component {
             Maximum Price
               </Text>
             <Slider
+              disabled={this.state.disabled}
               minimumValue={0.00}
               maximumValue={5.00}
               style={{ height: 10 }}
