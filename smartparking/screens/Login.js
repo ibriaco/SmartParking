@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    borderRadius: 50,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: "#fff",
     backgroundColor: "#fff",
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: '#03A696',
     height: 60,
-    borderRadius: 50,
+    borderRadius: 20,
     marginHorizontal: 25,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   registerButton: {
     backgroundColor: '#ffffff',
     height: 60,
-    borderRadius: 50,
+    borderRadius: 20,
     marginHorizontal: 25,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},

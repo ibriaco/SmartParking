@@ -389,7 +389,7 @@ class Map extends React.Component {
         </MapView>
 
         <Animatable.View animation="slideInDown" duration={800} delay={1700} style={{
-          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 50,
+          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 20,
           shadowOffset: { width: 0, height: 2 },
           elevation: 3,
         }}>

@@ -328,7 +328,8 @@ class Filter extends Component {
     const { profile, editing } = this.state;
 
     return (
-    <Animatable.View style={{flex: 1}} ref={v => this.bigView = v}> 
+      <ScrollView style={{flex: 1}}>
+    <Animatable.View  ref={v => this.bigView = v}> 
     <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", top: 50, }}>
       
         <View style = {{flexDirection: "row", justifyContent:"space-between"}}>
@@ -341,7 +342,7 @@ class Filter extends Component {
 
         <View style={styles.sliders}>
         <Animatable.View animation="slideInUp" duration={600} delay={100}>
-              <Text center h2 bold style={{ marginBottom: 40, }}>
+              <Text center h2 bold>
                 Type
               </Text>
               <Block row center style={{ justifyContent: "space-around" }}>
@@ -365,7 +366,7 @@ class Filter extends Component {
               
 
             <Animatable.View ref={p => this.priceView = p}>
-            <Text h2 bold style={{ marginBottom: 10, marginTop: 30}}>
+            <Text h2 bold style={{ marginBottom: 10,}}>
             Maximum Price
               </Text>
             <Slider
@@ -449,7 +450,7 @@ class Filter extends Component {
               </Animatable.View>
 
             <Animatable.View animation="slideInUp" duration={600} delay={400}>
-              <Text center h2 bold style={{ marginBottom: 40, }}>
+              <Text center h2 bold >
                 Minimum Availability
               </Text>
               <Block row center style={{ justifyContent: "space-around" }}>
@@ -470,8 +471,8 @@ class Filter extends Component {
             </Animatable.View>
 
 
-            <Animatable.View animation="slideInUp" duration={600} delay={500} style={{ marginTop: 30, }}>
-              <Text center h2 bold style={{ marginBottom: 40, }}>
+            <Animatable.View animation="slideInUp" duration={600} delay={500}>
+              <Text center h2 bold >
                 Spot for
               </Text>
               <Block row center style={{ justifyContent: "space-around" }}>
@@ -502,7 +503,7 @@ class Filter extends Component {
 
 
 
-        <Block bottom style={{ marginBottom: 50 }}>
+        <Block bottom style={{ marginBottom: 30 }}>
         <Animatable.View animation="bounceIn" duration={600} delay={1200}>
 
           <Button style={styles.button} onPress={() => this.handleApply()}>
@@ -523,6 +524,7 @@ class Filter extends Component {
       </View>
       </Block>
 </Animatable.View>
+</ScrollView>
     );
   }
 }
@@ -593,7 +595,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#03A696',
     height: 60,
-    borderRadius: 50,
+    borderRadius: 20,
     marginHorizontal: 45,
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
