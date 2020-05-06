@@ -11,6 +11,8 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import FlashMessage from "react-native-flash-message";
 
+import * as Font from 'expo-font';
+
 
 const initialState = {
   allAreas: {
@@ -77,8 +79,20 @@ const images = [
 
 export default class App extends React.Component {
   state = {
-    isLoadingComplete: false
+    isLoadingComplete: false,
+    isFontLoadingComplete: false
   };
+
+  loadFonts = async () => {
+
+    return Font.loadAsync({
+  
+    // Load a font `Montserrat` from a static resource
+    Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
+    Helvetica: require('./assets/fonts/Helvetica-Bold-Font.ttf'),
+  });
+}
+  
 
   handleResourcesAsync = async () => {
     // we're caching all the images
@@ -92,12 +106,13 @@ export default class App extends React.Component {
   };
 
   render() {
-    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+    if (!this.state.isFontLoadingComplete && !this.props.skipLoadingScreen) {
       return (
         <AppLoading
-          startAsync={this.handleResourcesAsync}
+         
+          startAsync={this.loadFonts}
           onError={error => console.warn(error)}
-          onFinish={() => this.setState({ isLoadingComplete: true })}
+          onFinish={() => this.setState({ isFontLoadingComplete: true })}
         />
       );
     }
@@ -106,7 +121,7 @@ export default class App extends React.Component {
       <Provider store = { store }>
       <Block white>
         <Navigation />
-        <FlashMessage position="top" /> 
+        <FlashMessage position="top" titleStyle={{fontFamily: 'Helvetica'}} textStyle={{fontFamily: 'Montserrat'}}/> 
       </Block>
       </Provider>
     );

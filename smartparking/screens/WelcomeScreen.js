@@ -165,6 +165,8 @@ import { StyleSheet, View, Text, Image } from 'react-native';
 import AppIntroSlider from 'react-native-app-intro-slider';
 import { ENTRIES1 } from './entries';
 import { images } from './images';
+import Icon from 'react-native-vector-icons/Ionicons';
+
 
 export default class App extends Component {
   static navigationOptions = {
@@ -179,6 +181,30 @@ export default class App extends Component {
 
     };
   }
+
+  _renderNextButton = () => {
+    return (
+      <View style={styles.buttonCircle}>
+        <Icon
+          name="md-arrow-round-forward"
+          color="rgba(255, 255, 255, .9)"
+          size={24}
+        />
+      </View>
+    );
+  };
+
+  _renderDoneButton = () => {
+    return (
+      <View style={styles.buttonCircle}>
+        <Icon
+          name="md-checkmark"
+          color="rgba(255, 255, 255, .9)"
+          size={24}
+        />
+      </View>
+    );
+  };
 
   _renderItem = ({ item, dimensions }) => (   
     <View style={styles.mainapp}>
@@ -217,9 +243,9 @@ export default class App extends Component {
           slides={slides}
           renderItem={this._renderItem}
           onDone={this.onDone}
-          showSkipButton={true}
           onSkip={this.onSkip}
-          
+          renderDoneButton={this._renderDoneButton}
+          renderNextButton={this._renderNextButton}
         />
       );
     }
@@ -237,9 +263,10 @@ const styles = StyleSheet.create({
     //flexDirection: 'row'
   },
   title: {
+    fontFamily: 'Helvetica',
     fontSize: 32,
     color: '#fff',
-    fontWeight: 'bold',
+    //fontWeight: 'bold',
     textAlign: 'center',
     marginTop: 0,
     opacity: 1,
@@ -247,6 +274,7 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   text: {
+    fontFamily: 'Montserrat',
     color: '#fff',
     fontSize: 20,
     opacity: 0.8,
@@ -259,7 +287,15 @@ const styles = StyleSheet.create({
     height: 240,
     resizeMode: 'contain',
     marginBottom: 80
-  }
+  },
+  buttonCircle: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(0, 0, 0, .2)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
 const slides = [

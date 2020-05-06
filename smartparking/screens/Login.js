@@ -102,10 +102,10 @@ class Login extends Component {
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
           </Text>
-          <Text bold style = {{fontSize: 32}}>
+          <Text style = {{fontFamily: 'Helvetica', fontSize: 32}}>
           Login
           </Text>
-          <Text gray2 h3>Enter your credentials to sign in</Text>
+          <Text gray2 h3 style={{fontFamily: 'Montserrat'}}>Enter your credentials to sign in</Text>
           <Block top>
             <View style={styles.errorMessage}>
               {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -142,7 +142,7 @@ class Login extends Component {
                 gray2
                 h4
                 right
-                style={{ textDecorationLine: "underline" }}>
+                style={{ textDecorationLine: "underline", fontFamily: 'Montserrat',}}>
                 Forgot your password?
             </Text>
             </Button>
@@ -175,7 +175,7 @@ class Login extends Component {
               <Animatable.View animation="slideInRight" duration={700} delay={400}>
 
             <Button style={styles.loginButton} onPress={()=>this.handleLogin()}>
-              <Text h2 bold white center>
+              <Text h2 white center style={{fontFamily: 'Montserrat'}}>
                 Login
                 </Text>
             </Button>
@@ -184,7 +184,7 @@ class Login extends Component {
             <Animatable.View animation="slideInLeft" duration={700} delay={500}>
 
             <Button style={styles.registerButton} onPress={() => navigation.navigate("Register")}>
-              <Text h2 bold black center>
+              <Text h2 black center style={{fontFamily: 'Montserrat'}}>
                 Register
                 </Text>
             </Button>

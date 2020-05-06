@@ -70,9 +70,9 @@ class Parkings extends Component {
                             borderless
                             shadowColor="black"
                             style={styles.card}
-                            title={"Distance: " + area.distance + ", " + area.time}
+                            title={area.distance + ", " + area.time}
                             avatar="https://i.imgur.com/dQGKmRZ.png"
-                            caption={"Price: " + area.price + " €/h"}
+                            caption={area.price != 0 ? area.price + " €/h" : "FREE"}
                             location={area.address} 
                             image={area.image.uri}
                             imageStyle={styles.rounded}
@@ -87,15 +87,24 @@ class Parkings extends Component {
                             
                             <View style={{ flexDirection: "row", justifyContent: "center" }}>
 
-                            <Button style={styles.labels}>
-                              <Text>disables</Text>
-                            </Button>
-                            <Button style={styles.labels}>
-                              <Text>pregnant</Text>
-                            </Button>
-                            <Button style={styles.labels}>
-                              <Text>electric</Text>
-                            </Button>
+                            {this.props.tappedArea.nHandicap > 0 &&
+                              <Button style={styles.labels}>
+                                <Text>disables</Text>
+                              </Button>
+                            }
+
+                            {this.props.tappedArea.nPregnant > 0 &&
+                              <Button style={styles.labels}>
+                                <Text>pregnant</Text>
+                              </Button>
+                            }
+                            
+                            {this.props.tappedArea.nElectric > 0 &&
+                              <Button style={styles.labels}>
+                                <Text>electric</Text>
+                              </Button>
+                            }
+                            
                           </View>
               
                         </Card>

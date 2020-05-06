@@ -19,6 +19,8 @@ import Filter from "../screens/Filter";
 import Test from "../screens/Test";
 import Payment from "../screens/Payment";
 import CardPage from "../screens/CardPage";
+import Reports from "../screens/Reports";
+
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
 import { zoomOut, zoomIn } from 'react-navigation-transitions';
@@ -108,6 +110,12 @@ const screens = createStackNavigator(
     },
     Payment: {
       screen: Payment,
+      navigationOptions: {
+        header: null
+      }
+    },
+    Reports: {
+      screen: Reports,
       navigationOptions: {
         header: null
       }

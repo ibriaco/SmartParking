@@ -38,6 +38,11 @@ const LONGITUDE_DELTA = 0.0009;
 const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
+const LOCATION_SETTINGS = {
+  accuracy: Location.Accuracy.Highest,
+  timeInterval: 200,
+  distanceInterval: 0,
+};
 
 var lightMapStyle = require('./mapStyle.json');
 var darkMapStyle = require('./mapStyle2.json');
@@ -69,6 +74,7 @@ class Map extends React.Component {
 
 
     this.state = {
+      isDistanceAndTimeComplete: false,
       searchQuery: '',
       tappedAreaTime: "",
       tappedAreaDistance: "",
@@ -138,45 +144,37 @@ class Map extends React.Component {
 
     //ask for gps permission and watch for position changes
     let { status } = await Location.requestPermissionsAsync();
+    
     if (status === 'granted') {
-      this.watchID = navigator.geolocation.watchPosition(
-        position => {
-          const { latitude, longitude } = position.coords;
+      Location.watchPositionAsync(LOCATION_SETTINGS, async(position) => {
 
-          const newCoordinate = {
-            latitude,
-            longitude
-          };
+            const newCoordinate = {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            };
 
-          //when position changes, animate the marker
-          coordinate.timing(newCoordinate).start();
+            //when position changes, animate the marker
+            coordinate.timing(newCoordinate).start();
 
-          //and update the route at index 0
+            //and update the route at index 0
 
-          this.setState({ currentCoordinates: newCoordinate });
-          this.props.updateCoordinates(newCoordinate);
+            this.setState({ currentCoordinates: newCoordinate });
+            this.props.updateCoordinates(newCoordinate);
 
 
-          if (initialPosition) {
-            initialPosition = !initialPosition
-            this.updateCamera();
-            this.readAndDrawAreas();
-          }
-          //this.updateDist()
-
-        },
-        error => alert('Please give us the permission!'),
-        {
-          //this should update position every 1m, mmmmmm
-          enableHighAccuracy: true,
-          timeout: 2000,
-          maximumAge: 0,
-          distanceFilter: 1
-        }
-      );
+            if (initialPosition) {
+              initialPosition = !initialPosition
+              this.updateCamera();
+              await this.readAndDrawAreas();
+            }
+            await this.updateDist()
+            
+            this.setState({ isDistanceAndTimeComplete: true })
 
 
-    }
+
+      });
+    } else alert("Please give us the permission!")
   }
 
   componentWillUnmount() {
@@ -207,15 +205,29 @@ class Map extends React.Component {
   */
   async onAreaTapped(area) {
 
-    if (this.props.showRoute)
-      this.props.updateShowRoute(false);
+    if(this.state.isDistanceAndTimeComplete){
+    
+      if (this.props.showRoute)
+        this.props.updateShowRoute(false);
 
-    await this.props.updateTappedArea(area);
+      await this.props.updateTappedArea(area);
 
-    setTimeout(() => { this.setState({ isModalVisible: true }) }, 200)
+      setTimeout(() => { this.setState({ isModalVisible: true }) }, 200)
+    }
   }
 
   _showParkingRoute() {
+
+    this.setState({shouldFitMap: true})
+
+    showMessage({
+      message: "Calculating route to " + this.props.tappedArea.address,
+      description: this.props.tappedArea.distance + ", " + this.props.tappedArea.time,
+      type: "default",
+      backgroundColor: "black", // background color
+      color: "white", // text color
+    });
+    
 
     this.setState({ isModalVisible: false })
     this.props.updateShowRoute(true);
@@ -268,6 +280,7 @@ class Map extends React.Component {
 
   async updateDist() {
 
+    /*first version (for..of)
     var tempAreas = this.props.areas;
     var newAreas = [];
 
@@ -284,6 +297,33 @@ class Map extends React.Component {
         };
 
         newAreas.push(area);
+
+      } catch (error) {
+        console.error(error);
+
+      };
+    }
+    this.props.updateArea(newAreas)
+    */
+
+
+    //second version (standard for)
+    var tempAreas = this.props.areas;
+    var newAreas = [];
+
+    for (var i = 0; i < tempAreas.length; i++) {
+
+      try {
+        let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + tempAreas[i].latitude + ',' + tempAreas[i].longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+        let json = await response.json();
+
+        tempAreas[i] = {
+          ...tempAreas[i],
+          distance: json.rows[0].elements[0].distance.text,
+          time: json.rows[0].elements[0].duration.text
+        };
+
+        newAreas.push(tempAreas[i]);
 
       } catch (error) {
         console.error(error);
@@ -350,24 +390,16 @@ class Map extends React.Component {
               strokeWidth={3}
               strokeColor="rgba(0,0,0,1)"
               optimizeWaypoints={true}
-              onStart={(params) => {
-
-                showMessage({
-                  message: "Calculating route to " + this.props.tappedArea.address,
-                  description: this.props.tappedArea.distance + ", " + this.props.tappedArea.time,
-                  type: "default",
-                  backgroundColor: "black", // background color
-                  color: "white", // text color
-                });
-
-              }}
+              
               onReady={result => {
 
-                this.mapView.fitToCoordinates(result.coordinates), {
-                  edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
-                  animated: true,
-                };
-
+                if(this.state.shouldFitMap){
+                  this.mapView.fitToCoordinates(result.coordinates), {
+                    edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
+                    animated: true,
+                  };
+                  this.setState({shouldFitMap: false})
+                }
 
               }}
               onError={(errorMessage) => {
@@ -503,15 +535,25 @@ class Map extends React.Component {
                   <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
                 </View>
                 <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                  
+                {this.props.tappedArea.nHandicap > 0 &&
                   <Button style={styles.labels}>
                     <Text>disables</Text>
                   </Button>
+                }
+
+                {this.props.tappedArea.nPregnant > 0 &&
                   <Button style={styles.labels}>
-                    <Text>disables</Text>
+                    <Text>pregnant</Text>
                   </Button>
+                }
+                
+                {this.props.tappedArea.nElectric > 0 &&
                   <Button style={styles.labels}>
-                    <Text>disables</Text>
+                    <Text>electric</Text>
                   </Button>
+                }
+                
                 </View>
 
                 <View style={{ flexDirection: "row", justifyContent: "space-evenly",  }}>
@@ -522,8 +564,23 @@ class Map extends React.Component {
                     <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
                   </Button>
                   <Button style={styles.modalContent}>
-                    <Icon name="credit-card" color="#fff" size={30} onPress={this._showParkingRoute} />
+                    <Icon name="exclamation" color="#fff" size={30} onPress={() => this.props.navigation.navigate("Reports")} />
                   </Button>
+
+
+
+                  {this.props.tappedArea.price != 0 && <Button style={styles.modalContent}>
+                    {//<Icon name="credit-card" color="#fff" size={30} onPress={() => this.props.navigation.navigate("Reports")} />
+                    }
+                    <Text white>PAY</Text>
+
+                  </Button>}
+
+                  {this.props.tappedArea.price == 0 && <Button style={styles.modalContent}>
+                    <Text white>RESERVE</Text>
+                  </Button>}
+                
+                
                 </View>
 
               </View>
