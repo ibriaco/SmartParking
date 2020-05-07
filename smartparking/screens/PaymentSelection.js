@@ -28,7 +28,7 @@ export default class Register extends Component {
         userCredentials.user.updateProfile({
         displayName: this.state.name        
       })
-      this.props.navigation.navigate("VehicleSelection");
+      this.props.navigation.navigate("Home");
     })
     .catch(error => this.setState({errorMessage: error.message}));
 
@@ -54,9 +54,9 @@ export default class Register extends Component {
         <Text h1 bold>
           </Text>
           <Text style = {{fontSize: 32}} bold>
-          Register
+          Payment Method
           </Text>
-          <Text gray2 h3>Enter your information to sign up</Text>
+          <Text gray2 h3>Enter your payment method</Text>
           <Block middle>
           <View style = {styles.errorMessage}>
             {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -64,7 +64,7 @@ export default class Register extends Component {
           <Block middle>
             </Block>
             <Input
-              placeholder="Full Name"
+              placeholder="Vehicle Type"
               style={[styles.input]}
               onChangeText={name => this.setState({ name })}
               value = {this.state.name}
@@ -76,7 +76,7 @@ export default class Register extends Component {
               style={styles.input}
             />
             <Input
-              placeholder ="Email Address"
+              placeholder ="Vehicle Plate"
               right
               icon="envelope"
               family="font-awesome"
@@ -87,11 +87,9 @@ export default class Register extends Component {
               value={this.state.email}
             />
             <Input
-              password
-              viewPass
               iconColor ="#a5a5a5"
               iconSize = {20}
-              placeholder="Password"
+              placeholder="Driving License"
               style={[styles.input]}
               onChangeText={password => this.setState({ password })}
               value={this.state.password}
@@ -104,19 +102,19 @@ export default class Register extends Component {
             </Block>
             <Block top></Block>
             <Block top ></Block>
-            <Button style = {styles.button} onPress={() => navigation.navigate("VehicleSelection")}>
+            <Button style = {styles.button} onPress={() => navigation.navigate("Login")}>
                 <Text h2 bold white center>
                   Continue
                 </Text>
             </Button>
-            <Button onPress={() => navigation.navigate("VehicleSelection")}>
+            <Button onPress={() => navigation.navigate("Login")}>
               <Text
                 gray2
-                caption
+                h3
                 center
-                style={{ textDecorationLine: "underline" }}
+                bold
               >
-                Terms of service
+                SKIP
               </Text>
             </Button>
           </Block>

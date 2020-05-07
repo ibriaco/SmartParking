@@ -21,6 +21,8 @@ import Payment from "../screens/Payment";
 import CardPage from "../screens/CardPage";
 import Reports from "../screens/Reports";
 import Details from "../screens/Details";
+import VehicleSelection from "../screens/VehicleSelection"
+import PaymentSelection from "../screens/PaymentSelection"
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
@@ -126,6 +128,30 @@ const screens = createStackNavigator(
       navigationOptions: {
         header: null
       }
+    },
+    VehicleSelection: {
+      screen: VehicleSelection,
+      navigationOptions: {
+        headerTitleStyle: {
+          textAlign: "center",
+          flex: 1,
+          fontSize: 26,
+          fontWeight: 'bold',
+        },
+        headerRight: (<View />)
+      },
+    },
+    PaymentSelection: {
+      screen: PaymentSelection,
+      navigationOptions: {
+        headerTitleStyle: {
+          textAlign: "center",
+          flex: 1,
+          fontSize: 26,
+          fontWeight: 'bold',
+        },
+        headerRight: (<View />)
+      },
     },
     Home: {
       screen: createBottomTabNavigator({
