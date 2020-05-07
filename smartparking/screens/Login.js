@@ -19,6 +19,7 @@ import { SocialIcon } from 'react-native-elements'
 
 import { Input, Icon } from "galio-framework"
 import * as Animatable from 'react-native-animatable';
+import { connect } from 'react-redux';
 
 
  
@@ -37,7 +38,9 @@ class Login extends Component {
     firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
-      .then(() => this.props.navigation.navigate("Home"))
+      .then(() => {
+        console.log(firebase.auth().currentUser)
+        this.props.navigation.navigate("Home")})
       .catch(error => this.setState({ errorMessage: error.message }));
       //this.props.navigation.navigate("Home")
 
@@ -60,7 +63,9 @@ class Login extends Component {
         firebase
           .auth()
           .signInWithCredential(credential)
-          .then(() => this.props.navigation.navigate("Home"))
+          .then(() => {
+            console.log(firebase.auth().currentUser)
+            this.props.navigation.navigate("Home")})
           .catch(error => {
             console.log("firebase cred err:", error);
           });
@@ -85,7 +90,9 @@ class Login extends Component {
       await firebase
         .auth()
         .signInWithCredential(credential) //signInWithReadCredential is deprecated!
-        .then(() => this.props.navigation.navigate("Home"))
+        .then(() => {
+          console.log(firebase.auth().currentUser)
+          this.props.navigation.navigate("Home")})
         .catch(error => this.setState({ errorMessage: error.message }));; 
     }
   };
@@ -283,4 +290,19 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Login;
+
+function mapStateToProps(state) {
+  return {
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    userData: state.userData
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Login);

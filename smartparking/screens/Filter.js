@@ -327,7 +327,10 @@ console.log(tempAreas.length)
     }
     else{
 
-      this.props.updateArea(tempAreas)
+      this.props.updateShowRoute(false);
+
+      this.props.updateArea(tempAreas);
+      
       showMessage({
         message: "Filters applied!",
         description: "We found " + tempAreas.length + " perfect parkings :)",
@@ -584,6 +587,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    showRoute: state.showRoute,
     allAreas: state.allAreas,
     areas: state.areas,
     tappedArea: state.tappedArea,
@@ -594,6 +598,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
     updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),
     updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),

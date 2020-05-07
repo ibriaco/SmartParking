@@ -29,8 +29,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import {showMessage} from "react-native-flash-message";
 import {Ionicons} from 'react-native-vector-icons'
 
-
-
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
 const LATITUDE_DELTA = 0.0009;
@@ -39,9 +37,7 @@ const LATITUDE = 46.166625;
 const LONGITUDE = 9.87888;
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 const LOCATION_SETTINGS = {
-  accuracy: Location.Accuracy.Highest,
-  timeInterval: 200,
-  distanceInterval: 0,
+  accuracy: Location.Accuracy.High,
 };
 
 var lightMapStyle = require('./mapStyle.json');
@@ -79,7 +75,6 @@ class Map extends React.Component {
       tappedAreaTime: "",
       tappedAreaDistance: "",
       parkCards: [],
-      isModalVisible: false,
       isLoading: true,
       darkMode: false,
       email: "",
@@ -107,11 +102,37 @@ class Map extends React.Component {
   async readAndDrawAreas() {
 
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
+      
+      //this means that we don't have parkings in the current city
+      if(snapshot.numChildren() == 0){
+
+        //notify the user of that
+        showMessage({
+          message: "Ooops!",
+          description: "No parkings found here :(",
+          type: "danger",
+        });
+
+        //just block the render of the markers so no marker is shown
+        this.setState({ isLoading: true });
+      }
+      else{    
+        //notify the user of that
+        showMessage({
+          message: "Yesss!",
+          description: "We found " + snapshot.numChildren() + " parkings here :)",
+          type: "success",
+        });
+
       this.props.updateArea(snapshot.val());
       this.props.updateAllAreas(snapshot.val());
       this.setState({ isLoading: false });
+      
+      this.updateDist()
+      }
     })
 
+    
   }
 
 
@@ -121,6 +142,8 @@ class Map extends React.Component {
 
 
   async componentDidMount() {
+
+    this.props.updateMapRef(this.mapView)
 
     //authentication
     const { email, displayName, uid } = firebase.auth().currentUser
@@ -163,13 +186,17 @@ class Map extends React.Component {
 
 
             if (initialPosition) {
+              let geocode = await Location.reverseGeocodeAsync(newCoordinate);
+              this.props.updateCity(geocode[0].city)
+              console.log("Prima lettura coordinate: " + this.props.currentCity)
+
               initialPosition = !initialPosition
               this.updateCamera();
               await this.readAndDrawAreas();
             }
-            await this.updateDist()
+
+           
             
-            this.setState({ isDistanceAndTimeComplete: true })
 
 
 
@@ -205,15 +232,16 @@ class Map extends React.Component {
   */
   async onAreaTapped(area) {
 
-    if(this.state.isDistanceAndTimeComplete){
+    console.log(area.distance)
+
     
       if (this.props.showRoute)
         this.props.updateShowRoute(false);
 
       await this.props.updateTappedArea(area);
 
-      setTimeout(() => { this.setState({ isModalVisible: true }) }, 200)
-    }
+      setTimeout(() => { this.props.updateModalVisible(true) }, 200)
+    
   }
 
   _showParkingRoute() {
@@ -229,7 +257,7 @@ class Map extends React.Component {
     });
     
 
-    this.setState({ isModalVisible: false })
+    this.props.updateModalVisible(false);
     this.props.updateShowRoute(true);
     
 
@@ -237,7 +265,7 @@ class Map extends React.Component {
 
   _handlePayment() {
 
-    this.setState({ isModalVisible: false })
+    this.props.updateModalVisible(false);
     this.props.navigation.navigate("Payment");
   }
 
@@ -254,18 +282,28 @@ class Map extends React.Component {
   }
 
 
-  handleSelection(details){
+  async handleSelection(details){
     
-    //qui serve il calcolo della città reale, ma le api sono fatte con il culo
-    this.props.updateCity("Milan");
 
-    this.readAndDrawAreas();
-
+    let geocode = await Location.reverseGeocodeAsync({
+      latitude: details.geometry.location.lat,
+      longitude: details.geometry.location.lng
+    });
+    
+    
     this.setState({destinationCoordinates: {
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng
     }});
 
+
+
+    //qui serve il calcolo della città reale, ma le api sono fatte con il culo
+    this.props.updateCity(geocode[0].city);
+
+    this.readAndDrawAreas();
+
+    
     if (this.mapView !== null)
       this.mapView.animateCamera({ center: this.state.destinationCoordinates, zoom: 14 }, { duration: 1000 });
     
@@ -310,6 +348,7 @@ class Map extends React.Component {
     //second version (standard for)
     var tempAreas = this.props.areas;
     var newAreas = [];
+    console.log("LUNGHEZZA: "+ tempAreas.length )
 
     for (var i = 0; i < tempAreas.length; i++) {
 
@@ -323,15 +362,22 @@ class Map extends React.Component {
           time: json.rows[0].elements[0].duration.text
         };
 
+        
         newAreas.push(tempAreas[i]);
 
+        console.log(tempAreas[i])
       } catch (error) {
         console.error(error);
 
       };
     }
+
+    console.log("New: " + newAreas)
     this.props.updateArea(newAreas)
 
+    console.log("Props: " + this.props.areas[0].distance)
+
+    console.log("finito update")
   }
 
 
@@ -420,9 +466,9 @@ class Map extends React.Component {
         </MapView>
 
         <Animatable.View animation="slideInDown" duration={800} delay={1700} style={{
-          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 20,
+          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 0,
           shadowOffset: { width: 0, height: 2 },
-          elevation: 3,
+          elevation: 3, 
         }}>
           <GooglePlacesAutocomplete
 
@@ -443,13 +489,12 @@ class Map extends React.Component {
 
             query={{
               // available options: https://developers.google.com/places/web-service/autocomplete
-              key: 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8',
+              key: GOOGLE_MAPS_APIKEY,
               language: 'en', // language of the results
             }}
 
             styles={{
               container: {
-                borderRadius: 50,
                 borderColor: '#fff',
                 backgroundColor: "#fff",
                 height: '100%',
@@ -466,6 +511,7 @@ class Map extends React.Component {
                 width: '50%',
               },
               textInputContainer: {
+                
                 borderTopWidth: 0,
                 borderBottomWidth: 0,
                 borderWidth: 10,
@@ -473,15 +519,17 @@ class Map extends React.Component {
                 backgroundColor: "#fff",
                 height: 60,
                 alignSelf: 'center',
-                borderRadius: 50
               },
               description: {
+                fontFamily: 'Montserrat',
+
                 color: '#a5a5a5',
               },
               predefinedPlacesDescription: {
                 color: '#DCDCDC',
               },
               textInput: {
+                fontFamily: 'Montserrat',
                 marginHorizontal: 20,
                 marginTop: 0,
                 borderWidth: 0,
@@ -510,7 +558,6 @@ class Map extends React.Component {
             filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
 
 
-            debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
             renderLeftButton={() => <FontAwesome5 name="map-marker-alt" size={20} color="#D4D4D4" style={{ alignSelf: 'center', }} />}
             renderRightButton={() => <FontAwesome5 name="sliders-h" size={20} color="#D4D4D4" style={{ alignSelf: 'center', }} onPress={() => this.props.navigation.navigate("Filter")} />}
           />
@@ -521,8 +568,8 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.state.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%',}}
-            onBackdropPress={() => { this.setModalVisible(false) }}>
+          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%',}}
+            onBackdropPress={() => { this.props.updateModalVisible(false) }}>
             <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderTopLeftRadius: 30, borderTopRightRadius: 30, justifyContent: "space-evenly", flexDirection: "row", width: '100%', marginVertical: -20, alignSelf:"flex-start" }}>
 
               <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
@@ -564,21 +611,17 @@ class Map extends React.Component {
                     <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
                   </Button>
                   <Button style={styles.modalContent}>
-                    <Icon name="exclamation" color="#fff" size={30} onPress={() => this.props.navigation.navigate("Reports")} />
+                    <Icon name="exclamation" color="#fff" size={30} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports");}} />
                   </Button>
 
 
 
-                  {this.props.tappedArea.price != 0 && <Button style={styles.modalContent}>
-                    {//<Icon name="credit-card" color="#fff" size={30} onPress={() => this.props.navigation.navigate("Reports")} />
-                    }
-                    <Text white>PAY</Text>
+                  <Button style={styles.modalContent} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Details");}}>
+                    {this.props.tappedArea.price != 0 && <Text white>PAY</Text>}
+                    {this.props.tappedArea.price == 0 && <Text white>RESERVE</Text>}
 
-                  </Button>}
+                  </Button>
 
-                  {this.props.tappedArea.price == 0 && <Button style={styles.modalContent}>
-                    <Text white>RESERVE</Text>
-                  </Button>}
                 
                 
                 </View>
@@ -719,6 +762,9 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    isModalVisible: state.isModalVisible,
+    userData: state.userData,
+
     allAreas: state.allAreas,
     darkTheme: state.darkTheme,
     showRoute: state.showRoute,
@@ -731,6 +777,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateMapRef: (param) => dispatch({ type: "UPDATE_MAP_REF", param: param }),
+    updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
+    updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
     updateAllAreas: (param) => dispatch({ type: "UPDATE_ALL_AREAS", param: param }),
     updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),

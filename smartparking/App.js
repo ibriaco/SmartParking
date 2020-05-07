@@ -31,12 +31,29 @@ const initialState = {
     latitude: 0,
     longitude: 0
   },
-  currentCity: "Sondrio",
+  currentCity: "",
   showRoute: false,
-  darkTheme: false
+  darkTheme: false,
+  isModalVisible: false,
+  userData: {
+
+  },
+  mapRef: null
 }
 const reducer = (state = initialState, action) => {
   switch(action.type){
+    case "UPDATE_MAP_REF": 
+      return {
+        ...state,
+        mapRef: action.param};
+    case "UPDATE_USER_DATA": 
+      return {
+        ...state,
+        userData: action.param};
+    case "UPDATE_MODAL_VISIBLE": 
+      return {
+        ...state,
+        isModalVisible: action.param};
     case "UPDATE_DARK_THEME": 
       return {
         ...state,

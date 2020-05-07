@@ -20,6 +20,7 @@ import Test from "../screens/Test";
 import Payment from "../screens/Payment";
 import CardPage from "../screens/CardPage";
 import Reports from "../screens/Reports";
+import Details from "../screens/Details";
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
@@ -116,6 +117,12 @@ const screens = createStackNavigator(
     },
     Reports: {
       screen: Reports,
+      navigationOptions: {
+        header: null
+      }
+    },    
+    Details: {
+      screen: Details,
       navigationOptions: {
         header: null
       }

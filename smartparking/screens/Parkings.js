@@ -59,11 +59,12 @@ class Parkings extends Component {
               ])}>
 
                 {this.props.areas.map((area, index) => (
-                     <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{height: 350, margin: 20}}>
+                     <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{flex: 1, margin: 10}}>
                          <TouchableWithoutFeedback onPress={() => {
-                               this.props.updateTappedArea(area);
-                               this.props.updateShowRoute(true);
-                               this.props.navigation.navigate("Home");
+                              this.props.mapRef.animateCamera({ center: {latitude: area.latitude, longitude: area.longitude}, zoom: 18 }, { duration: 1000 });
+                              this.props.updateTappedArea(area);
+                              this.props.updateShowRoute(false)
+                              this.props.navigation.navigate("Home");
                             }}>
                          <Card
                             flex
@@ -87,19 +88,19 @@ class Parkings extends Component {
                             
                             <View style={{ flexDirection: "row", justifyContent: "center" }}>
 
-                            {this.props.tappedArea.nHandicap > 0 &&
+                            {area.nHandicap > 0 &&
                               <Button style={styles.labels}>
                                 <Text>disables</Text>
                               </Button>
                             }
 
-                            {this.props.tappedArea.nPregnant > 0 &&
+                            {area.nPregnant > 0 &&
                               <Button style={styles.labels}>
                                 <Text>pregnant</Text>
                               </Button>
                             }
                             
-                            {this.props.tappedArea.nElectric > 0 &&
+                            {area.nElectric > 0 &&
                               <Button style={styles.labels}>
                                 <Text>electric</Text>
                               </Button>
@@ -176,6 +177,7 @@ function mapStateToProps(state) {
     return {
       //state.areas gets data from the store
       //and we are mapping that data to the prop named areas
+      mapRef: state.mapRef,
       showRoute: state.showRoute,
       areas: state.areas, 
       tappedArea: state.tappedArea
@@ -184,6 +186,7 @@ function mapStateToProps(state) {
 
   function mapDispatchToProps(dispatch) {
     return {
+      updateModalVisible: (param) => dispatch({type: "UPDATE_MODAL_VISIBLE", param: param}), 
       updateShowRoute: (param) => dispatch({type: "UPDATE_SHOW_ROUTE", param: param}), 
       updateArea: (param) => dispatch({type: "UPDATE_AREA", param: param}), 
       updateTappedArea: (param) => dispatch({type: "UPDATE_TAPPED_AREA", param: param}),    
