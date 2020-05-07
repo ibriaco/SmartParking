@@ -9,6 +9,10 @@ import {
 } from "react-native";
 import * as firebase from 'firebase'
 
+import * as Progress from 'react-native-progress';
+import { FontAwesome5 } from 'react-native-vector-icons';
+
+import * as Animatable from 'react-native-animatable';
 
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
@@ -19,7 +23,9 @@ export default class Register extends Component {
     name: "",
     email: "",
     password: "",
-    errorMessage: null
+    errorMessage: null,
+    progress: 0,
+    showIcon: false
   };
 
   handleSignUp() {
@@ -51,6 +57,38 @@ export default class Register extends Component {
       style={styles.signup}
     >
         <Block middle padding={[0, theme.sizes.base * 2]}>
+
+        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+          <View style={styles.selectedButtonCircle}>
+
+          <FontAwesome5 name="user" size={24} color="white"/>
+        </View>
+        
+
+        <View style={{flex: 1, paddingTop: 16}}>
+          <Progress.Bar progress={1}  width={null} color="rgba(3, 166, 150, 0.7)"/>
+        </View> 
+
+        <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
+
+          <FontAwesome5 name="car" size={24} color="white"/>
+        </Animatable.View>
+
+        <View style={{flex: 1,paddingTop: 16}}>
+          <Progress.Bar progress={this.state.progress}  width={null} color="rgba(3, 166, 150, 0.7)" />
+        </View> 
+      <View style={styles.buttonCircle}>
+
+          <FontAwesome5 name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"/>
+        </View> 
+
+       
+
+       
+
+        </View>
+
+
         <Text h1 bold>
           </Text>
           <Text style = {{fontSize: 32}} bold>
@@ -105,7 +143,12 @@ export default class Register extends Component {
             </Block>
             <Block top></Block>
             <Block top ></Block>
-            <Button style = {styles.button} onPress={() => navigation.navigate("PaymentSelection")}>
+            <Button style = {styles.button} onPress={() => {
+              this.setState({ progress: 1 });
+              setTimeout(() => { 
+                navigation.navigate("PaymentSelection")
+              }, 600);
+            }}>
                 <Text h2 bold white center>
                   Continue
                 </Text>
@@ -176,6 +219,24 @@ const styles = StyleSheet.create({
 
     // borderBottomColor: theme.colors.gray2,
     //borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  buttonCircle: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(0, 0, 0,0)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5
+  },
+  selectedButtonCircle: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(3, 166, 150, 0.7)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5
   },
   
 });

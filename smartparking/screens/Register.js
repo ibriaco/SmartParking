@@ -12,13 +12,12 @@ import * as firebase from 'firebase'
 import * as Progress from 'react-native-progress';
 import { FontAwesome5 } from 'react-native-vector-icons';
 
+import * as Animatable from 'react-native-animatable';
 
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
 import {Input} from "galio-framework"
 
-const { width } = Dimensions.get('screen');
-const {totalWidth} = (width - theme.sizes.base * 4) / 5; 
 
 
 export default class Register extends Component {
@@ -26,7 +25,8 @@ export default class Register extends Component {
     name: "",
     email: "",
     password: "",
-    errorMessage: null
+    errorMessage: null,
+    progress: 0,
   };
 
   handleSignUp() {
@@ -58,29 +58,36 @@ export default class Register extends Component {
       style={styles.signup}
     >
         <Block middle padding={[0, theme.sizes.base * 2]}>
-          <View style={{flexDirection: "row", justifyContent: "space-between"}}>
-            
-          <FontAwesome5 name="user" size={24} color="rgba(3, 166, 150,0.5)"/>
+        
+        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+          <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
 
-        <View style={{flex: 1, paddingTop: 9}}>
-          <Progress.Bar progress={0.3}  width={null}/>
+          <FontAwesome5 name="user" size={24} color="white"/>
+        </Animatable.View>
+        
+
+        <View style={{flex: 1, paddingTop: 16}}>
+          <Progress.Bar progress={this.state.progress}  width={null} color="rgba(3, 166, 150, 0.7)"/>
         </View> 
-          <FontAwesome5 name="car" size={24} color="rgba(3, 166, 150,0.5)"/>
 
-        <View style={{flex: 1,paddingTop: 9}}>
-          <Progress.Bar progress={0.3}  width={null}/>
+        <View style={styles.buttonCircle}>
+
+          <FontAwesome5 name="car" size={24} color="rgba(0, 0, 0, 0.2)"/>
+    </View> 
+
+        <View style={{flex: 1,paddingTop: 16}}>
+          <Progress.Bar progress={0}  width={null} color="rgba(0, 0, 0, 0.2)" />
         </View> 
 
-        <FontAwesome5 name="credit-card" size={24} color="rgba(3, 166, 150,0.5)"/>
+        <View style={styles.buttonCircle}>
 
-        <View style={{flex: 1,paddingTop: 9}}>
-          <Progress.Bar progress={0.3}  width={null}/>
-        </View>  
-
-        <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"/>
+        <FontAwesome5 name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"/>
+        </View> 
 
 
         </View>
+
+
         <Text h1 bold>
           </Text>
           <Text style = {{fontSize: 32}} bold>
@@ -134,7 +141,12 @@ export default class Register extends Component {
             </Block>
             <Block top></Block>
             <Block top ></Block>
-            <Button style = {styles.button} onPress={() => navigation.navigate("VehicleSelection")}>
+            <Button style = {styles.button} onPress={() => {
+              this.setState({ progress: 1 });
+              setTimeout(() => { 
+                navigation.navigate("VehicleSelection")
+              }, 600);}}
+            >
                 <Text h2 bold white center>
                   Continue
                 </Text>
@@ -205,6 +217,25 @@ const styles = StyleSheet.create({
 
     // borderBottomColor: theme.colors.gray2,
     //borderBottomWidth: StyleSheet.hairlineWidth
+  },
+  
+  buttonCircle: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(0, 0, 0,0)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5
+  },
+  selectedButtonCircle: {
+    width: 40,
+    height: 40,
+    backgroundColor: 'rgba(3, 166, 150, 0.7)',
+    borderRadius: 20,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginHorizontal: 5
   },
   
 });
