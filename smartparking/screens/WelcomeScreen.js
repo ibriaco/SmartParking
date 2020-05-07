@@ -263,7 +263,7 @@ const styles = StyleSheet.create({
     //flexDirection: 'row'
   },
   title: {
-    fontFamily: 'Helvetica',
+    fontFamily: 'Montserrat',
     fontSize: 32,
     color: '#fff',
     //fontWeight: 'bold',

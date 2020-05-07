@@ -109,7 +109,7 @@ class Login extends Component {
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
           </Text>
-          <Text style = {{fontFamily: 'Helvetica', fontSize: 32}}>
+          <Text style = {{fontFamily: 'Helvetica-Bold', fontSize: 32}}>
           Login
           </Text>
           <Text gray2 h3 style={{fontFamily: 'Montserrat'}}>Enter your credentials to sign in</Text>
@@ -217,7 +217,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
     elevation: 3,
-    height: 60
+    height: 60,
   },
   hasErrors: {
     borderBottomColor: theme.colors.accent

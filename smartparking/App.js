@@ -105,8 +105,9 @@ export default class App extends React.Component {
     return Font.loadAsync({
   
     // Load a font `Montserrat` from a static resource
-    Montserrat: require('./assets/fonts/Montserrat-Regular.ttf'),
-    Helvetica: require('./assets/fonts/Helvetica-Bold-Font.ttf'),
+    'Montserrat': require('./assets/fonts/Montserrat-Regular.ttf'),
+    'Montserrat-Bold': require('./assets/fonts/Montserrat-Bold.ttf'),
+    'Helvetica-Bold': require('./assets/fonts/Helvetica-Bold-Font.ttf'),
   });
 }
   
