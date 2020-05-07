@@ -26,7 +26,7 @@ import PaymentSelection from "../screens/PaymentSelection"
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
-import { zoomOut, zoomIn } from 'react-navigation-transitions';
+import { zoomOut, zoomIn, fromRight } from 'react-navigation-transitions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
@@ -45,6 +45,24 @@ if(!firebase.apps.length){
 }
 
 //firebase.analytics();
+
+
+const handleCustomTransition = ({ scenes }) => {
+  const prevScene = scenes[scenes.length - 2];
+  const nextScene = scenes[scenes.length - 1];
+
+  // Custom transitions go there
+  if (prevScene
+    && prevScene.route.routeName === 'Register'
+    && nextScene.route.routeName === 'VehicleSelection') {
+    return fromRight();
+  } else if (prevScene
+    && prevScene.route.routeName === 'VehicleSelection'
+    && nextScene.route.routeName === 'PaymentSelection') {
+    return fromRight();
+  }
+  return zoomOut();
+}
 
 const screens = createStackNavigator(
   {
@@ -210,7 +228,7 @@ const screens = createStackNavigator(
   },
 
   {
-    transitionConfig: () => zoomOut(),
+    transitionConfig: (screens) => handleCustomTransition(screens),
     defaultNavigationOptions: {
       headerStyle: {
         height: theme.sizes.base * 4,

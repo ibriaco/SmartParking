@@ -5,14 +5,21 @@ import {
   Keyboard,
   StyleSheet,
   View,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Dimensions
 } from "react-native";
 import * as firebase from 'firebase'
+import * as Progress from 'react-native-progress';
+import { FontAwesome5 } from 'react-native-vector-icons';
 
 
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
 import {Input} from "galio-framework"
+
+const { width } = Dimensions.get('screen');
+const {totalWidth} = (width - theme.sizes.base * 4) / 5; 
+
 
 export default class Register extends Component {
   state = {
@@ -51,6 +58,29 @@ export default class Register extends Component {
       style={styles.signup}
     >
         <Block middle padding={[0, theme.sizes.base * 2]}>
+          <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+            
+          <FontAwesome5 name="user" size={24} color="rgba(3, 166, 150,0.5)"/>
+
+        <View style={{flex: 1, paddingTop: 9}}>
+          <Progress.Bar progress={0.3}  width={null}/>
+        </View> 
+          <FontAwesome5 name="car" size={24} color="rgba(3, 166, 150,0.5)"/>
+
+        <View style={{flex: 1,paddingTop: 9}}>
+          <Progress.Bar progress={0.3}  width={null}/>
+        </View> 
+
+        <FontAwesome5 name="credit-card" size={24} color="rgba(3, 166, 150,0.5)"/>
+
+        <View style={{flex: 1,paddingTop: 9}}>
+          <Progress.Bar progress={0.3}  width={null}/>
+        </View>  
+
+        <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"/>
+
+
+        </View>
         <Text h1 bold>
           </Text>
           <Text style = {{fontSize: 32}} bold>
