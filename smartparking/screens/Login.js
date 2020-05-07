@@ -182,7 +182,7 @@ class Login extends Component {
               <Animatable.View animation="slideInRight" duration={700} delay={400}>
 
             <Button style={styles.loginButton} onPress={()=>this.handleLogin()}>
-              <Text h2 white center style={{fontFamily: 'Montserrat'}}>
+              <Text h2 white center style={{fontFamily: 'Montserrat-Bold'}}>
                 Login
                 </Text>
             </Button>
@@ -191,7 +191,7 @@ class Login extends Component {
             <Animatable.View animation="slideInLeft" duration={700} delay={500}>
 
             <Button style={styles.registerButton} onPress={() => navigation.navigate("Register")}>
-              <Text h2 black center style={{fontFamily: 'Montserrat'}}>
+              <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
                 Register
                 </Text>
             </Button>

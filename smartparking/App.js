@@ -139,7 +139,7 @@ export default class App extends React.Component {
       <Provider store = { store }>
       <Block white>
         <Navigation />
-        <FlashMessage position="top" titleStyle={{fontFamily: 'Helvetica'}} textStyle={{fontFamily: 'Montserrat'}}/> 
+        <FlashMessage position="top" titleStyle={{fontFamily: 'Helvetica-Bold'}} textStyle={{fontFamily: 'Montserrat'}}/> 
       </Block>
       </Provider>
     );
