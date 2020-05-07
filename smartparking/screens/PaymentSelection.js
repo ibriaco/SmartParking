@@ -10,7 +10,7 @@ import {
 import * as firebase from 'firebase'
 
 import * as Progress from 'react-native-progress';
-import { FontAwesome5 } from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -54,12 +54,12 @@ export default class Register extends Component {
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.signup}
     >
-        <Block middle padding={[0, theme.sizes.base * 2]}>
+        <Block middle padding={[0, theme.sizes.base * 2]} >
 
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
           <View style={styles.selectedButtonCircle}>
 
-          <FontAwesome5 name="user" size={24} color="white"/>
+          <Icon name="account" size={20} color="white" onPress={() => navigation.navigate("Register")}/>
         </View>
         
 
@@ -69,7 +69,7 @@ export default class Register extends Component {
 
         <View style={styles.selectedButtonCircle}>
 
-          <FontAwesome5 name="car" size={24} color="white"/>
+          <Icon name="car" size={24} color="white"  onPress={() => navigation.navigate("VehicleSelection")}/>
         </View>
 
         <View style={{flex: 1, paddingTop: 16}}>
@@ -77,7 +77,7 @@ export default class Register extends Component {
         </View> 
       <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
 
-          <FontAwesome5 name="credit-card" size={24} color="white"/>
+          <Icon name="credit-card" size={20} color="white"/>
         </Animatable.View> 
         </View>
           
@@ -134,7 +134,7 @@ export default class Register extends Component {
             <Block top ></Block>
             <Button style = {styles.button} onPress={() => navigation.navigate("Login")}>
                 <Text h2 bold white center>
-                  Continue
+                  Register
                 </Text>
             </Button>
             <Button onPress={() => navigation.navigate("Login")}>

@@ -10,7 +10,7 @@ import {
 import * as firebase from 'firebase'
 
 import * as Progress from 'react-native-progress';
-import { FontAwesome5 } from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -56,12 +56,12 @@ export default class Register extends Component {
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.signup}
     >
-        <Block middle padding={[0, theme.sizes.base * 2]}>
+        <Block middle padding={[0, theme.sizes.base * 2]} >
 
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
           <View style={styles.selectedButtonCircle}>
 
-          <FontAwesome5 name="user" size={24} color="white"/>
+          <Icon name="account" size={24} color="white"  onPress={() => navigation.navigate("Register")}/>
         </View>
         
 
@@ -71,7 +71,7 @@ export default class Register extends Component {
 
         <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
 
-          <FontAwesome5 name="car" size={24} color="white"/>
+          <Icon name="car" size={24} color="white"/>
         </Animatable.View>
 
         <View style={{flex: 1,paddingTop: 16}}>
@@ -79,7 +79,7 @@ export default class Register extends Component {
         </View> 
       <View style={styles.buttonCircle}>
 
-          <FontAwesome5 name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"/>
+          <Icon name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"  onPress={() => navigation.navigate("PaymentSelection")}/>
         </View> 
 
        

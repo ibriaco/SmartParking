@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import * as firebase from 'firebase'
 import * as Progress from 'react-native-progress';
-import { FontAwesome5 } from 'react-native-vector-icons';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -62,7 +62,7 @@ export default class Register extends Component {
         <View style={{flexDirection: "row", justifyContent: "space-between"}}>
           <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
 
-          <FontAwesome5 name="user" size={24} color="white"/>
+          <Icon name="account" size={20} color="white"/>
         </Animatable.View>
         
 
@@ -72,7 +72,7 @@ export default class Register extends Component {
 
         <View style={styles.buttonCircle}>
 
-          <FontAwesome5 name="car" size={24} color="rgba(0, 0, 0, 0.2)"/>
+          <Icon name="car" size={24} color="rgba(0, 0, 0, 0.2)"/>
     </View> 
 
         <View style={{flex: 1,paddingTop: 16}}>
@@ -81,7 +81,7 @@ export default class Register extends Component {
 
         <View style={styles.buttonCircle}>
 
-        <FontAwesome5 name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"/>
+        <Icon name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"/>
         </View> 
 
 

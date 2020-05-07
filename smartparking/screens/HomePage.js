@@ -570,40 +570,47 @@ class Map extends React.Component {
         <Block>
           <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%',}}
             onBackdropPress={() => { this.props.updateModalVisible(false) }}>
-            <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderTopLeftRadius: 30, borderTopRightRadius: 30, justifyContent: "space-evenly", flexDirection: "row", width: '100%', marginVertical: -20, alignSelf:"flex-start" }}>
+            <View style={{ flex: 0.4 , backgroundColor: "#f8f8ff", borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: "space-between", paddingHorizontal: 40, width: '100%', marginVertical: -20, alignSelf:"flex-start" }}>
 
-              <View style={{ marginTop: 5, flexDirection: "column", justifyContent: "space-between" }}>
+              <View style={{ marginTop: 5,  justifyContent: "space-around" }}>
                 <View style={{ flexDirection: "column" }}>
-                  <Text h2 bold secondary>{this.props.tappedArea.address}</Text>
-                  <Text h3>{this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
-                  <Text h2 bold>Price: <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h2 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
+                  <Text></Text>
+                  <Text h1 bold secondary>{this.props.tappedArea.address}</Text>
+                  <Text></Text>
+                  <View style={{ flexDirection: "row", justifyContent:"space-between"}}>
+                  <Text bold h2>Distance: <Text h3 secondary>{this.props.tappedArea.distance}</Text></Text>
+                  <Text bold h2>ETA: <Text h3 secondary>{this.props.tappedArea.time}</Text></Text>
+                  <Text h2 bold>Price: <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}<Text h2 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
+                  </View>
+                  <Text></Text>
+                  <FontAwesome5 name="parking" size={26} color="rgba(3, 166, 150,0.5)"> <Text h2 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
+                  <Text></Text>
                 </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-between", }}>
-                  <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
-                </View>
-                <View style={{ flexDirection: "row", justifyContent: "space-around" }}>
+                <View style={{ flexDirection: "row", justifyContent: "flex-start"}}>
                   
                 {this.props.tappedArea.nHandicap > 0 &&
                   <Button style={styles.labels}>
-                    <Text>disables</Text>
+                    <Text h3>disables</Text>
                   </Button>
                 }
 
                 {this.props.tappedArea.nPregnant > 0 &&
                   <Button style={styles.labels}>
-                    <Text>pregnant</Text>
+                    <Text h3>pregnant</Text>
                   </Button>
                 }
                 
                 {this.props.tappedArea.nElectric > 0 &&
                   <Button style={styles.labels}>
-                    <Text>electric</Text>
+                    <Text h3>electric</Text>
                   </Button>
                 }
                 
                 </View>
-
-                <View style={{ flexDirection: "row", justifyContent: "space-evenly",  }}>
+                <View style={{ flexDirection: "column", position:"relative"}} >
+                <Text></Text>
+                <Text></Text>
+                <View style={{ flexDirection: "row", justifyContent: "space-between"}}>
                  <Button style={styles.modalContent}>
                     <Icon name="directions" color="#fff" size={30} onPress={this._showParkingRoute} />
                   </Button>
@@ -611,7 +618,7 @@ class Map extends React.Component {
                     <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
                   </Button>
                   <Button style={styles.modalContent}>
-                    <Icon name="exclamation" color="#fff" size={30} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports");}} />
+                    <Icon name="exclamation" color="#fFFF00" size={30} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports");}} />
                   </Button>
 
 
@@ -625,7 +632,7 @@ class Map extends React.Component {
                 
                 
                 </View>
-
+                </View>
               </View>
               {/*
               
@@ -713,19 +720,20 @@ const styles = StyleSheet.create({
 
   },
   labels: {
-    width: 55,
-    height: 20,
-    borderRadius: 8,
+    width: 75,
+    height: 25,
+    borderRadius: 20,
     backgroundColor: "#E5E5E5",
-    alignItems: "center"
+    alignItems: "center",
+    marginRight: 20
   },
   modalContent: {
     backgroundColor: '#000',
-    height: 40,
-    width: 50,
+    height: 50,
+    width: 70,
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 8,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: "#000",
     shadowOpacity: 0.8,
