@@ -379,7 +379,7 @@ const styles = StyleSheet.create({
   button:{
     backgroundColor: '#03A696',
     height: 60,
-    borderRadius: 20,
+    borderRadius: 50,
     marginHorizontal: 25,
     shadowOpacity: 0.6,
     shadowOffset: {width: 0, height: 2},
@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   input: {
-    borderRadius: 20,
+    borderRadius: 50,
     borderWidth: 1,
     borderColor: "#fff",
     backgroundColor: "#fff",
