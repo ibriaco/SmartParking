@@ -12,7 +12,7 @@ target 'smartparking' do
     'RCTAnimation',
     'RCTBlob',
     'RCTGeolocation',
-    'RCTImage',
+    'React-RCTImage',
     'RCTLinkingIOS',
     'RCTNetwork',
     'RCTSettings',
@@ -21,7 +21,7 @@ target 'smartparking' do
     'RCTWebSocket',
   ]
 
-  pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+  pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga/Yoga.podspec'
 
   pod 'DoubleConversion', :podspec => '../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec'
   pod 'glog', :podspec => '../node_modules/react-native/third-party-podspecs/glog.podspec'
@@ -35,5 +35,18 @@ target 'smartparking' do
   pod 'react-native-fbsdk', :path => '../node_modules/react-native-fbsdk'
 
   pod 'react-native-slider', :path => '../node_modules/@react-native-community/slider'
+
+  pod 'Stripe', '~> 19.0.1'
+pod 'tipsi-stripe', :path => '../node_modules/tipsi-stripe'
+
+  # Install additional dependencies
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Crash'
+  pod 'Firebase/Database'
+  pod 'Firebase/Firestore'
+  pod 'Firebase/Messaging'
+  pod 'Firebase/Performance'
+  pod 'Firebase/Storage'
 
 end
