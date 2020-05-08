@@ -280,7 +280,8 @@ const styles = StyleSheet.create({
     color: "#F14336",
     fontSize: 13,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: 'Montserrat'
   },
   errorMessage: {
     height: 36,

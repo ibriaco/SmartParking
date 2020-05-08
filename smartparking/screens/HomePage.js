@@ -114,6 +114,9 @@ class Map extends React.Component {
         });
 
         //just block the render of the markers so no marker is shown
+        var emptyArray = [];
+        this.props.updateArea(emptyArray);
+        this.props.updateAllAreas(emptyArray);
         this.setState({ isLoading: true });
       }
       else{    
@@ -575,12 +578,12 @@ class Map extends React.Component {
               <View style={{ marginTop: 5,  justifyContent: "space-around" }}>
                 <View style={{ flexDirection: "column" }}>
                   <Text></Text>
-                  <Text h1 bold secondary>{this.props.tappedArea.address}</Text>
+                  <Text h1 style={{color: "#FF9800", fontFamily: "Montserrat-Bold"}}>{this.props.tappedArea.address}</Text>
                   <Text></Text>
                   <View style={{ flexDirection: "row", justifyContent:"space-between"}}>
-                  <Text bold h2>Distance: <Text h3 secondary>{this.props.tappedArea.distance}</Text></Text>
-                  <Text bold h2>ETA: <Text h3 secondary>{this.props.tappedArea.time}</Text></Text>
-                  <Text h2 bold>Price: <Text h2 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}<Text h2 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
+                  <Text  h2><Text h3 secondary style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.distance}</Text></Text>
+                  <Text  h2><Text h3 secondary style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.time}</Text></Text>
+                  <Text h2 ><Text h3 color="#03A696" style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}<Text h3 color="#03A696">{this.props.tappedArea.price != 0 && " €"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
                   </View>
                   <Text></Text>
                   <FontAwesome5 name="parking" size={26} color="rgba(3, 166, 150,0.5)"> <Text h2 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
@@ -590,19 +593,19 @@ class Map extends React.Component {
                   
                 {this.props.tappedArea.nHandicap > 0 &&
                   <Button style={styles.labels}>
-                    <Text h3>disables</Text>
+                    <Text h3 style={{fontFamily: "Montserrat-Bold"}}>disables</Text>
                   </Button>
                 }
 
                 {this.props.tappedArea.nPregnant > 0 &&
                   <Button style={styles.labels}>
-                    <Text h3>pregnant</Text>
+                    <Text h3 style={{fontFamily: "Montserrat-Bold"}}>pregnant</Text>
                   </Button>
                 }
                 
                 {this.props.tappedArea.nElectric > 0 &&
                   <Button style={styles.labels}>
-                    <Text h3>electric</Text>
+                    <Text h3 style={{fontFamily: "Montserrat-Bold"}}>electric</Text>
                   </Button>
                 }
                 
@@ -720,7 +723,7 @@ const styles = StyleSheet.create({
 
   },
   labels: {
-    width: 75,
+    width: 100,
     height: 25,
     borderRadius: 20,
     backgroundColor: "#E5E5E5",
@@ -733,7 +736,7 @@ const styles = StyleSheet.create({
     width: 70,
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: "#000",
     shadowOpacity: 0.8,

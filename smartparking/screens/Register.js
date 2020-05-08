@@ -26,16 +26,32 @@ export default class Register extends Component {
     email: "",
     password: "",
     errorMessage: null,
-    progress: 0,
+    firstProgress: 0,
+    secondProgress: 0,
+    index: 0
   };
 
   handleSignUp() {
+
+    if(this.state.name != ""){
+
     firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
     .then(userCredentials => {
         userCredentials.user.updateProfile({
         displayName: this.state.name        
       })
-      this.props.navigation.navigate("VehicleSelection");
+
+      this.setState({ firstProgress: 1 });
+      
+      this.userView.slideOutLeft(300);
+      
+      setTimeout(() => {
+          this.setState({index: 1})
+      }, 300);
+              
+      this.setState({errorMessage: null})
+      
+
     })
     .catch(error => this.setState({errorMessage: error.message}));
 
@@ -46,54 +62,72 @@ export default class Register extends Component {
     */
 
     Keyboard.dismiss();
-
+  }
+  else{  
+    this.setState({errorMessage: "Please insert your full name to continue."})
+  }
   }
 
   render() {
     const { navigation } = this.props;
 
     return (
+
+      
       <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.signup}
     >
-        <Block middle padding={[0, theme.sizes.base * 2]}>
+      <Block middle padding={[0, theme.sizes.base * 2]}>
         
-        <View style={{flexDirection: "row", justifyContent: "space-between"}}>
+        <Animatable.View style={{flexDirection: "row", justifyContent: "space-between"}} animation="slideInRight" duration={800} delay={200}>
           <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
+             <Icon name="account" size={20} color="white"/>
+          </Animatable.View>        
 
-          <Icon name="account" size={20} color="white"/>
+          <View style={{flex: 1, paddingTop: 16}}>
+             <Progress.Bar progress={this.state.firstProgress}  width={null} color="rgba(3, 166, 150, 0.7)"/>
+          </View> 
+
+          {(this.state.index == 1 || this.state.index == 2) && <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800}>
+             <Icon name="car" size={24} color="white"/>
+          </Animatable.View>        
+          }
+
+          {this.state.index == 0 && <View style={styles.buttonCircle} ref={r => this.carView = r}>
+             <Icon name="car" size={24} color="white"/>
+          </View> 
+          }
+          
+          <View style={{flex: 1,paddingTop: 16}}>
+             <Progress.Bar progress={this.state.secondProgress}  width={null} color="rgba(3, 166, 150, 0.7)"/>
+          </View> 
+
+
+          {this.state.index == 2 && <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} >
+             <Icon name="credit-card" size={24} color="white"/>
+          </Animatable.View>        
+          }
+
+          {(this.state.index == 0 || this.state.index == 1) && <View style={styles.buttonCircle} ref={r => this.creditView = r}>
+             <Icon name="credit-card" size={24} color="white"/>
+          </View> 
+        }
+
         </Animatable.View>
+
+
+
+      {this.state.index == 0 &&
         
-
-        <View style={{flex: 1, paddingTop: 16}}>
-          <Progress.Bar progress={this.state.progress}  width={null} color="rgba(3, 166, 150, 0.7)"/>
-        </View> 
-
-        <View style={styles.buttonCircle}>
-
-          <Icon name="car" size={24} color="rgba(0, 0, 0, 0.2)"/>
-    </View> 
-
-        <View style={{flex: 1,paddingTop: 16}}>
-          <Progress.Bar progress={0}  width={null} color="rgba(0, 0, 0, 0.2)" />
-        </View> 
-
-        <View style={styles.buttonCircle}>
-
-        <Icon name="credit-card" size={24} color="rgba(0, 0, 0, 0.2)"/>
-        </View> 
-
-
-        </View>
-
+        <Animatable.View style={{flex: 1}} animation="slideInRight" duration={800} delay={600} ref={r => this.userView = r}>
 
         <Text h1 bold>
           </Text>
-          <Text style = {{fontSize: 32}} bold>
+          <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
           Register
           </Text>
-          <Text gray2 h3>Enter your information to sign up</Text>
+          <Text gray2 h3 style={{fontFamily: "Montserrat"}}>Enter your information to sign up</Text>
           <Block middle>
           <View style = {styles.errorMessage}>
             {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -134,20 +168,15 @@ export default class Register extends Component {
               value={this.state.password}
             />
             <Block>
-              <Text center gray2 h4>Already registered?
-              <Text bold center secondary h3 onPress={() => navigation.navigate("Login")}> Sign In</Text></Text>
+              <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Already registered?
+              <Text  center secondary h3 style={{fontFamily: "Montserrat-Bold"}}onPress={() => navigation.navigate("Login")}> Sign In</Text></Text>
             </Block>
             <Block top>
             </Block>
             <Block top></Block>
             <Block top ></Block>
-            <Button style = {styles.button} onPress={() => {
-              this.setState({ progress: 1 });
-              setTimeout(() => { 
-                navigation.navigate("VehicleSelection")
-              }, 600);}}
-            >
-                <Text h2 bold white center>
+            <Button style = {styles.button} onPress={() => this.handleSignUp()}>
+                <Text h2 white center style={{fontFamily: "Montserrat-Bold"}}>
                   Continue
                 </Text>
             </Button>
@@ -156,16 +185,181 @@ export default class Register extends Component {
                 gray2
                 caption
                 center
-                style={{ textDecorationLine: "underline" }}
+                style={{ textDecorationLine: "underline", fontFamily: "Montserrat" }}
               >
                 Terms of service
               </Text>
             </Button>
           </Block>
-        </Block>
-      </KeyboardAvoidingView>
-    );
+            </Animatable.View>
+
   }
+
+
+
+  {this.state.index == 1 &&
+  
+  <Animatable.View style={{flex: 1}} animation="slideInRight" duration={300} ref={r => this.vehicleView = r}>
+
+  <Text h1 bold>
+    </Text>
+    <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}}>
+    Vehicle
+    </Text>
+    <Text gray2 h3 style={{fontFamily: "Montserrat"}}>Enter your vehicle information</Text>
+    <Block middle>
+    <View style = {styles.errorMessage}>
+      {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+    </View>
+    <Block middle>
+      </Block>
+      <Input
+        placeholder="Vehicle Type"
+        style={[styles.input]}
+        onChangeText={name => this.setState({ name })}
+        value = {this.state.name}
+        right
+        icon = "car"
+        family="material-community"
+        iconSize={24}
+        iconColor="#a5a5a5"
+        style={styles.input}
+      />
+      <Input
+        placeholder ="Vehicle Plate"
+        right
+        icon="clipboard-text"
+        family="material-community"
+        iconSize={18}
+        iconColor="#a5a5a5"
+        style={styles.input}
+        onChangeText={email => this.setState({ email })}
+        value={this.state.email}
+      />
+      <Input
+        icon="contact-mail"
+        family="material-community"
+        right
+        iconColor ="#a5a5a5"
+        iconSize = {20}
+        placeholder="Driving License"
+        style={[styles.input]}
+        onChangeText={password => this.setState({ password })}
+        value={this.state.password}
+      />
+      <Block>
+        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Already registered?
+        <Text center secondary h3 style={{fontFamily: "Montserrat-Bold"}} onPress={() => navigation.navigate("Login")}> Sign In</Text></Text>
+      </Block>
+      <Block top>
+      </Block>
+      <Block top></Block>
+      <Block top ></Block>
+      <Button style = {styles.button} onPress={() => {
+
+          this.setState({ secondProgress: 1 });
+          this.vehicleView.slideOutLeft(300);
+          setTimeout(() => {
+            this.setState({index: 2})
+          }, 300);
+          }
+          }>
+          <Text h2 white center style={{fontFamily: "Montserrat-Bold"}}>
+            Continue
+          </Text>
+      </Button>
+      <Button onPress={() => navigation.navigate("PaymentSelection")}>
+        <Text
+          gray2
+          h3
+          center
+          style={{fontFamily: "Montserrat-Bold"}}
+        >
+          SKIP
+        </Text>
+      </Button>
+    </Block>
+  </Animatable.View>
+
+    }
+
+
+  {this.state.index == 2 && 
+        <Animatable.View style={{flex: 1}} animation="slideInRight" duration={300} ref={r => this.payView = r}>
+        <Text h1 bold>
+    </Text>
+    <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
+    Payment
+    </Text>
+    <Text gray2 h3 style={{fontFamily: "Montserrat"}}>Enter your payment method</Text>
+    <Block middle>
+    <View style = {styles.errorMessage}>
+      {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
+    </View>
+    <Block middle>
+      </Block>
+      <Input
+        placeholder="Vehicle Type"
+        style={[styles.input]}
+        onChangeText={name => this.setState({ name })}
+        value = {this.state.name}
+        right
+        icon = "user"
+        family="font-awesome"
+        iconSize={18}
+        iconColor="#a5a5a5"
+        style={styles.input}
+      />
+      <Input
+        placeholder ="Vehicle Plate"
+        right
+        icon="envelope"
+        family="font-awesome"
+        iconSize={18}
+        iconColor="#a5a5a5"
+        style={styles.input}
+        onChangeText={email => this.setState({ email })}
+        value={this.state.email}
+      />
+      <Input
+        iconColor ="#a5a5a5"
+        iconSize = {20}
+        placeholder="Driving License"
+        style={[styles.input]}
+        onChangeText={password => this.setState({ password })}
+        value={this.state.password}
+      />
+      <Block>
+        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Already registered?
+        <Text center secondary h3 style={{fontFamily: "Montserrat-Bold"}} onPress={() => navigation.navigate("Login")}> Sign In</Text></Text>
+      </Block>
+      <Block top>
+      </Block>
+      <Block top></Block>
+      <Block top ></Block>
+      <Button style = {styles.button} onPress={() => navigation.navigate("Login")}>
+          <Text h2  white center style={{fontFamily: "Montserrat-Bold"}}>
+            Register
+          </Text>
+      </Button>
+      <Button onPress={() => navigation.navigate("Login")}>
+        <Text
+          gray2
+          h3
+          center
+          style={{fontFamily: "Montserrat-Bold"}}
+        >
+          SKIP
+        </Text>
+      </Button>
+    </Block>
+    </Animatable.View>
+  }
+      </Block>
+</KeyboardAvoidingView>
+    );
+
+}
 }
 
 const styles = StyleSheet.create({
@@ -196,7 +390,8 @@ const styles = StyleSheet.create({
     color: "#E9446A",
     fontSize: 13,
     fontWeight: "600",
-    textAlign: "center"
+    textAlign: "center",
+    fontFamily: "Montserrat"
   },
   errorMessage: {
     height: 36,
@@ -222,11 +417,13 @@ const styles = StyleSheet.create({
   buttonCircle: {
     width: 40,
     height: 40,
-    backgroundColor: 'rgba(0, 0, 0,0)',
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
     borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-    marginHorizontal: 5
+    marginHorizontal: 5,
+    borderWidth: 1,
+    borderColor: 'rgba(3, 166, 150, 0.7)'
   },
   selectedButtonCircle: {
     width: 40,

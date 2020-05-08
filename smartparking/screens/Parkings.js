@@ -131,6 +131,13 @@ class Parkings extends Component {
 
                      </Animatable.View>
                      ))}
+                     {this.props.areas.length == 0 && <Animatable.View animation="slideInUp" duration={600} delay={100} style={{flex: 1, margin: 10}}>
+                     <FontAwesome5 name="times" size={30} color="red" style={{paddingTop:30}}><Text h1 style={{color: "red"}}> There are no parkings!</Text></FontAwesome5>
+
+                     <Text>Please change location, destination or try using different filter paramenters!</Text>
+
+                     </Animatable.View>
+}
 
             </Animated.ScrollView>
           </View>
