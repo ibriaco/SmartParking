@@ -375,12 +375,9 @@ class Map extends React.Component {
       };
     }
 
-    console.log("New: " + newAreas)
     this.props.updateArea(newAreas)
+    this.props.updateAllAreas(newAreas)
 
-    console.log("Props: " + this.props.areas[0].distance)
-
-    console.log("finito update")
   }
 
 
@@ -580,7 +577,7 @@ class Map extends React.Component {
                   <Text></Text>
                   <Text h1 style={{color: "#FF9800", fontFamily: "Montserrat-Bold"}}>{this.props.tappedArea.address}</Text>
                   <Text></Text>
-                  <View style={{ flexDirection: "row", justifyContent:"space-between"}}>
+                  <View style={{flexDirection: "row", justifyContent:"space-between"}}>
                   <Text  h2><Text h3 secondary style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.distance}</Text></Text>
                   <Text  h2><Text h3 secondary style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.time}</Text></Text>
                   <Text h2 ><Text h3 color="#03A696" style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}<Text h3 color="#03A696">{this.props.tappedArea.price != 0 && " €"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
@@ -593,19 +590,19 @@ class Map extends React.Component {
                   
                 {this.props.tappedArea.nHandicap > 0 &&
                   <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat-Bold"}}>disables</Text>
+                    <Text h3 style={{fontFamily: "Montserrat"}}>disables</Text>
                   </Button>
                 }
 
                 {this.props.tappedArea.nPregnant > 0 &&
                   <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat-Bold"}}>pregnant</Text>
+                    <Text h3 style={{fontFamily: "Montserrat"}}>pregnant</Text>
                   </Button>
                 }
                 
                 {this.props.tappedArea.nElectric > 0 &&
                   <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat-Bold"}}>electric</Text>
+                    <Text h3 style={{fontFamily: "Montserrat"}}>electric</Text>
                   </Button>
                 }
                 
@@ -725,7 +722,7 @@ const styles = StyleSheet.create({
   labels: {
     width: 100,
     height: 25,
-    borderRadius: 20,
+    borderRadius: 8,
     backgroundColor: "#E5E5E5",
     alignItems: "center",
     marginRight: 20

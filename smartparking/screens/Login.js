@@ -22,8 +22,6 @@ import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 
 
- 
-
 class Login extends Component {
   state = {
     email: "",
@@ -39,15 +37,17 @@ class Login extends Component {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
-        console.log(firebase.auth().currentUser)
+        
+        firebase.database().ref('Users/' + firebase.auth().currentUser.uid).on('value', (snapshot) => {
+          this.props.updateUserData(snapshot.val());
+        });
+
         this.props.navigation.navigate("Home")})
       .catch(error => this.setState({ errorMessage: error.message }));
       //this.props.navigation.navigate("Home")
 
     Keyboard.dismiss();
   }
-
-
 
     _loginWithGoogle = async () => {
     try {

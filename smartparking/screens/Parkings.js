@@ -39,10 +39,10 @@ class Parkings extends Component {
             <Animated.View style={{justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}], shadowOpacity: 0.3,
     
     elevation: 6,}}>
-               <Text bold style={{ fontSize: 32 }}>
+               <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 32 }}>
           Parkings
         </Text>
-        <Text h3 gray2>Choose the best parking for you</Text>
+        <Text h3 style={{ fontFamily: "Montserrat"}} gray2>Choose the best parking for you</Text>
 
             </Animated.View>                
            
@@ -90,19 +90,19 @@ class Parkings extends Component {
 
                             {area.nHandicap > 0 &&
                               <Button style={styles.labels}>
-                                <Text>disables</Text>
+                    <Text h3 style={{fontFamily: "Montserrat"}}>disables</Text>
                               </Button>
                             }
 
                             {area.nPregnant > 0 &&
                               <Button style={styles.labels}>
-                                <Text>pregnant</Text>
+                    <Text h3 style={{fontFamily: "Montserrat"}}>pregnant</Text>
                               </Button>
                             }
                             
                             {area.nElectric > 0 &&
                               <Button style={styles.labels}>
-                                <Text>electric</Text>
+                    <Text h3 style={{fontFamily: "Montserrat"}}>electric</Text>
                               </Button>
                             }
                             
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
     borderRadius: theme.sizes.base,
   },
   labels: {
-    width: 55,
-    height: 20,
+    width: 100,
+    height: 25,
     borderRadius: 8,
     backgroundColor: "#E5E5E5",
     alignItems: "center",

@@ -17,10 +17,11 @@ import * as Animatable from 'react-native-animatable';
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
 import {Input} from "galio-framework"
+import { connect } from 'react-redux';
 
 
 
-export default class Register extends Component {
+class Register extends Component {
   state = {
     name: "",
     email: "",
@@ -28,7 +29,10 @@ export default class Register extends Component {
     errorMessage: null,
     firstProgress: 0,
     secondProgress: 0,
-    index: 0
+    index: 0,
+    vehiclePlate: "",
+    vehicleType: "",
+    license: ""
   };
 
   handleSignUp() {
@@ -50,23 +54,71 @@ export default class Register extends Component {
       }, 300);
               
       this.setState({errorMessage: null})
-      
+
+      this.props.updateUserData({
+        uid: userCredentials.user.uid,
+        name: this.state.name,
+        email: this.state.email,
+        points: 0,
+        reservations: {}
+      });
 
     })
     .catch(error => this.setState({errorMessage: error.message}));
 
-    /*
-    if (this.state.errorMessage!=null){
-      this.state.errorMessage = "Welcome" + this.state.name + "!"
-    }
-    */
-
     Keyboard.dismiss();
+    }
+    else{  
+      this.setState({errorMessage: "Please insert your full name to continue."})
+    }
   }
-  else{  
-    this.setState({errorMessage: "Please insert your full name to continue."})
+
+  handleContinue() {
+
+    if(this.state.vehicleType != "" && this.state.vehiclePlate != "" && this.state.license != ""){
+
+      //all data inserted, proceed with the registration
+      this.setState({ secondProgress: 1 });
+      
+      this.vehicleView.slideOutLeft(300);
+      
+      setTimeout(() => {
+          this.setState({index: 2})
+      }, 300);
+              
+      this.setState({errorMessage: null})
+           
+      this.props.updateUserData({
+        ...this.props.userData,
+        license: this.state.license,
+        vehicle: {
+          vehicleType: this.state.vehicleType,
+          vehiclePlate: this.state.vehiclePlate
+        }
+      });
+      
+    Keyboard.dismiss();
+    }
+    else{  
+      this.setState({errorMessage: "Please fill all the fields above to continue or skip this phase."})
+    }
   }
+
+
+
+  handleFinish() {
+
+
+    firebase.database().ref('Users/' + this.props.userData.uid).set(
+      this.props.userData
+    );
+
+    this.props.navigation.navigate("Home");
+
+    
   }
+
+
 
   render() {
     const { navigation } = this.props;
@@ -216,8 +268,8 @@ export default class Register extends Component {
       <Input
         placeholder="Vehicle Type"
         style={[styles.input]}
-        onChangeText={name => this.setState({ name })}
-        value = {this.state.name}
+        onChangeText={vehicleType => this.setState({ vehicleType })}
+        value = {this.state.vehicleType}
         right
         icon = "car"
         family="material-community"
@@ -233,8 +285,8 @@ export default class Register extends Component {
         iconSize={18}
         iconColor="#a5a5a5"
         style={styles.input}
-        onChangeText={email => this.setState({ email })}
-        value={this.state.email}
+        onChangeText={vehiclePlate => this.setState({ vehiclePlate })}
+        value={this.state.vehiclePlate}
       />
       <Input
         icon="contact-mail"
@@ -244,8 +296,8 @@ export default class Register extends Component {
         iconSize = {20}
         placeholder="Driving License"
         style={[styles.input]}
-        onChangeText={password => this.setState({ password })}
-        value={this.state.password}
+        onChangeText={license => this.setState({ license })}
+        value={this.state.license}
       />
       <Block>
         <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Already registered?
@@ -255,8 +307,12 @@ export default class Register extends Component {
       </Block>
       <Block top></Block>
       <Block top ></Block>
-      <Button style = {styles.button} onPress={() => {
-
+      <Button style = {styles.button} onPress={() => this.handleContinue()}>          
+          <Text h2 white center style={{fontFamily: "Montserrat-Bold"}}>
+            Continue
+          </Text>
+      </Button>
+      <Button onPress={() => {
           this.setState({ secondProgress: 1 });
           this.vehicleView.slideOutLeft(300);
           setTimeout(() => {
@@ -264,11 +320,6 @@ export default class Register extends Component {
           }, 300);
           }
           }>
-          <Text h2 white center style={{fontFamily: "Montserrat-Bold"}}>
-            Continue
-          </Text>
-      </Button>
-      <Button onPress={() => navigation.navigate("PaymentSelection")}>
         <Text
           gray2
           h3
@@ -337,12 +388,12 @@ export default class Register extends Component {
       </Block>
       <Block top></Block>
       <Block top ></Block>
-      <Button style = {styles.button} onPress={() => navigation.navigate("Login")}>
+      <Button style = {styles.button} onPress={() => this.handleFinish()}>
           <Text h2  white center style={{fontFamily: "Montserrat-Bold"}}>
             Register
           </Text>
       </Button>
-      <Button onPress={() => navigation.navigate("Login")}>
+      <Button onPress={() => console.log(this.props.userData)}>
         <Text
           gray2
           h3
@@ -436,3 +487,37 @@ const styles = StyleSheet.create({
   },
   
 });
+
+
+function mapStateToProps(state) {
+  return {
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    isModalVisible: state.isModalVisible,
+    userData: state.userData,
+
+    allAreas: state.allAreas,
+    darkTheme: state.darkTheme,
+    showRoute: state.showRoute,
+    areas: state.areas,
+    tappedArea: state.tappedArea,
+    currentCity: state.currentCity,
+    userCoordinates: state.userCoordinates
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    updateMapRef: (param) => dispatch({ type: "UPDATE_MAP_REF", param: param }),
+    updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
+    updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
+    updateAllAreas: (param) => dispatch({ type: "UPDATE_ALL_AREAS", param: param }),
+    updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
+    updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
+    updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),
+    updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),
+    updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Register);
