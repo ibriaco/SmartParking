@@ -404,6 +404,17 @@ class Map extends React.Component {
           showsUserLocation={false}
         >
 
+          {this.props.circleRadius != 0 &&
+          <MapView.Circle
+            center={this.props.distanceFromUser ? this.state.currentCoordinates : this.state.destinationCoordinates}
+            radius={this.props.circleRadius * 1000}
+            fillColor="rgba(3, 166, 150,0.1)"
+            strokeColor="rgba(3, 166, 150,0.2)"
+            >
+          </MapView.Circle>}
+
+          
+
           {!this.state.isLoading && this.props.areas.map((area, index) => (
 
             <MapView.Marker key={index}
@@ -770,6 +781,8 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    distanceFromUser: state.distanceFromUser,
+    circleRadius: state.circleRadius,
     isModalVisible: state.isModalVisible,
     userData: state.userData,
 

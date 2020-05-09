@@ -232,8 +232,12 @@ class Filter extends Component {
     if(this.state.maxDistance != 0){
       console.log("DISTANCE LIMIT")
 
+      this.props.updateCircleRadius(distance);
+
       tempAreas = tempAreas.filter(function (area) {
-        return area.distance < distance;
+        var s = area.distance.substr(0, area.distance.length - 3)
+
+        return parseFloat(s) < distance;
       });
     }
 
@@ -274,16 +278,6 @@ class Filter extends Component {
       });
     }
     
-    /************************** SERVONO TUTTE LE COMBINAZIONI TRA H, P, E
-     * !H   !P   !E   = niente filtri 
-     * !H   !P   E    = solo E
-     * !H   P    !E   = solo P
-     * !H   P    E    = P & E
-     * H    !P   !E   = solo H
-     * H    !P   E    = H & E
-     * H    P    !E   = H & P
-     * H    P    E    = H & P & E
-     */
     
     //H
     if(this.state.hSpot){
@@ -598,6 +592,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateDistanceFrom: (param) => dispatch({ type: "UPDATE_DISTANCE_FROM", param: param }),
+    updateCircleRadius: (param) => dispatch({ type: "UPDATE_CIRCLE_RADIUS", param: param }),
     updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateCity: (param) => dispatch({ type: "UPDATE_CURRENT_CITY", param: param }),
     updateCoordinates: (param) => dispatch({ type: "UPDATE_COORDINATES", param: param }),
