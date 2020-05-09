@@ -102,10 +102,14 @@ class Login extends Component {
     const { navigation } = this.props;
 
     return (
+      <View style={{flex: 1}}>
+              <Animatable.View animation="slideOutUp" style={{position: "absolute", top:0, left:0, height: "100%", width: "100%", backgroundColor:"#03A696", zIndex: 1}}></Animatable.View>
+
       <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.login}
     >
+      
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>
           </Text>
@@ -159,7 +163,7 @@ class Login extends Component {
           </Block>
           <Block bottom style={styles.bottom}>
           <View style={styles.social}>
-            <Animatable.View animation="zoomIn" duration={700} delay={200}>
+            <Animatable.View animation="slideInUp" duration={700} delay={200}>
                 <Button style={styles.google} onPress={()=>this._loginWithGoogle()} >
                   <SocialIcon
                     type="google"
@@ -168,7 +172,7 @@ class Login extends Component {
                 </Button>
                 </Animatable.View>
                 <Text center gray2 h4>      </Text>
-            <Animatable.View animation="zoomIn" duration={700} delay={300}>
+            <Animatable.View animation="slideInUp" duration={700} delay={300}>
 
                 <Button style={styles.facebook} onPress={()=>this._loginWithFacebook()}>
                   <SocialIcon
@@ -179,7 +183,7 @@ class Login extends Component {
                 </Animatable.View>
 
               </View>
-              <Animatable.View animation="slideInRight" duration={700} delay={400}>
+              <Animatable.View animation="slideInUp" duration={700} delay={400}>
 
             <Button style={styles.loginButton} onPress={()=>this.handleLogin()}>
               <Text h2 white center style={{fontFamily: 'Montserrat-Bold'}}>
@@ -188,7 +192,7 @@ class Login extends Component {
             </Button>
             </Animatable.View>
 
-            <Animatable.View animation="slideInLeft" duration={700} delay={500}>
+            <Animatable.View animation="slideInUp" duration={700} delay={600}>
 
             <Button style={styles.registerButton} onPress={() => navigation.navigate("Register")}>
               <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
@@ -200,6 +204,7 @@ class Login extends Component {
           </Block>
         </Block>
       </KeyboardAvoidingView>
+      </View>
     );
   }
 }

@@ -239,6 +239,8 @@ class Filter extends Component {
 
         return parseFloat(s) < distance;
       });
+    }else{
+      this.props.updateCircleRadius(distance);
     }
 
     //TIME

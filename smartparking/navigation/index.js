@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Image, View } from "react-native";
+import { Image, View, Text } from "react-native";
 import * as firebase from 'firebase';
 import { createAppContainer } from "react-navigation";
 import { createStackNavigator } from "react-navigation-stack";
@@ -87,13 +87,24 @@ const screens = createStackNavigator(
     Login: {
       screen: Login,
       navigationOptions: {
-        headerTitleStyle: {
-          textAlign: "center",
-          flex: 1,
-          fontSize: 26,
-          fontWeight: 'bold',
+        headerTitle: "SmartParking",
+        headerStyle: {
+          backgroundColor: "#03A696",
+          elevation: null,
+          shadowOpacity: 0.9,
+          height: 100,
         },
-        headerRight: (<View />)
+        headerTitleStyle: {
+          color: "#FFF",
+          fontWeight: "500",
+          fontSize: 32,
+          textAlign: "center",
+          flexGrow: 1,
+          fontFamily: "Helvetica-Bold"
+        },
+        headerTintColor: "#fff",
+        headerLeft: null,
+        headerRight: null
       },
     },
     Register: {
