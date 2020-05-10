@@ -16,7 +16,7 @@ import Register from "../screens/Register";
 import HomePage from "../screens/HomePage";
 import Profile from "../screens/Profile";
 import Filter from "../screens/Filter";
-import Test from "../screens/Test";
+import ParkingsContainer from "../screens/ParkingsContainer";
 import Payment from "../screens/Payment";
 import CardPage from "../screens/CardPage";
 import Reports from "../screens/Reports";
@@ -78,8 +78,8 @@ const screens = createStackNavigator(
         header: null
       }
     },
-    Test: {
-      screen: Test,
+    ParkingsContainer: {
+      screen: ParkingsContainer,
       navigationOptions: {
         header: null,
       }
@@ -192,8 +192,8 @@ const screens = createStackNavigator(
           }
         },
         
-        Parkings: {
-          screen: Parkings,
+        ParkingsContainer: {
+          screen: ParkingsContainer,
           navigationOptions: {
             tabBarIcon: ({ focused }) => <FontAwesome5 name="parking" size={28} color={focused ? "#000" : "#CDCCCE"} />
           }

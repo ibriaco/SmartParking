@@ -245,7 +245,7 @@ class Register extends Component {
                   Continue
                 </Text>
             </Button>
-            <Button onPress={() => navigation.navigate("VehicleSelection")}>
+            <Button onPress={() => navigation.navigate("ParkingsContainer")}>
               <Text
                 gray2
                 caption

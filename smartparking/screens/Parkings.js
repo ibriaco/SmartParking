@@ -8,6 +8,7 @@ import Animated from 'react-native-reanimated';
 import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 import { Card } from 'galio-framework';
+import { Container, Header, Content, Tab, Tabs } from 'native-base';
 
 const { width } = Dimensions.get('screen');
 
@@ -26,123 +27,108 @@ class Parkings extends Component {
   }
   scrollY = new Animated.Value(0);
   diffClampScrollY = new Animated.diffClamp(this.scrollY, 0, HEADER_HEIGHT);
-  headerY = new Animated.interpolate(this.diffClampScrollY, 
+  headerY = new Animated.interpolate(this.diffClampScrollY,
     {
       inputRange: [0, HEADER_HEIGHT],
       outputRange: [0, -HEADER_HEIGHT]
     });
-  
-    render() {
-        return (
-          
-          <View style={{flex: 1}}>
-            <Animated.View style={{justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}], shadowOpacity: 0.3,
-    
-    elevation: 6,}}>
-               <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 32 }}>
-          Parkings
+
+  render() {
+    return (
+
+      <Container style={{ flex: 1 }}>
+      {/*
+      <Animated.View style={{
+          justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
+
+          elevation: 6,
+        }}>
+          <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 32 }}>
+            Parkings
         </Text>
-        <Text h3 style={{ fontFamily: "Montserrat"}} gray2>Choose the best parking for you</Text>
+          <Text h3 style={{ fontFamily: "Montserrat" }} gray2>Choose the best parking for you</Text>
 
-            </Animated.View>                
-           
-            <Animated.ScrollView  
-              contentContainerStyle={styles.cards}
-              showsVerticalScrollIndicator={false}
-              style={{paddingTop: HEADER_HEIGHT}}
-              bounces={false}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {contentOffset:{y: this.scrollY}}
-                }
-              ])}>
+        </Animated.View> 
+       */}
+        
 
-                {this.props.areas.map((area, index) => (
-                     <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{flex: 1, margin: 10}}>
-                         <TouchableWithoutFeedback onPress={() => {
-                              this.props.mapRef.animateCamera({ center: {latitude: area.latitude, longitude: area.longitude}, zoom: 18 }, { duration: 1000 });
-                              this.props.updateTappedArea(area);
-                              this.props.updateShowRoute(false)
-                              this.props.navigation.navigate("Home");
-                            }}>
-                         <Card
-                            flex
-                            borderless
-                            shadowColor="black"
-                            style={styles.card}
-                            title={area.distance + ", " + area.time}
-                            avatar="https://i.imgur.com/dQGKmRZ.png"
-                            caption={area.price != 0 ? area.price + " €/h" : "FREE"}
-                            location={area.address} 
-                            image={area.image.uri}
-                            imageStyle={styles.rounded}
-                            imageBlockStyle={{ padding: theme.sizes.base / 2 }}
-                        >
-
-
-                          <View style={{ flexDirection: "column", justifyContent: "center", alignSelf:"center"}}>
-               
-                            <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
-                          </View>
-                            
-                            <View style={{ flexDirection: "row", justifyContent: "center" }}>
-
-                            {area.nHandicap > 0 &&
-                              <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat"}}>disables</Text>
-                              </Button>
-                            }
-
-                            {area.nPregnant > 0 &&
-                              <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat"}}>pregnant</Text>
-                              </Button>
-                            }
-                            
-                            {area.nElectric > 0 &&
-                              <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat"}}>electric</Text>
-                              </Button>
-                            }
-                            
-                          </View>
-              
-                        </Card>
-                        </TouchableWithoutFeedback>
-                         {/*
-                         
-                         <Image source={area.image} style={{flex: 1, height: null, width: null, borderRadius:10}}></Image>
-                         <Text h2 bold black >{area.address}</Text>
-                         <Button
-                            onPress={() => {
-                               this.props.updateTappedArea(area);
-                               this.props.updateShowRoute(true);
-                               this.props.navigation.navigate("Home");
-                            }}
-
-                            style = {styles.route}
-                        >
-                          <Text white center bold h3>Show Route</Text>
-                        </Button>
-
-                          */}
+        <Animated.ScrollView
+          contentContainerStyle={styles.cards}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingTop: 20 }}
+          bounces={false}
+          scrollEventThrottle={16}
+          onScroll={Animated.event([
+            {
+              nativeEvent: { contentOffset: { y: this.scrollY } }
+            }
+          ])}>
+          {this.props.areas.map((area, index) => (
+            <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{ flex: 1, margin: 10 }}>
+              <TouchableWithoutFeedback onPress={() => {
+                this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
+                this.props.updateTappedArea(area);
+                this.props.updateShowRoute(false)
+                this.props.navigation.navigate("Home");
+              }}>
+                <Card
+                  flex
+                  borderless
+                  shadowColor="black"
+                  style={styles.card}
+                  title={area.distance + ", " + area.time}
+                  avatar="https://i.imgur.com/dQGKmRZ.png"
+                  caption={area.price != 0 ? area.price + " €/h" : "FREE"}
+                  location={area.address}
+                  image={area.image.uri}
+                  imageStyle={styles.rounded}
+                  imageBlockStyle={{ padding: theme.sizes.base / 2 }}
+                >
 
 
-                     </Animatable.View>
-                     ))}
-                     {this.props.areas.length == 0 && <Animatable.View animation="slideInUp" duration={600} delay={100} style={{flex: 1, margin: 10}}>
-                     <FontAwesome5 name="times" size={30} color="red" style={{paddingTop:30}}><Text h1 style={{color: "red"}}> There are no parkings!</Text></FontAwesome5>
+                  <View style={{ flexDirection: "column", justifyContent: "center", alignSelf: "center" }}>
 
-                     <Text>Please change location, destination or try using different filter paramenters!</Text>
+                    <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
+                  </View>
 
-                     </Animatable.View>
-}
+                  <View style={{ flexDirection: "row", justifyContent: "center" }}>
 
-            </Animated.ScrollView>
-          </View>
-        );
-    }
+                    {area.nHandicap > 0 &&
+                      <Button style={styles.labels}>
+                        <Text h3 style={{ fontFamily: "Montserrat" }}>disables</Text>
+                      </Button>
+                    }
+
+                    {area.nPregnant > 0 &&
+                      <Button style={styles.labels}>
+                        <Text h3 style={{ fontFamily: "Montserrat" }}>pregnant</Text>
+                      </Button>
+                    }
+
+                    {area.nElectric > 0 &&
+                      <Button style={styles.labels}>
+                        <Text h3 style={{ fontFamily: "Montserrat" }}>electric</Text>
+                      </Button>
+                    }
+
+                  </View>
+                  <Text></Text>
+                </Card>
+              </TouchableWithoutFeedback>
+            </Animatable.View>
+          ))}
+          {this.props.areas.length == 0 && <Animatable.View animation="slideInUp" duration={600} delay={100} style={{ flex: 1, margin: 10 }}>
+            <FontAwesome5 name="times" size={30} color="red" style={{ paddingTop: 30 }}><Text h1 style={{ color: "red" }}> There are no parkings!</Text></FontAwesome5>
+
+            <Text>Please change location, destination or try using different filter paramenters!</Text>
+
+          </Animatable.View>
+          }
+
+        </Animated.ScrollView>
+      </Container>
+    );
+  }
 }
 
 
@@ -181,23 +167,23 @@ const styles = StyleSheet.create({
 });
 
 function mapStateToProps(state) {
-    return {
-      //state.areas gets data from the store
-      //and we are mapping that data to the prop named areas
-      mapRef: state.mapRef,
-      showRoute: state.showRoute,
-      areas: state.areas, 
-      tappedArea: state.tappedArea
-    }
+  return {
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    mapRef: state.mapRef,
+    showRoute: state.showRoute,
+    areas: state.areas,
+    tappedArea: state.tappedArea
   }
+}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      updateModalVisible: (param) => dispatch({type: "UPDATE_MODAL_VISIBLE", param: param}), 
-      updateShowRoute: (param) => dispatch({type: "UPDATE_SHOW_ROUTE", param: param}), 
-      updateArea: (param) => dispatch({type: "UPDATE_AREA", param: param}), 
-      updateTappedArea: (param) => dispatch({type: "UPDATE_TAPPED_AREA", param: param}),    
-    }
+function mapDispatchToProps(dispatch) {
+  return {
+    updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
+    updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
+    updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),
+    updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
   }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Parkings);
