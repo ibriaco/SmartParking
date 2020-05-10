@@ -9,28 +9,12 @@ const now = new Date();
 class ListScreen extends Component {
   constructor(props) {
     super(props);
-
-    
   }   
   
     render() {
         return (
           <CardList  
-          listProps={{
-            ListHeaderComponent: () => (
-              <View style={{ padding: 16, paddingBottom: 0 }}>
-                <Text
-                  style={{
-                    fontSize: 13,
-                    color: "rgba(0, 0, 0, 0.5)"
-                  }}
-                >
-                  {now.toDateString()}
-                </Text>
-                <Text style={{ fontSize: 32, fontWeight: "bold" }}>Parkings</Text>
-              </View>
-            )
-          }} 
+          cardContainerStyle={{height: 500}}
           data={this.props.areas}
           
           renderItem={({ item, index }) => {

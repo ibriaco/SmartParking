@@ -9,6 +9,8 @@ import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 import { Card } from 'galio-framework';
 import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import Accordion from 'react-native-collapsible/Accordion';
+
 
 const { width } = Dimensions.get('screen');
 
@@ -21,6 +23,7 @@ class History extends Component {
         super(props);
     
         this.state = {
+          activeSections: [],
           animation: new Animated.Value(0),
         }
     
@@ -32,6 +35,43 @@ class History extends Component {
           inputRange: [0, HEADER_HEIGHT],
           outputRange: [0, -HEADER_HEIGHT]
         });
+
+        _renderSectionTitle = section => {
+          return (
+            <View style={styles.content}>
+              <Text>{section.distance}</Text>
+            </View>
+          );
+        };
+      
+        _renderHeader = section => {
+          return (
+            <View style={styles.header}>
+              <Text style={styles.headerText}>{section.address}</Text>
+              <Text style={styles.headerText}>{section.distance}</Text>
+              <Text style={styles.headerText}>{section.time}</Text>
+
+
+            </View>
+          );
+        };
+      
+        _renderContent = section => {
+          return (
+            <View style={styles.content}>
+              <Text>{section.price}</Text>
+              <Text> PORCODSIDOSAOFSKIDJFC
+                VSVVJDFVSDKFJC
+                FDIJSFSAKJFAQXHACDUSCDIUCGNISJDGHFCYU
+              </Text>
+
+            </View>
+          );
+        };
+      
+        _updateSections = activeSections => {
+          this.setState({ activeSections });
+        };
     
       render() {
         return (
@@ -51,54 +91,20 @@ class History extends Component {
             </Animated.View> 
            */}
             <View style = {{marginLeft: 20, marginTop: 20}}>
-                <Text h2 bold gray2>Today</Text>
+                <Text h2 gray2 style={{fontFamily: "Montserrat-Bold"}}>Today</Text>
             </View>
     
-            <Animated.ScrollView
-              contentContainerStyle={styles.cards}
-              showsVerticalScrollIndicator={false}
-              style={{ paddingTop: 20 }}
-              bounces={false}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: { contentOffset: { y: this.scrollY } }
-                }
-              ])}>
-               
-              {this.props.areas.map((area, index) => (
-                <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{ flex: 1, margin: 10 }}>
-                  <TouchableWithoutFeedback onPress={() => {
-                    this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
-                    this.props.updateTappedArea(area);
-                    this.props.updateShowRoute(false)
-                    this.props.navigation.navigate("Home");
-                  }}>
-                    <Card
-                      flex
-                      borderless
-                      shadowColor="white"
-                      style={styles.card}
-                      title="9:30 - 14:00"
-                      avatar="https://i.imgur.com/dQGKmRZ.png"
-                      caption={area.price != 0 ? area.price + " €/h" : "FREE"}
-                      location={area.address}
-                      imageStyle={styles.rounded}
-                      imageBlockStyle={{ padding: theme.sizes.base / 2 }}
-                    >
-                    </Card>
-                  </TouchableWithoutFeedback>
-                </Animatable.View>
-              ))}
-              {this.props.areas.length == 0 && <Animatable.View animation="slideInUp" duration={600} delay={100} style={{ flex: 1, margin: 10 }}>
-                <FontAwesome5 name="times" size={30} color="red" style={{ paddingTop: 30 }}><Text h1 style={{ color: "red" }}> There are no parkings!</Text></FontAwesome5>
+            
+               <Accordion
+                  touchableComponent={TouchableWithoutFeedback}
+                  duration={600}
+                  sections={this.props.areas}
+                  activeSections={this.state.activeSections}
+                  renderHeader={this._renderHeader}
+                  renderContent={this._renderContent}
+                  onChange={this._updateSections}
+                />
     
-                <Text>Please change location, destination or try using different filter paramenters!</Text>
-    
-              </Animatable.View>
-              }
-    
-            </Animated.ScrollView>
           </Container>
         );
       }
@@ -106,10 +112,7 @@ class History extends Component {
     
     
     const styles = StyleSheet.create({
-      header: {
-        paddingHorizontal: theme.sizes.base * 2,
-        paddingVertical: theme.sizes.base * 4
-      },
+      
       container: {
         paddingHorizontal: theme.sizes.base * 2
       },
@@ -118,7 +121,6 @@ class History extends Component {
         backgroundColor: "white",
         alignItems: 'center',
         justifyContent: 'flex-start',
-        paddingBottom: HEADER_HEIGHT
       },
       card: {
         backgroundColor: "white",
@@ -128,6 +130,27 @@ class History extends Component {
       },
       rounded: {
         borderRadius: theme.sizes.base,
+      },
+      header: {
+        width: width - theme.sizes.base * 2,
+        alignItems: 'center',
+        alignSelf: 'center',
+
+        borderRadius: theme.sizes.base,
+        elevation: theme.sizes.base / 2,
+        shadowOpacity: 0.5,
+        backgroundColor: '#fff',
+        padding: 20,
+        marginTop: 20
+      },
+      headerText: {
+        textAlign: 'center',
+        fontSize: 16,
+        fontWeight: '500',
+      },
+      content: {
+        padding: 20,
+        backgroundColor: '#fff',
       },
     });
     

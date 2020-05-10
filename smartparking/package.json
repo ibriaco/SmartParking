@@ -31,6 +31,7 @@
     "react-native-app-walkthrough": "^1.0.1",
     "react-native-card-animated-modal": "^1.0.3",
     "react-native-circular-action-menu": "^0.5.0",
+    "react-native-collapsible": "^1.5.2",
     "react-native-credit-card-input": "^0.4.1",
     "react-native-dynamic-search-bar": "^0.3.1",
     "react-native-dynamic-vector-icons": "^0.2.2",

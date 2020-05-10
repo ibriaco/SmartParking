@@ -49,13 +49,12 @@ class Parkings extends Component {
           <Text h3 style={{ fontFamily: "Montserrat" }} gray2>Choose the best parking for you</Text>
 
         </Animated.View> 
-       */}
+      */}
         
 
         <Animated.ScrollView
           contentContainerStyle={styles.cards}
           showsVerticalScrollIndicator={false}
-          style={{ paddingTop: 20 }}
           bounces={false}
           scrollEventThrottle={16}
           onScroll={Animated.event([
@@ -145,7 +144,6 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     alignItems: 'center',
     justifyContent: 'flex-start',
-    paddingBottom: HEADER_HEIGHT
   },
   card: {
     backgroundColor: "white",
