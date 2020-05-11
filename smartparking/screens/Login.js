@@ -64,8 +64,40 @@ class Login extends Component {
           .auth()
           .signInWithCredential(credential)
           .then(() => {
-            console.log(firebase.auth().currentUser)
-            this.props.navigation.navigate("Home")})
+            //console.log(firebase.auth().currentUser)            
+
+            var result;
+            var tempUser = firebase.auth().currentUser;
+            firebase.database().ref('Users/' + tempUser.uid).on('value', (snapshot) => {
+              result = snapshot.val();
+            });
+
+            if(result == null){
+              //no user data => signup
+              this.props.updateUserData({
+                uid: tempUser.uid,
+                name: tempUser.displayName,
+                email: tempUser.email,
+                photoUrl: tempUser.photoURL,
+                points: 0,
+                bonus: 0
+              });
+              console.log("NULL")
+
+              firebase.database().ref('Users/' + tempUser.uid).set(
+                this.props.userData
+              );
+
+            } else {
+              console.log("NOT NULL")
+              //user data => login
+              this.props.updateUserData(result);
+            }
+            
+            
+            this.props.navigation.navigate("Home")
+          }
+            )
           .catch(error => {
             console.log("firebase cred err:", error);
           });
@@ -91,7 +123,37 @@ class Login extends Component {
         .auth()
         .signInWithCredential(credential) //signInWithReadCredential is deprecated!
         .then(() => {
-          console.log(firebase.auth().currentUser)
+
+          //console.log(firebase.auth().currentUser)
+
+          var result;
+            var tempUser = firebase.auth().currentUser;
+            firebase.database().ref('Users/' + tempUser.uid).on('value', (snapshot) => {
+              result = snapshot.val();
+            });
+
+            if(result == null){
+              //no user data => signup
+              this.props.updateUserData({
+                uid: tempUser.uid,
+                name: tempUser.displayName,
+                email: tempUser.email,
+                photoUrl: tempUser.photoURL,
+                points: 0,
+                bonus: 0
+              });
+              console.log("NULL")
+
+              firebase.database().ref('Users/' + tempUser.uid).set(
+                this.props.userData
+              );
+
+            } else {
+              console.log("NOT NULL")
+              //user data => login
+              this.props.updateUserData(result);
+            }
+
           this.props.navigation.navigate("Home")})
         .catch(error => this.setState({ errorMessage: error.message }));; 
     }
@@ -103,12 +165,12 @@ class Login extends Component {
 
     return (
       <View style={{flex: 1}}>
-              <Animatable.View animation="slideOutUp" style={{position: "absolute", top:0, left:0, height: "100%", width: "100%", backgroundColor:"#03A696", zIndex: 1}}></Animatable.View>
+      <Animatable.View animation="slideOutUp" style={{position: "absolute", top:0, left:0, height: "100%", width: "100%", backgroundColor:"#03A696", zIndex: 1}}></Animatable.View>
 
       <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.login}
-    >
+      >
       
         <Block padding={[0, theme.sizes.base * 2]}>
           <Text h1 bold>

@@ -158,30 +158,7 @@ const screens = createStackNavigator(
         header: null
       }
     },
-    VehicleSelection: {
-      screen: VehicleSelection,
-      navigationOptions: {
-        headerTitleStyle: {
-          textAlign: "center",
-          flex: 1,
-          fontSize: 26,
-          fontWeight: 'bold',
-        },
-        headerRight: (<View />)
-      },
-    },
-    PaymentSelection: {
-      screen: PaymentSelection,
-      navigationOptions: {
-        headerTitleStyle: {
-          textAlign: "center",
-          flex: 1,
-          fontSize: 26,
-          fontWeight: 'bold',
-        },
-        headerRight: (<View />)
-      },
-    },
+    
     Home: {
       screen: createBottomTabNavigator({
         Home: {
@@ -199,12 +176,7 @@ const screens = createStackNavigator(
           }
         },
 
-        Filter: {
-          screen: Filter,
-          navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="sliders-h" size={28} color={focused ? "#000" : "#CDCCCE"} />
-          }
-        },
+        
         Profile: {
             screen: Profile,
             navigationOptions: {
@@ -214,12 +186,6 @@ const screens = createStackNavigator(
             }
           },
         
-        Wallet: {
-          screen: Payment,
-          navigationOptions: {
-          tabBarIcon: ({ focused }) => <FontAwesome5 name="credit-card" size={28} color={focused ? "#000" : "#CDCCCE"} />,
-        }
-        },
 
       },
         {

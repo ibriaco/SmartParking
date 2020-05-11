@@ -59,8 +59,9 @@ class Register extends Component {
         uid: userCredentials.user.uid,
         name: this.state.name,
         email: this.state.email,
+        photoUrl: "none",
         points: 0,
-        reservations: {}
+        bonus: 0,
       });
 
     })
@@ -109,9 +110,19 @@ class Register extends Component {
   handleFinish() {
 
 
+    var newData ={
+      ...this.props.userData,
+      payment: {
+        paymentType: "paypal",
+        paypayEmail: "nananan@bella.it"
+      }
+    };
+
     firebase.database().ref('Users/' + this.props.userData.uid).set(
-      this.props.userData
+      newData
     );
+
+    this.props.updateUserData(newData);
 
     this.props.navigation.navigate("Home");
 

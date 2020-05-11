@@ -68,7 +68,7 @@ class Parkings extends Component {
                 this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
                 this.props.updateTappedArea(area);
                 this.props.updateShowRoute(false)
-                this.props.navigation.navigate("Home");
+                //this.props.navigation.navigate("Home");
               }}>
                 <Card
                   flex
