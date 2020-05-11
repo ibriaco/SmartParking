@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { View, StyleSheet, ScrollView } from "react-native";
+import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
@@ -7,22 +7,38 @@ import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
 import { Input, Icon } from "galio-framework"
 import * as Progress from 'react-native-progress';
-
+import Modal from "react-native-modal";
   
+const { width } = Dimensions.get('screen');
+
 class Details extends Component {
+
   constructor(props) {
     super(props);
 
   this.state = {
     showPicker: false,
+    showModal: false,
     selectedTime: 0,
     timeInMS: 0, 
     isTimeSelected: false, 
     userBonus: 1.00,
     userProgress: 50,
-    notificationsEnabled: false
+    notificationsEnabled: false,
+    scrollOffset: null
   };
   }
+
+  handleOnScroll = event => {
+    this.setState({
+      scrollOffset: event.nativeEvent.contentOffset.y,
+    });
+  };
+  handleScrollTo = p => {
+    if (this.scrollViewRef.current) {
+      this.scrollViewRef.current.scrollTo(p);
+    }
+  };
   
 render(){
   return (
@@ -65,6 +81,7 @@ render(){
 
 
 {this.props.tappedArea.price > 0 &&
+<TouchableWithoutFeedback onPress={() => this.setState({showModal: true})}>
 <View style={{shadowOpacity: 0.5,
         backgroundColor: '#fff', borderRadius: 20, elevation: 16}}>
 <Text h2 black center style={{fontFamily: 'Montserrat'}}>
@@ -75,6 +92,7 @@ render(){
   </Text>
  
   </View>
+  </TouchableWithoutFeedback>
 }
 
   <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
@@ -82,7 +100,7 @@ render(){
 
 {this.props.tappedArea.price > 0 &&
 
-<Input
+            <Input
               placeholder ="DX 999 SS"
               editable={false}
               right
@@ -120,7 +138,8 @@ render(){
   }
 
   {(this.state.isTimeSelected && this.props.tappedArea.price == 0) &&
-  <Button style={{backgroundColor: "orange"}} onPress={() => this.setState({userProgress: this.state.userProgress + 10})}>
+  <Button style={{backgroundColor: "orange"}} onPress={() => {
+    this.setState({userProgress: this.state.userProgress + 10})}}>
     <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
       Continue
     </Text>
@@ -128,7 +147,8 @@ render(){
   }
 
   {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
-  <Button style={{backgroundColor: "blue"}} onPress={() => this.setState({userProgress: this.state.userProgress + 40})}>
+  <Button style={{backgroundColor: "blue"}} onPress={() => {
+    this.setState({userProgress: this.state.userProgress + 40})}}>
     <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
       Pay
     </Text>
@@ -205,15 +225,54 @@ render(){
     isVisible={this.state.showPicker}
     mode="time"
     date={new Date()}
-    onCancel={() => console.log("cancel")}
+    onCancel={() => this.setState({showPicker: false})}
     onConfirm={(date) => {
-      if(date > new Date())
+      if(date >= new Date())
         this.setState({
           isTimeSelected: true,
           selectedTime: date.toLocaleTimeString(),
           timeInMS: date.getTime(),
           showPicker: false})
-        }}/>
+        
+        else 
+        this.setState({showPicker: false})}}/>
+
+
+
+<Modal
+        isVisible={this.state.showModal}
+        onBackdropPress={() => this.setState({showModal: false})}
+        style={styles.modal}>
+        <View style={styles.scrollableModal}>
+          <ScrollView
+            scrollEventThrottle={16}>
+            <TouchableWithoutFeedback>
+            <View style={styles.scrollableModalContent}>
+            <Text style={{fontFamily: "Montserrat-Bold"}}>
+                Paypal
+              </Text>
+
+              <Text style={{fontFamily: "Montserrat"}}>
+                griggoswaggo@gmail.com
+              </Text>
+            </View>
+            </TouchableWithoutFeedback>
+
+            <TouchableWithoutFeedback>
+            <View style={styles.scrollableModalContent}>
+            <Text style={{fontFamily: "Montserrat-Bold"}}>
+                Credit Card
+              </Text>
+              <Text style={{fontFamily: "Montserrat"}}>
+                VISA 4444 4444 4444 4444
+              </Text>
+            </View>
+            </TouchableWithoutFeedback>
+
+            
+          </ScrollView>
+        </View>
+      </Modal>
 
   </View>
   );
@@ -317,5 +376,27 @@ const styles = StyleSheet.create({
     position: "absolute"
 
 
-  }
+  },
+  modal: {
+    justifyContent: 'flex-end',
+    margin: 0,
+  },
+  scrollableModal: {
+    backgroundColor: "white",
+    height: 300,
+  },
+  scrollableModalContent: {
+    width: width - theme.sizes.base * 2,
+        alignItems: 'center',
+        alignSelf: 'center',
+
+        borderRadius: theme.sizes.base,
+        elevation: theme.sizes.base / 2,
+        shadowOpacity: 0.5,
+        backgroundColor: '#fff',
+        padding: 20,
+        marginTop: 10,
+        marginBottom: 10
+  },
+  
 });

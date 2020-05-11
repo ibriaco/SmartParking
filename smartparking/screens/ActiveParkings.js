@@ -111,17 +111,18 @@ class ParkingsNoImage extends Component {
 
             </View>
             </TouchableWithoutFeedback>
+            
             <Collapsible collapsed={this.state.collapsed} align="center">
-<View style={styles.content}>
-  
-  <Text style={{ textAlign: 'center' }}>
-   Gestisci il tuo parking
-  </Text>
-  <Button style = {styles.end}>
-                <Text center white h2>Stop parking</Text>
-            </Button>
-</View>
-</Collapsible>
+            <View style={styles.content}>
+              
+              <Text style={{ textAlign: 'center' }}>
+              Gestisci il tuo parking
+              </Text>
+              <Button style = {styles.end}>
+                            <Text center white h2>Stop parking</Text>
+                        </Button>
+            </View>
+            </Collapsible>
 
             
           </Container>
