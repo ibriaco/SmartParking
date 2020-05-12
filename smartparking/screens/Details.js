@@ -8,7 +8,9 @@ import { connect } from 'react-redux';
 import { Input, Icon } from "galio-framework"
 import * as Progress from 'react-native-progress';
 import Modal from "react-native-modal";
-  
+import * as firebase from 'firebase';
+
+
 const { width } = Dimensions.get('screen');
 
 class Details extends Component {
@@ -22,7 +24,6 @@ class Details extends Component {
     selectedTime: 0,
     timeInMS: 0, 
     isTimeSelected: false, 
-    userBonus: 1.00,
     userProgress: 50,
     notificationsEnabled: false,
     scrollOffset: null
@@ -119,13 +120,13 @@ render(){
 {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
   <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
-    Bonus: {this.state.userBonus.toFixed(2)} €
+    Bonus: {this.props.userData.bonus.toFixed(2)} €
   </Text>
 }
   {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
 <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
-    Total: {((((this.state.timeInMS - (new Date()).getTime()) / 3600000 ) * this.props.tappedArea.price) - this.state.userBonus).toFixed(2)} €
+    Total: {((((this.state.timeInMS - (new Date()).getTime()) / 3600000 ) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(2)} €
   </Text>
   }
 
@@ -148,6 +149,16 @@ render(){
 
   {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
   <Button style={{backgroundColor: "blue"}} onPress={() => {
+    this.props.navigation.navigate("Purchase");
+    var now = new Date()
+    firebase.database().ref('Users/' + this.props.userData.uid + "/Reservations").push({
+      startDate: now.toDateString(),
+      endDate: this.state.selectedTime,
+      amount: ((((this.state.timeInMS - (new Date()).getTime()) / 3600000 ) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(2),
+      parkingAddress: this.props.tappedArea.address, 
+      parkingCity: this.props.currentCity,
+      earnedPoints: 10
+    });
     this.setState({userProgress: this.state.userProgress + 40})}}>
     <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
       Pay
@@ -169,7 +180,7 @@ render(){
     </Text>
 
     <Text h1 black center style={{fontFamily: 'Montserrat-Bold'}}>
-    {((((this.state.timeInMS - (new Date()).getTime()) / 3600000 ) * this.props.tappedArea.price) - this.state.userBonus).toFixed(1) * 5}
+    {((((this.state.timeInMS - (new Date()).getTime()) / 3600000 ) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(1) * 5}
     </Text>
 
     <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
@@ -283,6 +294,8 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    currentCity: state.currentCity,
+    userData: state.userData,
     tappedArea: state.tappedArea
   }
 }

@@ -588,7 +588,7 @@ class Map extends React.Component {
               <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text h1 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>Viale Sarca, 369</Text>
+                    <Text h1 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
                     <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 30 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -627,8 +627,8 @@ class Map extends React.Component {
                   <Text></Text>
                   <View style={{ flexDirection: "column", justifyContent:"center" }}>
                   <View style={{ flexDirection: "row", justifyContent:"space-between" }}>
-                    <Button style={styles.modalContent}>
-                    <Icon name="directions" color="#0000FF" size={34} onPress={this._showParkingRoute}/>
+                    <Button style={styles.modalContent} onPress={this._showParkingRoute}>
+                    <Icon name="directions" color="#0000FF" size={34} />
                     </Button>
                     <Button style={styles.modalContent} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}>
                     <Image source = {require('../assets/icons/gmaps.png')} style = {{width: 30, height: 30}}/>

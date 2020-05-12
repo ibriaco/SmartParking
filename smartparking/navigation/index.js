@@ -21,6 +21,7 @@ import Payment from "../screens/Payment";
 import CardPage from "../screens/CardPage";
 import Reports from "../screens/Reports";
 import Details from "../screens/Details";
+import PurchaseProduct from "../screens/PurchaseProduct";
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
@@ -72,6 +73,12 @@ const screens = createStackNavigator(
     },
     Welcome: {
       screen: WelcomeScreen,
+      navigationOptions: {
+        header: null
+      }
+    },
+    Purchase: {
+      screen: PurchaseProduct,
       navigationOptions: {
         header: null
       }
