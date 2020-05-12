@@ -9,6 +9,7 @@ import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 import { Checkbox } from 'galio-framework';
 import Modal from "react-native-modal";
+import {Header, Left, Right, Body, Title} from 'native-base'
 
 const { width } = Dimensions.get('screen');
 
@@ -27,10 +28,10 @@ class Reports extends Component {
 
   }
 
-  async handleSend(){
+  async handleSend() {
 
     //show modal
-    this.setState({reportSent: true});
+    this.setState({ reportSent: true });
 
     //increment user points (in the local copy)
     //questo valore sarà quello collegato a PROGRESS della progressbar
@@ -40,7 +41,7 @@ class Reports extends Component {
       setTimeout(() => {
         //this.props.updateUserData(this.props.userData.points + 10);
       }, 1000);
-      this.setState({reportSent: false});
+      this.setState({ reportSent: false });
     }, 2000);
 
 
@@ -51,82 +52,96 @@ class Reports extends Component {
 
   scrollY = new Animated.Value(0);
   diffClampScrollY = new Animated.diffClamp(this.scrollY, 0, HEADER_HEIGHT);
-  headerY = new Animated.interpolate(this.diffClampScrollY, 
+  headerY = new Animated.interpolate(this.diffClampScrollY,
     {
       inputRange: [0, HEADER_HEIGHT],
       outputRange: [0, -HEADER_HEIGHT]
     });
-  
-    render() {
-        return (
-          
-          <View style={{flex: 1}}>
-            <Animated.View style={{justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position:'absolute', left:0, right:0, top:0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex:1000, elevation:1000, transform: [{translateY: this.headerY}], shadowOpacity: 0.3,
-    
-    elevation: 6,}}>
-               <Text bold style={{ fontSize: 32 }}>
-          Reports
-        </Text>
-        <Text h3 gray2>Make us know if there's something wrong</Text>
 
-            </Animated.View>                
-           
-            <Animated.ScrollView  
-              contentContainerStyle={styles.cards}
-              showsVerticalScrollIndicator={false}
-              style={{paddingTop: HEADER_HEIGHT}}
-              bounces={false}
-              scrollEventThrottle={16}
-              onScroll={Animated.event([
-                {
-                  nativeEvent: {contentOffset:{y: this.scrollY}}
-                }
-              ])}>
+  render() {
+    return (
 
-            <Animatable.View animation="slideInRight" duration={600} delay={100}>
-            <View style = {{flexDirection:"column", justifyContent:"space-around"}}>
-              <Checkbox label = "The price is different" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
-              <Checkbox label = "The time is different" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
-              <Checkbox label = "The road is unaccessible" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
-              <Checkbox label = "The parking has been removed" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
-            </View>
-           
-
-            </Animatable.View>
-            <Block bottom style={{ marginBottom: 30 }}>
-
-            <Animatable.View animation="bounceIn" duration={600} delay={100}>
-            <Block bottom style = {{alignSelf:"flex-end"}}>
-            <Button style={styles.button} onPress={() => this.handleSend()}>
-              <Text h1 bold black center>
-                Send
-              </Text>
+      <View style={{ flex: 1, flexDirection: "column", justifyContent: "space-between" }}>
+        <Header style = {{backgroundColor:"#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
+          <Left>
+            <Button style = {{flexDirection:"column"}}>
+              <Icon name="arrow-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
             </Button>
+          </Left>
+          <Body>
+          </Body>
+          <Right>
+            <Button/>
+          </Right>
+        </Header>
+        <Animated.View style={{
+          justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
+
+          elevation: 6,
+        }}>
+          <Text bold style={{ fontSize: 32 }}>
+            Reports
+        </Text>
+          <Text h3 gray2>Make us know if there's something wrong</Text>
+
+        </Animated.View>
+
+        <Animated.ScrollView
+          contentContainerStyle={styles.cards}
+          showsVerticalScrollIndicator={false}
+          style={{ paddingTop: HEADER_HEIGHT }}
+          bounces={false}
+          scrollEventThrottle={16}
+          onScroll={Animated.event([
+            {
+              nativeEvent: { contentOffset: { y: this.scrollY } }
+            }
+          ])}>
+
+          <Animatable.View animation="slideInRight" duration={600} delay={100}>
+            <View style={{ flexDirection: "column", justifyContent: "space-around" }}>
+              <Checkbox label="The price is different" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
+              <Checkbox label="The time is different" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
+              <Checkbox label="The road is unaccessible" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
+              <Checkbox label="The parking has been removed" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
+            </View>
+
+
+          </Animatable.View>
+
+
+
+
+
+        </Animated.ScrollView>
+        <Block bottom style={{ marginBottom: 30 }}>
+
+          <Animatable.View animation="bounceIn" duration={600} delay={100}>
+            <Block bottom center>
+              <Button style={styles.button} onPress={() => this.handleSend()}>
+                <Text h1 bold white center>
+                  Send
+              </Text>
+              </Button>
             </Block>
-            
-            </Animatable.View>
 
-</Block>
+          </Animatable.View>
 
-            
-            
+        </Block>
+        <Modal isVisible={this.state.reportSent} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', alignContent:"center" }}>
 
-            </Animated.ScrollView>
+          <Animatable.View animation="bounceIn" duration={600} delay={200}>
+            <Text h3 gray2>+ 10 points!</Text>
+          </Animatable.View>
 
-            <Modal isVisible={this.state.reportSent} style={{ flex: 0.5, justifyContent: "flex-end", alignSelf: "center", width: '100%',}}>
-              
-              <Animatable.View animation="bounceIn" duration={600} delay={200}>
-                <Text h3 gray2>+ 10 points!</Text>
-              </Animatable.View>
+          <Animatable.View animation="bounceIn" duration={600} delay={200}>
+            <Text h3 gray2>here the progress bar</Text>
+          </Animatable.View>
 
-              <Animatable.View animation="bounceIn" duration={600} delay={200}>
-                <Text h3 gray2>here the progress bar</Text>
-              </Animatable.View>
-
-            </Modal>
-          </View>
-        );
-    }
+        </Modal>
+      </View>
+    );
+  }
 }
 
 
@@ -162,29 +177,33 @@ const styles = StyleSheet.create({
     marginHorizontal: 10
   },
   button: {
-    width: 80,
-    paddingHorizontal: 12,
-    alignItems: "center",
-    marginHorizontal: 10
+    backgroundColor: '#03A696',
+    height: 60,
+    width:'80%',
+    borderRadius: 20,
+    marginHorizontal: 25,
+    shadowOpacity: 0.3,
+    shadowOffset: {width: 0, height: 2},
+    elevation: 6,
   },
 });
 
 function mapStateToProps(state) {
-    return {
-      //state.areas gets data from the store
-      //and we are mapping that data to the prop named areas
-      showRoute: state.showRoute,
-      areas: state.areas, 
-      tappedArea: state.tappedArea
-    }
+  return {
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    showRoute: state.showRoute,
+    areas: state.areas,
+    tappedArea: state.tappedArea
   }
+}
 
-  function mapDispatchToProps(dispatch) {
-    return {
-      updateShowRoute: (param) => dispatch({type: "UPDATE_SHOW_ROUTE", param: param}), 
-      updateArea: (param) => dispatch({type: "UPDATE_AREA", param: param}), 
-      updateTappedArea: (param) => dispatch({type: "UPDATE_TAPPED_AREA", param: param}),    
-    }
+function mapDispatchToProps(dispatch) {
+  return {
+    updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
+    updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),
+    updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
   }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(Reports);
