@@ -26,8 +26,8 @@ import { FontAwesome5 } from 'react-native-vector-icons';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
-import {showMessage} from "react-native-flash-message";
-import {Ionicons} from 'react-native-vector-icons'
+import { showMessage } from "react-native-flash-message";
+import { Ionicons } from 'react-native-vector-icons'
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -102,9 +102,9 @@ class Map extends React.Component {
   async readAndDrawAreas() {
 
     firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
-      
+
       //this means that we don't have parkings in the current city
-      if(snapshot.numChildren() == 0){
+      if (snapshot.numChildren() == 0) {
 
         //notify the user of that
         showMessage({
@@ -119,7 +119,7 @@ class Map extends React.Component {
         this.props.updateAllAreas(emptyArray);
         this.setState({ isLoading: true });
       }
-      else{    
+      else {
         //notify the user of that
         showMessage({
           message: "Yesss!",
@@ -127,15 +127,15 @@ class Map extends React.Component {
           type: "success",
         });
 
-      this.props.updateArea(snapshot.val());
-      this.props.updateAllAreas(snapshot.val());
-      this.setState({ isLoading: false });
-      
-      this.updateDist()
+        this.props.updateArea(snapshot.val());
+        this.props.updateAllAreas(snapshot.val());
+        this.setState({ isLoading: false });
+
+        this.updateDist()
       }
     })
 
-    
+
   }
 
 
@@ -170,36 +170,36 @@ class Map extends React.Component {
 
     //ask for gps permission and watch for position changes
     let { status } = await Location.requestPermissionsAsync();
-    
+
     if (status === 'granted') {
-      Location.watchPositionAsync(LOCATION_SETTINGS, async(position) => {
+      Location.watchPositionAsync(LOCATION_SETTINGS, async (position) => {
 
-            const newCoordinate = {
-              latitude: position.coords.latitude,
-              longitude: position.coords.longitude
-            };
+        const newCoordinate = {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude
+        };
 
-            //when position changes, animate the marker
-            coordinate.timing(newCoordinate).start();
+        //when position changes, animate the marker
+        coordinate.timing(newCoordinate).start();
 
-            //and update the route at index 0
+        //and update the route at index 0
 
-            this.setState({ currentCoordinates: newCoordinate });
-            this.props.updateCoordinates(newCoordinate);
+        this.setState({ currentCoordinates: newCoordinate });
+        this.props.updateCoordinates(newCoordinate);
 
 
-            if (initialPosition) {
-              let geocode = await Location.reverseGeocodeAsync(newCoordinate);
-              this.props.updateCity(geocode[0].city)
-              console.log("Prima lettura coordinate: " + this.props.currentCity)
+        if (initialPosition) {
+          let geocode = await Location.reverseGeocodeAsync(newCoordinate);
+          this.props.updateCity(geocode[0].city)
+          console.log("Prima lettura coordinate: " + this.props.currentCity)
 
-              initialPosition = !initialPosition
-              this.updateCamera();
-              await this.readAndDrawAreas();
-            }
+          initialPosition = !initialPosition
+          this.updateCamera();
+          await this.readAndDrawAreas();
+        }
 
-           
-            
+
+
 
 
 
@@ -237,19 +237,19 @@ class Map extends React.Component {
 
     console.log(area.distance)
 
-    
-      if (this.props.showRoute)
-        this.props.updateShowRoute(false);
 
-      await this.props.updateTappedArea(area);
+    if (this.props.showRoute)
+      this.props.updateShowRoute(false);
 
-      setTimeout(() => { this.props.updateModalVisible(true) }, 200)
-    
+    await this.props.updateTappedArea(area);
+
+    setTimeout(() => { this.props.updateModalVisible(true) }, 200)
+
   }
 
   _showParkingRoute() {
 
-    this.setState({shouldFitMap: true})
+    this.setState({ shouldFitMap: true })
 
     showMessage({
       message: "Calculating route to " + this.props.tappedArea.address,
@@ -258,11 +258,11 @@ class Map extends React.Component {
       backgroundColor: "black", // background color
       color: "white", // text color
     });
-    
+
 
     this.props.updateModalVisible(false);
     this.props.updateShowRoute(true);
-    
+
 
   }
 
@@ -280,24 +280,26 @@ class Map extends React.Component {
 
   }
 
-  _linkToGoogleMaps(){
+  _linkToGoogleMaps() {
     Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude);
   }
 
 
-  async handleSelection(details){
-    
+  async handleSelection(details) {
+
 
     let geocode = await Location.reverseGeocodeAsync({
       latitude: details.geometry.location.lat,
       longitude: details.geometry.location.lng
     });
-    
-    
-    this.setState({destinationCoordinates: {
-      latitude: details.geometry.location.lat,
-      longitude: details.geometry.location.lng
-    }});
+
+
+    this.setState({
+      destinationCoordinates: {
+        latitude: details.geometry.location.lat,
+        longitude: details.geometry.location.lng
+      }
+    });
 
 
 
@@ -306,10 +308,10 @@ class Map extends React.Component {
 
     this.readAndDrawAreas();
 
-    
+
     if (this.mapView !== null)
       this.mapView.animateCamera({ center: this.state.destinationCoordinates, zoom: 14 }, { duration: 1000 });
-    
+
   }
 
   async setModalVisible(visible) {
@@ -351,7 +353,7 @@ class Map extends React.Component {
     //second version (standard for)
     var tempAreas = this.props.areas;
     var newAreas = [];
-    console.log("LUNGHEZZA: "+ tempAreas.length )
+    console.log("LUNGHEZZA: " + tempAreas.length)
 
     for (var i = 0; i < tempAreas.length; i++) {
 
@@ -365,7 +367,7 @@ class Map extends React.Component {
           time: json.rows[0].elements[0].duration.text
         };
 
-        
+
         newAreas.push(tempAreas[i]);
 
         console.log(tempAreas[i])
@@ -405,15 +407,15 @@ class Map extends React.Component {
         >
 
           {this.props.circleRadius != 0 &&
-          <MapView.Circle
-            center={this.props.distanceFromUser ? this.state.currentCoordinates : this.state.destinationCoordinates}
-            radius={this.props.circleRadius * 1000}
-            fillColor="rgba(3, 166, 150,0.1)"
-            strokeColor="rgba(3, 166, 150,0.2)"
+            <MapView.Circle
+              center={this.props.distanceFromUser ? this.state.currentCoordinates : this.state.destinationCoordinates}
+              radius={this.props.circleRadius * 1000}
+              fillColor="rgba(3, 166, 150,0.1)"
+              strokeColor="rgba(3, 166, 150,0.2)"
             >
-          </MapView.Circle>}
+            </MapView.Circle>}
 
-          
+
 
           {!this.state.isLoading && this.props.areas.map((area, index) => (
 
@@ -427,15 +429,15 @@ class Map extends React.Component {
 
 
           {(this.state.destinationCoordinates != null) && (
-          <MapView.Marker
+            <MapView.Marker
               coordinate={{ latitude: this.state.destinationCoordinates.latitude, longitude: this.state.destinationCoordinates.longitude }}>
               <Animatable.View animation="bounceIn" duration={700} delay={2000} >
                 <FontAwesome5 name="map-marker-alt" color="#FF9800" size={30} />
-             </Animatable.View>
-          </MapView.Marker>         
+              </Animatable.View>
+            </MapView.Marker>
           )}
-          
-          
+
+
           {(this.props.showRoute) && (
             <MapViewDirections
               origin={this.state.currentCoordinates}
@@ -447,15 +449,15 @@ class Map extends React.Component {
               strokeWidth={3}
               strokeColor="rgba(0,0,0,1)"
               optimizeWaypoints={true}
-              
+
               onReady={result => {
 
-                if(this.state.shouldFitMap){
+                if (this.state.shouldFitMap) {
                   this.mapView.fitToCoordinates(result.coordinates), {
                     edgePadding: { top: 150, right: 150, bottom: 150, left: 150 },
                     animated: true,
                   };
-                  this.setState({shouldFitMap: false})
+                  this.setState({ shouldFitMap: false })
                 }
 
               }}
@@ -465,11 +467,11 @@ class Map extends React.Component {
 
             />
           )}
-        
-        <Marker.Animated
+
+          <Marker.Animated
             ref={marker => { this.marker = marker; }}
             coordinate={this.state.coordinate}>
-            <Icon name="circle-slice-8" size = {24} color ="#rgba(3, 166, 150,0.7)"/>
+            <Icon name="circle-slice-8" size={24} color="#rgba(3, 166, 150,0.7)" />
 
           </Marker.Animated>
 
@@ -479,7 +481,7 @@ class Map extends React.Component {
         <Animatable.View animation="slideInDown" duration={800} delay={1700} style={{
           backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 0,
           shadowOffset: { width: 0, height: 2 },
-          elevation: 3, 
+          elevation: 3,
         }}>
           <GooglePlacesAutocomplete
 
@@ -491,7 +493,7 @@ class Map extends React.Component {
             fetchDetails={true}
             renderDescription={row => row.description} // custom description render
             onPress={(data, details) => { // 'details' is provided when fetchDetails = true
-              
+
               this.handleSelection(details);
 
             }}
@@ -522,7 +524,7 @@ class Map extends React.Component {
                 width: '50%',
               },
               textInputContainer: {
-                
+
                 borderTopWidth: 0,
                 borderBottomWidth: 0,
                 borderWidth: 10,
@@ -579,70 +581,74 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%',}}
+          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '90%', height: '60%', bottom: 20, }}
             onBackdropPress={() => { this.props.updateModalVisible(false) }}>
-            <View style={{ flex: 0.4 , backgroundColor: "#f8f8ff", borderTopLeftRadius: 20, borderTopRightRadius: 20, justifyContent: "space-between", paddingHorizontal: 40, width: '100%', marginVertical: -20, alignSelf:"flex-start" }}>
+            <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderRadius: 14, justifyContent: "space-between", width: '100%', marginVertical: 0, alignSelf: "flex-start" }}>
 
-              <View style={{ marginTop: 5,  justifyContent: "space-around" }}>
+              <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
-                  <Text></Text>
-                  <Text h1 style={{color: "#FF9800", fontFamily: "Montserrat-Bold"}}>{this.props.tappedArea.address}</Text>
-                  <Text></Text>
-                  <View style={{flexDirection: "row", justifyContent:"space-between"}}>
-                  <Text  h2><Text h3 secondary style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.distance}</Text></Text>
-                  <Text  h2><Text h3 secondary style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.time}</Text></Text>
-                  <Text h2 ><Text h3 color="#03A696" style={{fontFamily: "Montserrat"}}>{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}<Text h3 color="#03A696">{this.props.tappedArea.price != 0 && " €"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text></Text>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text h1 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>Viale Sarca, 369</Text>
+                    <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 30 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
                   </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <Text h3 gray2 style={{ fontFamily: "Montserrat" }}>{this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
+                    {this.props.tappedArea.price != 0 &&
+                      <Text h3 gray2 style={{ fontFamily: "Montserrat" }}>per hour</Text>
+                    }
+                  </View>
+                  <View style = {{flexDirection:"row", paddingVertical: 10}}>
+                    <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.5)">
+                    <Text h2 bold secondary>   3 spots</Text> 
+                    </FontAwesome5>
+                    
+                  </View>
+                  <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row" }}>
+                      {this.props.tappedArea.nHandicap > 0 &&
+                        <Icon name="wheelchair-accessibility" size={30} color="#6592F7" style={{ alignSelf: "center", paddingRight: 20 }} />
+                      }
+                      {this.props.tappedArea.nPregnant > 0 &&
+                        <Icon name="human-pregnant" size={30} color="#FF69B4" style={{ alignSelf: "center", paddingRight: 20 }} />
+                      }
+                      {this.props.tappedArea.nElectric > 0 &&
+                        <Icon name="car-electric" size={30} color="#FFD800" style={{ alignSelf: "center", paddingRight: 20 }} />
+                      }
+                    </View>
+                    <View style={{ flexDirection: "row" }}>
+                      
+                      
+                      <Icon name="alert-circle-outline" color="#C02501" size={36} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }} />
+                    </View>
+
+                  </View>
+                </View>
+                <View style={{ flexDirection: "column", position: "relative" }} >
                   <Text></Text>
-                  <FontAwesome5 name="parking" size={26} color="rgba(3, 166, 150,0.5)"> <Text h2 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
-                  <Text></Text>
-                </View>
-                <View style={{ flexDirection: "row", justifyContent: "flex-start"}}>
-                  
-                {this.props.tappedArea.nHandicap > 0 &&
-                  <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat"}}>disables</Text>
-                  </Button>
-                }
-
-                {this.props.tappedArea.nPregnant > 0 &&
-                  <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat"}}>pregnant</Text>
-                  </Button>
-                }
-                
-                {this.props.tappedArea.nElectric > 0 &&
-                  <Button style={styles.labels}>
-                    <Text h3 style={{fontFamily: "Montserrat"}}>electric</Text>
-                  </Button>
-                }
-                
-                </View>
-                <View style={{ flexDirection: "column", position:"relative"}} >
-                <Text></Text>
-                <Text></Text>
-                <View style={{ flexDirection: "row", justifyContent: "space-between"}}>
-                 <Button style={styles.modalContent}>
-                    <Icon name="directions" color="#fff" size={30} onPress={this._showParkingRoute} />
-                  </Button>
-                  <Button  style={styles.modalContent}>
-                    <Icon name="google-maps" color="#fff" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}/>
-                  </Button>
-                  <Button style={styles.modalContent}>
-                    <Icon name="exclamation" color="#fFFF00" size={30} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports");}} />
-                  </Button>
+                  <View style={{ flexDirection: "column", justifyContent:"center" }}>
+                  <View style={{ flexDirection: "row", justifyContent:"space-between" }}>
+                    <Button style={styles.modalContent}>
+                    <Icon name="directions" color="#0000FF" size={34} onPress={this._showParkingRoute}/>
+                    </Button>
+                    <Button style={styles.modalContent} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}>
+                    <Image source = {require('../assets/icons/gmaps.png')} style = {{width: 30, height: 30}}/>
+                   {/**
+                    <Icon name="google-maps" color="#248A24" size={34} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
+                    */}
+                    </Button>
+                    </View>
 
 
 
-                  <Button style={styles.modalContent} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Details");}}>
-                    {this.props.tappedArea.price != 0 && <Text white>PAY</Text>}
-                    {this.props.tappedArea.price == 0 && <Text white>RESERVE</Text>}
+                    <Button style={styles.pay} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Details"); }}>
+                      {this.props.tappedArea.price != 0 && <Text h2 white bold >PAY PARKING</Text>}
+                      {this.props.tappedArea.price == 0 && <Text h2 white bold >RESERVE PARKING</Text>}
 
-                  </Button>
+                    </Button>
 
-                
-                
-                </View>
+
+
+                  </View>
                 </View>
               </View>
               {/*
@@ -659,17 +665,17 @@ class Map extends React.Component {
               </View>
               
                */}
-              
+
             </View>
           </Modal>
         </Block>
 
         <Animatable.View animation="bounceIn" duration={800} delay={1000} style={{
-          position: 'absolute', bottom: 30, elevation: 3,alignSelf:"center", 
+          position: 'absolute', bottom: 30, elevation: 3, alignSelf: "center",
         }}>
-        <Button style = {styles.centerUser} onPress={this._centerMap}>
-        <Icon name="crosshairs-gps" size = {28} color ="#fff"/>
-        </Button>
+          <Button style={styles.centerUser} onPress={this._centerMap}>
+            <Icon name="crosshairs-gps" size={28} color="#fff" />
+          </Button>
         </Animatable.View>
       </View>
 
@@ -739,17 +745,32 @@ const styles = StyleSheet.create({
     marginRight: 20
   },
   modalContent: {
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     height: 50,
-    width: 70,
+    width: '45%',
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "#000",
+    borderColor: "#fff",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
+    alignSelf:"center"
+  },
+  pay: {
+    backgroundColor: '#03A696',
+    height: 50,
+    width: '100%',
+    //justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#03A696",
     shadowOpacity: 0.8,
     shadowOffset: { width: 0, height: 2 },
     elevation: 3,
+    alignSelf:"flex-end"
   },
   modalContentLowLeft: {
     backgroundColor: '#03A696',

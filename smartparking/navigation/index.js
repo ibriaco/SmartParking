@@ -21,8 +21,6 @@ import Payment from "../screens/Payment";
 import CardPage from "../screens/CardPage";
 import Reports from "../screens/Reports";
 import Details from "../screens/Details";
-import VehicleSelection from "../screens/VehicleSelection"
-import PaymentSelection from "../screens/PaymentSelection"
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
@@ -80,6 +78,12 @@ const screens = createStackNavigator(
     },
     ParkingsContainer: {
       screen: ParkingsContainer,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    Parkings: {
+      screen: Parkings,
       navigationOptions: {
         header: null,
       }

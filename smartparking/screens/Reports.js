@@ -7,7 +7,7 @@ import { theme, mocks } from "../constants";
 import Animated from 'react-native-reanimated';
 import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
-import { Card } from 'galio-framework';
+import { Checkbox } from 'galio-framework';
 import Modal from "react-native-modal";
 
 const { width } = Dimensions.get('screen');
@@ -84,28 +84,26 @@ class Reports extends Component {
               ])}>
 
             <Animatable.View animation="slideInRight" duration={600} delay={100}>
-            
-            <Text h3 gray2>The price is different</Text>
-
-            <Text h3 gray2>The time is different</Text>
-
-            <Text h3 gray2>The road is unaccessible</Text>
-
-            <Text h3 gray2>The parking has been removed</Text>
-
-
+            <View style = {{flexDirection:"column", justifyContent:"space-around"}}>
+              <Checkbox label = "The price is different" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
+              <Checkbox label = "The time is different" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
+              <Checkbox label = "The road is unaccessible" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
+              <Checkbox label = "The parking has been removed" style = {{paddingVertical: 20}} labelStyle={{fontSize: 20}} checkboxStyle={{borderColor:"#03A696", borderWidth: 2}}/>
+            </View>
+           
 
             </Animatable.View>
-
             <Block bottom style={{ marginBottom: 30 }}>
 
             <Animatable.View animation="bounceIn" duration={600} delay={100}>
-
+            <Block bottom style = {{alignSelf:"flex-end"}}>
             <Button style={styles.button} onPress={() => this.handleSend()}>
               <Text h1 bold black center>
                 Send
               </Text>
             </Button>
+            </Block>
+            
             </Animatable.View>
 
 </Block>
@@ -141,7 +139,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 2
   },
   cards: {
-    width,
     backgroundColor: "white",
     alignItems: 'center',
     justifyContent: 'flex-start',

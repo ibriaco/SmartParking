@@ -2,13 +2,13 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, Dimensions, Platform, StatusBar, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { FontAwesome5 } from 'react-native-vector-icons';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { theme, mocks } from "../constants";
 import Animated from 'react-native-reanimated';
 import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 import { Card } from 'galio-framework';
 import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 const { width } = Dimensions.get('screen');
 
@@ -37,7 +37,7 @@ class Parkings extends Component {
     return (
 
       <Container style={{ flex: 1 }}>
-      {/*
+        {/*
       <Animated.View style={{
           justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
 
@@ -50,7 +50,7 @@ class Parkings extends Component {
 
         </Animated.View> 
       */}
-        
+
 
         <Animated.ScrollView
           contentContainerStyle={styles.cards}
@@ -67,8 +67,8 @@ class Parkings extends Component {
               <TouchableWithoutFeedback onPress={() => {
                 this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
                 this.props.updateTappedArea(area);
-                this.props.updateShowRoute(false)
-                //this.props.navigation.navigate("Home");
+                this.props.updateShowRoute(false);
+                this.props.navigation.navigate("Home");
               }}>
                 <Card
                   flex
@@ -85,29 +85,25 @@ class Parkings extends Component {
                 >
 
 
-                  <View style={{ flexDirection: "column", justifyContent: "center", alignSelf: "center" }}>
-
-                    <FontAwesome5 name="parking" size={24} color="rgba(3, 166, 150,0.5)"> <Text h3 bold secondary> 3</Text><Text title>/10 spots</Text></FontAwesome5>
+                  <View style={{ flexDirection: "row", paddingVertical: 10, justifyContent:"center" }}>
+                    <FontAwesome5 name="parking" size={30} color="rgba(3, 166, 150,0.5)">
+                      <Text h2 bold secondary>   3 spots</Text>
+                    </FontAwesome5>
+                    
                   </View>
 
                   <View style={{ flexDirection: "row", justifyContent: "center" }}>
 
                     {area.nHandicap > 0 &&
-                      <Button style={styles.labels}>
-                        <Text h3 style={{ fontFamily: "Montserrat" }}>disables</Text>
-                      </Button>
+                      <Icon name="wheelchair-accessibility" size={30} color="#6592F7" style={{ alignSelf: "center", paddingRight: 20 }} />
                     }
 
                     {area.nPregnant > 0 &&
-                      <Button style={styles.labels}>
-                        <Text h3 style={{ fontFamily: "Montserrat" }}>pregnant</Text>
-                      </Button>
+                      <Icon name="human-pregnant" size={30} color="#FF69B4" style={{ alignSelf: "center", paddingRight: 20 }} />
                     }
 
                     {area.nElectric > 0 &&
-                      <Button style={styles.labels}>
-                        <Text h3 style={{ fontFamily: "Montserrat" }}>electric</Text>
-                      </Button>
+                      <Icon name="car-electric" size={30} color="#FFD800" style={{ alignSelf: "center", paddingRight: 20 }} />
                     }
 
                   </View>

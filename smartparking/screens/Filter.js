@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StyleSheet, ScrollView, TextInput, View } from "react-native";
+import { Image, StyleSheet, ScrollView, TextInput, View, Dimensions } from "react-native";
 import Slider from "react-native-slider";
 
 import { Divider, Button, Block, Text, Switch } from "../components";
@@ -11,6 +11,7 @@ import { Picker, DatePicker } from 'react-native-wheel-pick';
 import {Container} from 'native-base'
 import * as Animatable from 'react-native-animatable';
 import {showMessage} from "react-native-flash-message";
+import {Header, Left, Right, Body, Title} from 'native-base'
 
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
@@ -350,9 +351,23 @@ console.log(tempAreas.length)
 
     return (
       <ScrollView style={{flex: 1}}>
+        <Header style = {{backgroundColor:"#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
+          <Left>
+            <Button style = {{flexDirection:"column"}}>
+              <Icon name="arrow-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
+            </Button>
+          </Left>
+          <Body>
+          </Body>
+          <Right>
+            <Button/>
+          </Right>
+        </Header>
     <Animatable.View  ref={v => this.bigView = v}> 
-    <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", top: 50, }}>
-      
+    <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
+        {/*
+        
+        */}
         <View style = {{flexDirection: "row", justifyContent:"space-between"}}>
           <Text bold style={{ fontSize: 32 }}>
           Filters
