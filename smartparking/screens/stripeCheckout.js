@@ -1,19 +1,10 @@
 import { STRIPE } from './stripeSettings';
 
-
-/**
- * Create the Stripe Checkout redirect html code for a given user
- * @param {String} userID
- * @returns {String}
- */
-export function stripeCheckoutRedirectHTML() {
-  
+export function stripeCheckoutRedirectHTML(email) {
 
   return `
   <html>
     <body>
-    <h1></h1>
-    <h1></h1>
     
     <!-- Load Stripe.js on your website. -->
     <script src="https://js.stripe.com/v3"></script>
@@ -25,7 +16,7 @@ export function stripeCheckoutRedirectHTML() {
       
         stripe.redirectToCheckout({
           items: [{sku: 'sku_HGUjGxZH2IXBjS', quantity: 1}],
-          
+          customerEmail: '${email}',
           // Do not rely on the redirect to the successUrl for fulfilling
           // purchases, customers may not always reach the success_url after
           // a successful payment.

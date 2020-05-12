@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Paypal</title>
+    <script src="https://www.paypal.com/sdk/js?client-id={AZd6zV9XPrAQs87vHYv6R63iTI1IILshJhC92E49Ihdb4tSZrrBqtVXhlpq3u_Xj5MCyU6tYXgdHxHFb}"></script>
+
+    <style>
+        html, body{
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(180deg, #3D40AD 0%, #6B6ED7 100%);
+        }
+        .container{
+            height: 100%;
+            display: flex;
+            margin-left: 20px;
+            margin-right: 20px;
+            overflow-y: scroll;
+            justify-content: center;
+            align-items: center;
+        }
+        p{
+            color: white;
+            font-size: 16px;
+            text-align: justify;
+            margin-bottom: 50px;
+        }
+        #preloaderSpinner{
+          display: none;
+        }
+    </style>
+  </head>
+  <body>
+      <div class="container">
+            <div style="justify-content: center; text-align: center">
+                <img width="80px" height="80px" src="logo.png"/>
+                <p>
+                </p>
+                <div id="paypal-button-container"></div>
+            </div>
+      </div>
+
+
+    <script>
+      function payWithPayPal(amount, orderID) {
+        paypal
+          .Buttons({
+
+            createOrder: function(data, actions) {
+                return new Promise(function(resolve, reject){
+                  resolve(orderID);
+              });
+            },
+            onApprove: function(data, actions) {
+              window.postMessage(JSON.stringify({
+                    reference: data.orderID, 
+                    message: 'Transaction Successful',
+                    status: 'success'
+                }));
+            }
+          })
+          .render("#paypal-button-container");
+      }
+      document.addEventListener("message", function(data) {
+        var details = JSON.parse(data.data);
+        document.querySelector('p').innerText = "You are about to fund your wallet with USD "+details.amount+" on XYZ. Click on any of the payment options to proceed. Your account will be credited instantly after payment."
+        payWithPayPal(details.amount, details.orderID);
+      })
+
+    </script>
+  </body>
+</html>

@@ -161,11 +161,29 @@ render(){
     });
     this.setState({userProgress: this.state.userProgress + 40})}}>
     <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
-      Pay
+      Pay with Credit Card
     </Text>
   </Button>
   }
 
+{(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
+  <Button style={{backgroundColor: "blue"}} onPress={() => {
+    this.props.navigation.navigate("Paypal");
+    var now = new Date()
+    firebase.database().ref('Users/' + this.props.userData.uid + "/Reservations").push({
+      startDate: now.toDateString(),
+      endDate: this.state.selectedTime,
+      amount: ((((this.state.timeInMS - (new Date()).getTime()) / 3600000 ) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(2),
+      parkingAddress: this.props.tappedArea.address, 
+      parkingCity: this.props.currentCity,
+      earnedPoints: 10
+    });
+    this.setState({userProgress: this.state.userProgress + 40})}}>
+    <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
+      Pay with Paypal
+    </Text>
+  </Button>
+  }
 
 
 
