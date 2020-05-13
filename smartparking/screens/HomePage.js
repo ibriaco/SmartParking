@@ -581,10 +581,9 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '90%', height: '60%', bottom: 20, }}
+          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', height: '60%', }}
             onBackdropPress={() => { this.props.updateModalVisible(false) }}>
-            <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderRadius: 14, justifyContent: "space-between", width: '100%', marginVertical: 0, alignSelf: "flex-start" }}>
-
+            <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderRadius: 14, justifyContent: "space-between", width: '100%', marginVertical: -40, alignSelf: "flex-start" }}>
               <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -597,11 +596,11 @@ class Map extends React.Component {
                       <Text h3 gray2 style={{ fontFamily: "Montserrat" }}>per hour</Text>
                     }
                   </View>
-                  <View style = {{flexDirection:"row", paddingVertical: 10}}>
+                  <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"baseline"}}>
                     <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.5)">
-                    <Text h2 bold secondary>   3 spots</Text> 
                     </FontAwesome5>
-                    
+                    <Text h1 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  3</Text> 
+                    <Text h2 secondary center secondary style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -616,11 +615,8 @@ class Map extends React.Component {
                       }
                     </View>
                     <View style={{ flexDirection: "row" }}>
-                      
-                      
                       <Icon name="alert-circle-outline" color="#C02501" size={36} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }} />
                     </View>
-
                   </View>
                 </View>
                 <View style={{ flexDirection: "column", position: "relative" }} >
@@ -632,40 +628,15 @@ class Map extends React.Component {
                     </Button>
                     <Button style={styles.modalContent} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}>
                     <Image source = {require('../assets/icons/gmaps.png')} style = {{width: 30, height: 30}}/>
-                   {/**
-                    <Icon name="google-maps" color="#248A24" size={34} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
-                    */}
                     </Button>
                     </View>
-
-
-
                     <Button style={styles.pay} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Details"); }}>
                       {this.props.tappedArea.price != 0 && <Text h2 white bold >PAY PARKING</Text>}
                       {this.props.tappedArea.price == 0 && <Text h2 white bold >RESERVE PARKING</Text>}
-
                     </Button>
-
-
-
                   </View>
                 </View>
               </View>
-              {/*
-              
-              <View style={{ justifyContent: "space-evenly", flexDirection: "column", marginHorizontal: 20, }}>
-                <Text h1 bold color="#03A696">{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "FREE"}<Text h1 color="#03A696">{this.props.tappedArea.price != 0 && "€"}<Text h3 secondary>{this.props.tappedArea.price != 0 && "/h"}</Text></Text></Text>
-                <Button style={styles.modalContentLowRight} >
-                  <Text h2 bold white >Pay</Text>
-                </Button>
-                <Text></Text>
-                <Button style={styles.modalContent}>
-                    <Icon name="google-maps" color="#03A696" size={30} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)} />
-                  </Button>
-              </View>
-              
-               */}
-
             </View>
           </Modal>
         </Block>

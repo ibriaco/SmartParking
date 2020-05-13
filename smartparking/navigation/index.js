@@ -176,7 +176,7 @@ const screens = createStackNavigator(
           screen: HomePage,
 
           navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={28} color={focused ? "#000" : "#CDCCCE"} />
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={28} color={focused ? "#000" : "#CDCCCE"} style = {{paddingLeft:20}}/>
           }
         },
         
@@ -191,7 +191,7 @@ const screens = createStackNavigator(
         Profile: {
             screen: Profile,
             navigationOptions: {
-              tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={28} color={focused ? "#000" : "#CDCCCE"} />,
+              tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={28} color={focused ? "#000" : "#CDCCCE"} style = {{paddingRight:20}}/>,
               backgroundColor: "#03A696",
               height: theme.sizes.base * 6,
             }
@@ -203,7 +203,6 @@ const screens = createStackNavigator(
           tabBarOptions: {
             showLabel: false,
             elevation: 0,
-            borderBottomColor: "#fff",
           }
         }
       ),

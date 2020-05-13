@@ -36,7 +36,7 @@ class Parkings extends Component {
   render() {
     return (
 
-      <Container style={{ flex: 1 }}>
+      <Container style={{ flex: 1, paddingTop: 10, backgroundColor:"rgba(3, 166, 150,0.02)" }}>
         {/*
       <Animated.View style={{
           justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
@@ -85,11 +85,11 @@ class Parkings extends Component {
                 >
 
 
-                  <View style={{ flexDirection: "row", paddingVertical: 10, justifyContent:"center" }}>
+                  <View style={{ flexDirection: "row", paddingVertical: 10, justifyContent: "center", alignItems:"baseline" }}>
                     <FontAwesome5 name="parking" size={30} color="rgba(3, 166, 150,0.5)">
-                      <Text h2 bold secondary>   3 spots</Text>
                     </FontAwesome5>
-                    
+                    <Text h1 secondary center style={{ fontFamily: "Montserrat-Bold" }}>  3</Text>
+                    <Text h2 secondary center secondary style={{ fontFamily: "Montserrat-Bold" }}> available spots</Text>
                   </View>
 
                   <View style={{ flexDirection: "row", justifyContent: "center" }}>
