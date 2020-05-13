@@ -1,98 +1,98 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import {View, Platform} from 'react-native';
-import { WebView } from 'react-native-webview';
-import { paypalCheckoutHTML } from './paypalCheckout';
+import React, { Component } from 'react'
+import {
+    View,
+    WebView,
+    ActivityIndicator
+} from 'react-native'
+import axios from 'axios'
+const qs = require('qs');
 
-class PayPal extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            loading: false,
-            sent: false
-        }
-        const patchPostMessageFunction = function() {
-            var originalPostMessage = window.postMessage;
-          
-            var patchedPostMessage = function(message, targetOrigin, transfer) { 
-              originalPostMessage(message, targetOrigin, transfer);
-            };
-          
-            patchedPostMessage.toString = function() { 
-              return String(Object.hasOwnProperty).replace('hasOwnProperty', 'postMessage');
-            };
-          
-            window.postMessage = patchedPostMessage;
-          };
-          
-          this.patchPostMessageJsCode = '(' + String(patchPostMessageFunction) + ')();';
-          
-      }
-    componentWillMount(){
-        this.setState({loading: true});
+const url = 'https://api.sandbox.paypal.com/v1/oauth2/token';
+
+const data = {
+  
+  grant_type: 'client_credentials'
+  
+};
+
+const auth = {
+
+  username: 'AWTXlwkP0FG2LXsu78_UzNz2nlbB99ks5_28PnAd8LBZL3wWAk2x98xz_fpIBl7eP671MvHseIxAsuu-',
+    password: 'EJ15MZGb9CGuLNRk1mSJFxG0JddgyDPWiMIyi9wMX5U0E3N3wPjfC2zBnY9ffUt0OOVvhKfL0YlTVHE_'
+  
+};
+
+const options = {
+
+  headers: {
+    'Content-Type': 'application/x-www-form-urlencoded',
+    'Access-Control-Allow-Credentials': true
+  },
+  data: qs.stringify(data),
+  auth: auth,
+};
+export default class Paypal extends Component {
+
+    state = {
+        accessToken: null,
+        approvalUrl: null,
+        paymentId: null
     }
 
-    handleNavigation(event){
-        console.log(event)
-    }
-    handleMessage(event){
-        let data = event.nativeEvent.data;
-        data = JSON.parse(data);
-        if(data.status == 'success'){
-            alert(data.reference);
-            
-        }else{
-            this.setState({loading: false});
-            alert('Failed, '+ data.message);
-            
-        }
+
+    componentDidMount() {
+        axios.post(url, {options}).then((response) => {
+
+            console.log(response);
         
+        }).catch((err) => {console.log(err);});
     }
-    passValues(){
-        const { amount, paypalFundingDetails} = this.props;
-        
-        let data = {
-            amount: 1,
+
+    _onNavigationStateChange = (webViewState) => {
+
+        if (webViewState.url.includes('https://example.com/')) {
+
+            this.setState({
+                approvalUrl: null
+            })
+
+            const { PayerID, paymentId } = webViewState.url
+
+            axios.post(`https://api.sandbox.paypal.com/v1/payments/payment/${paymentId}/execute`, { payer_id: PayerID },
+                {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${this.state.accessToken}`
+                    }
+                }
+            )
+                .then(response => {
+                    console.log(response)
+
+                }).catch(err => {
+                    console.log({ ...err })
+                })
+
         }
-     
-        if(!this.state.sent){
-            this.refs.webview.postMessage(JSON.stringify(data));
-            this.setState({loading: false, sent: true});
-        }
-        
     }
+
     render() {
-       
-        return (
-            <View style={{flex: 1}}>
-             <WebView
-               style={{overflow: 'scroll'}}
-               source={{html: paypalCheckoutHTML()}}
-               originWhitelist={["*"]}
-               mixedContentMode={'always'}
-               useWebKit={Platform.OS == 'ios'}
-               onError={() => {alert('Error Occured'); }}
-               onLoadEnd={() => this.passValues()}
-               ref="webview"
-               thirdPartyCookiesEnabled={true}
-               scrollEnabled={true}
-               domStorageEnabled={true}
-               startInLoadingState={true}
-               injectedJavaScript={this.patchPostMessageJsCode}
-               allowUniversalAccessFromFileURLs={true}
-               onMessage={(event) => this.handleMessage(event)}
-               onNavigationStateChange={(event) => this.handleNavigation(event)}
-               javaScriptEnabled={true}
-             />
-         </View>
-        );
 
+        const { approvalUrl } = this.state
+        return (
+            <View style={{ flex: 1 }}>
+                {
+                    approvalUrl ? <WebView
+                        style={{ height: 400, width: 300 }}
+                        source={{ uri: approvalUrl }}
+                        onNavigationStateChange={this._onNavigationStateChange}
+                        javaScriptEnabled={true}
+                        domStorageEnabled={true}
+                        startInLoadingState={false}
+                        style={{ marginTop: 20 }}
+                    /> : <ActivityIndicator />
+                }
+            </View>
+        )
     }
 }
-function mapStateToProps(state) {
-    return {    
-      amount: state.amount,
-    }
-  }
-  
-export default connect(mapStateToProps, {})(PayPal);

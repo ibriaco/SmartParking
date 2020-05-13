@@ -22,6 +22,7 @@ import CardPage from "../screens/CardPage";
 import Reports from "../screens/Reports";
 import Details from "../screens/Details";
 import PurchaseProduct from "../screens/PurchaseProduct";
+import Paypal from "../screens/Paypal";
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
@@ -79,6 +80,12 @@ const screens = createStackNavigator(
     },
     Purchase: {
       screen: PurchaseProduct,
+      navigationOptions: {
+        header: null
+      }
+    },
+    Paypal: {
+      screen: Paypal,
       navigationOptions: {
         header: null
       }

@@ -9,6 +9,11 @@ import { Input, Icon } from "galio-framework"
 import * as Progress from 'react-native-progress';
 import Modal from "react-native-modal";
 import * as firebase from 'firebase';
+import PayPal from 'react-native-paypal-wrapper';
+import axios from 'axios'
+import qs from 'qs';
+
+
 
 
 const { width } = Dimensions.get('screen');
@@ -26,7 +31,19 @@ class Details extends Component {
     isTimeSelected: false, 
     userProgress: 50,
     notificationsEnabled: false,
-    scrollOffset: null
+    scrollOffset: null,
+    settings : {
+      url: "https://api.sandbox.paypal.com/v1/oauth2/token",
+      method: "POST",
+      timeout: 0,
+      headers: {
+        "Content-Type": ["application/x-www-form-urlencoded", "application/x-www-form-urlencoded"],
+        "Authorization": "Basic QVJNeGQzNHFFTkI0aDJwNlp6Q2dfQWFrQ1NLVzR4cmFQQVNITXJmcVZ1Wm4xRzRoV1pEZmtlNGI4UkVXQ2c4VHgxc3EtOGRtV05uak9HMmY6RUhfTzdLZmdGZm1VTU1hNzFWTWJMQXFpNHVRLWFxenBCMldFRXF2cWYwcTZNbjYwZ1RUOVNRMW9QOEotdzN0TUVSLWhZZFNMNk02dmNFQkc="
+      },
+      data: qs.stringify({
+        "grant_type": "client_credentials"
+      })
+    }
   };
   }
 
@@ -168,7 +185,15 @@ render(){
 
 {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
   <Button style={{backgroundColor: "blue"}} onPress={() => {
-    this.props.navigation.navigate("Paypal");
+
+
+    
+axios(this.state.settings)
+.then(function (response) {
+  console.log(response)
+});
+    
+
     var now = new Date()
     firebase.database().ref('Users/' + this.props.userData.uid + "/Reservations").push({
       startDate: now.toDateString(),
@@ -178,7 +203,10 @@ render(){
       parkingCity: this.props.currentCity,
       earnedPoints: 10
     });
+
     this.setState({userProgress: this.state.userProgress + 40})}}>
+
+      
     <Text h2 black center style={{fontFamily: 'Montserrat-Bold'}}>
       Pay with Paypal
     </Text>

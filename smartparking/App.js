@@ -12,7 +12,11 @@ import { createStore } from 'redux';
 import FlashMessage from "react-native-flash-message";
 
 import * as Font from 'expo-font';
+import {decode, encode} from 'base-64';
 
+if (!global.btoa) {  global.btoa = encode }
+
+if (!global.atob) { global.atob = decode } 
 
 const initialState = {
   allAreas: {
