@@ -1,5 +1,5 @@
-import React, { Component } from "react";
-import { View, StyleSheet, ScrollView, Dimensions, TouchableOpacity, TouchableWithoutFeedback } from "react-native";
+import React, { Component, useState } from "react";
+import { View, StyleSheet, ScrollView, Dimensions, ActivityIndicator, TouchableWithoutFeedback, StatusBar } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
@@ -12,11 +12,16 @@ import * as firebase from 'firebase';
 import PayPal from 'react-native-paypal-wrapper';
 import axios from 'axios'
 import qs from 'qs';
+import { WebView } from 'react-native-webview';
+
 
 
 
 
 const { width } = Dimensions.get('screen');
+
+
+  //When loading paypal page it refirects lots of times. This prop to control start loading only first time
 
 class Details extends Component {
 
@@ -24,6 +29,11 @@ class Details extends Component {
     super(props);
 
   this.state = {
+    isWebViewLoading: false,
+    paypalUrl: '',
+    accessToken: "",
+    shouldShowWebViewLoading: true,
+
     showPicker: false,
     showModal: false,
     selectedTime: 0,
@@ -46,6 +56,154 @@ class Details extends Component {
     }
   };
   }
+
+/*---Paypal checkout section---*/
+buyBook = async () => {
+
+  //Check out https://developer.paypal.com/docs/integration/direct/payments/paypal-payments/# for more detail paypal checkout
+  const dataDetail = {
+    "intent": "sale",
+    "payer": {
+      "payment_method": "paypal"
+    },
+    "transactions": [{
+      "amount": {
+        "currency": "USD",
+        "total": "26",
+        "details": {
+          "shipping": "6",
+          "subtotal": "20",
+          "shipping_discount": "0",
+          "insurance": "0",
+          "handling_fee": "0",
+          "tax": "0"
+        }
+      },
+      "description": "This is the payment transaction description",
+      "payment_options": {
+        "allowed_payment_method": "IMMEDIATE_PAY"
+      }, "item_list": {
+        "items": [{
+          "name": "Book",
+          "description": "Chasing After The Wind",
+          "quantity": "1",
+          "price": "20",
+          "tax": "0",
+          "sku": "product34",
+          "currency": "USD"
+        }]
+      }
+    }],
+    "redirect_urls": {
+      "return_url": "https://blank.org/",
+      "cancel_url": "https://blank.org/"
+    }
+  }
+
+  const url = `https://api.sandbox.paypal.com/v1/oauth2/token`;
+
+  const data = {
+    grant_type: 'client_credentials'
+
+  };
+
+  const auth = {
+    username: "ARMxd34qENB4h2p6ZzCg_AakCSKW4xraPASHMrfqVuZn1G4hWZDfke4b8REWCg8Tx1sq-8dmWNnjOG2f",  //"your_paypal-app-client-ID",
+    password: "EH_O7KfgFfmUMMa71VMbLAqi4uQ-aqzpB2WEEqvqf0q6Mn60gTT9SQ1oP8J-w3tMER-hYdSL6M6vcEBG"   //"your-paypal-app-secret-ID
+
+
+  };
+
+  const options = {
+
+    method: 'post',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+      'Access-Control-Allow-Credentials': true
+    },
+
+    //Make sure you use the qs.stringify for data
+    data: qs.stringify(data),
+    auth: auth,
+    url,
+  };
+
+  // Authorise with seller app information (clientId and secret key)
+  axios(options).then(response => {
+    this.setState({accessToken: response.data.access_token})
+
+    //Resquest payal payment (It will load login page payment detail on the way)
+    axios.post(`https://api.sandbox.paypal.com/v1/payments/payment`, dataDetail,
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${response.data.access_token}`
+        }
+      }
+    )
+      .then(response => {
+        const { id, links } = response.data
+        const approvalUrl = links.find(data => data.rel == "approval_url").href
+
+        console.log("response", links)
+        this.setState({paypalUrl: approvalUrl})
+      }).catch(err => {
+        console.log({ ...err })
+      })
+  }).catch(err => {
+    console.log(err)
+  })
+};
+
+/*---End Paypal checkout section---*/
+
+onWebviewLoadStart = () => {
+  if (this.state.shouldShowWebViewLoading) {
+    this.setState({shouldShowWebViewLoading: true})
+  }
+}
+
+_onNavigationStateChange = (webViewState) => {
+  console.log("webViewState", webViewState)
+
+  //When the webViewState.title is empty this mean it's in process loading the first paypal page so there is no paypal's loading icon
+  //We show our loading icon then. After that we don't want to show our icon we need to set setShouldShowWebviewLoading to limit it
+  if (webViewState.title == "") {
+    //When the webview get here Don't need our loading anymore because there is one from paypal
+    this.setState({shouldShowWebViewLoading: false})
+  }
+
+  if (webViewState.url.includes('https://blank.org/')) {
+
+    this.setState({paypalUrl: null})
+    const urlArr = webViewState.url.split(/(=|&)/);
+
+    const paymentId = urlArr[2];
+    const payerId = urlArr[10];
+    
+
+    axios.post(`https://api.sandbox.paypal.com/v1/payments/payment/${paymentId}/execute`, { payer_id: payerId },
+      {
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${this.state.accessToken}`
+        }
+      }
+    )
+      .then(response => {
+        this.setState({shouldShowWebViewLoading: true})
+        console.log(response)
+        return;
+      }).catch(err => {
+        this.setState({shouldShowWebViewLoading: true})
+        console.log({ ...err })
+      })
+
+  }
+}
+
+
+
 
   handleOnScroll = event => {
     this.setState({
@@ -186,13 +344,15 @@ render(){
 {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
   <Button style={{backgroundColor: "blue"}} onPress={() => {
 
-
-    
+    /*
 axios(this.state.settings)
 .then(function (response) {
   console.log(response)
 });
-    
+    */
+
+    this.buyBook();
+    //this.props.navigation.navigate("Paypal")
 
     var now = new Date()
     firebase.database().ref('Users/' + this.props.userData.uid + "/Reservations").push({
@@ -331,6 +491,28 @@ axios(this.state.settings)
         </View>
       </Modal>
 
+
+
+      {this.state.paypalUrl ? (
+        <View style={styles.webview}>
+          <WebView
+            style={{ height: "100%", width: "100%" }}
+            source={{ uri: this.state.paypalUrl }}
+            onNavigationStateChange={this._onNavigationStateChange}
+            javaScriptEnabled={true}
+            domStorageEnabled={true}
+            startInLoadingState={false}
+            onLoadStart={this.onWebviewLoadStart}
+            onLoadEnd={() => this.setState({isWebViewLoading: false})}
+          />
+        </View>
+      ) : null}
+      {this.state.isWebViewLoading ? (
+        <View style={{ ...StyleSheet.absoluteFill, justifyContent: "center", alignItems: "center", backgroundColor: "#ffffff" }}>
+          <ActivityIndicator size="small" color="#A02AE0" />
+        </View>
+      ) : null}
+
   </View>
   );
 };
@@ -456,6 +638,17 @@ const styles = StyleSheet.create({
         padding: 20,
         marginTop: 10,
         marginBottom: 10
+  },
+
+  webview: {
+    width: '100%',
+    height: '100%',
+    position: 'absolute',
+    marginTop: StatusBar.currentHeight,
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   
 });
