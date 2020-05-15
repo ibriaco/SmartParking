@@ -7,10 +7,11 @@ import ActiveParkings from './ActiveParkings';
 import History from './History'
 import { Text, Block } from '../components';
 
+const HEADER_HEIGHT = Platform.OS == 'ios' ? 45 : 100 + StatusBar.currentHeight;
 export default class TabsExample extends Component {
   render() {
     return (
-      <Container style={{ paddingTop: Platform.OS === 'android' ? StatusBar.currentHeight : 0 }}>
+      <Container style={{ marginTop: HEADER_HEIGHT}}>
           <View style = {{flex: 0.1, alignContent:"center", flexDirection:"row", alignItems:"center", marginHorizontal:30}}>
             <Text style = {{fontSize: 32}} bold>Parkings</Text>
           </View>

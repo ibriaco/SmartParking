@@ -87,7 +87,7 @@ class ParkingsNoImage extends Component {
   render() {
     return (
 
-      <Container style={{ flex: 1, backgroundColor:"rgba(3, 166, 150,0.02)" }}>
+      <Container style={{ flex: 1, backgroundColor:"rgba(3, 166, 150,0.02)", }}>
         <TouchableWithoutFeedback onPress={() => this.setState({ collapsed: !this.state.collapsed })}>
 
           <View style={styles.header}>
@@ -194,7 +194,8 @@ const styles = StyleSheet.create({
 
     borderRadius: theme.sizes.base / 2,
     elevation: theme.sizes.base / 2,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 1},
     backgroundColor: '#fff',
     padding: 20,
     marginTop: 20

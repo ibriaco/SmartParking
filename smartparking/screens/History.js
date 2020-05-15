@@ -10,6 +10,7 @@ import * as Animatable from 'react-native-animatable';
 import { Card } from 'galio-framework';
 import { Container, Header, Content, Tab, Tabs } from 'native-base';
 import Accordion from 'react-native-collapsible/Accordion';
+import { ScrollView } from 'react-native-gesture-handler';
 
 
 const { width } = Dimensions.get('screen');
@@ -97,7 +98,7 @@ class History extends Component {
   render() {
     return (
 
-      <Container style={{ flex: 1 , backgroundColor:"rgba(3, 166, 150,0.02)"}}>
+      <ScrollView style={{ flex: 1 , backgroundColor:"rgba(3, 166, 150,0.02)"}}>
         {/*
           <Animated.View style={{
               justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
@@ -126,7 +127,7 @@ class History extends Component {
           onChange={this._updateSections}
         />
 
-      </Container>
+      </ScrollView>
     );
   }
 }
@@ -159,7 +160,8 @@ const styles = StyleSheet.create({
 
     borderRadius: theme.sizes.base,
     elevation: theme.sizes.base / 2,
-    shadowOpacity: 0.5,
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 1},
     backgroundColor: '#fff',
     padding: 20,
     marginTop: 20

@@ -195,16 +195,15 @@ class Profile extends Component {
               row
               center
               space="between"
-              style={{ marginBottom: theme.sizes.base * 2 }}
+              style={{ marginBottom: theme.sizes.base * 2, alignItems:"baseline" }}
             >
               <Text h3 bold>Logout</Text>
-              <Button style = {{backgroundColor:"#fff", width: 30, height:30}} center>
               <Icon
                 name ="exit-to-app"
-                size = {24}
+                size = {28}
+                color="#03A696"
               />
 
-            </Button>
             </Block>
           </Block>
 

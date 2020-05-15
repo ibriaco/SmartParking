@@ -471,7 +471,7 @@ class Map extends React.Component {
           <Marker.Animated
             ref={marker => { this.marker = marker; }}
             coordinate={this.state.coordinate}>
-            <Icon name="circle-slice-8" size={24} color="#rgba(3, 166, 150,0.7)" />
+            <Icon name="circle-slice-8" size={32} color="#rgba(3, 166, 150,0.6)" />
 
           </Marker.Animated>
 
@@ -597,10 +597,10 @@ class Map extends React.Component {
                     }
                   </View>
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"baseline"}}>
-                    <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.5)">
+                    <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.9)">
                     </FontAwesome5>
                     <Text h1 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  3</Text> 
-                    <Text h2 secondary center secondary style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
+                    <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
