@@ -23,6 +23,7 @@ class ParkingsNoImage extends Component {
     super(props);
 
     this.state = {
+      curTime: 0,
       animation: new Animated.Value(0),
       activeSections: [],
       collapsed: true
@@ -36,6 +37,31 @@ class ParkingsNoImage extends Component {
       inputRange: [0, HEADER_HEIGHT],
       outputRange: [0, -HEADER_HEIGHT]
     });
+
+    componentDidMount() {
+      setInterval( () => {
+        this.setState({
+          curTime : new Date().getTime()
+        })
+      },1000)
+    }
+
+
+    check = () =>
+    {
+      var temp = this.props.userData.reservations
+
+      for(var i in temp){
+        var nowInMs = (new Date()).getTime();
+
+        if(temp[i].endDate > nowInMs){
+          this.props.updateActiveParking(temp[i]);
+          return (true)
+        }          
+      }
+      return (false)
+    }
+    
 
   _renderSectionTitle = section => {
     return (
@@ -88,44 +114,54 @@ class ParkingsNoImage extends Component {
     return (
 
       <Container style={{ flex: 1, backgroundColor:"rgba(3, 166, 150,0.02)", }}>
+        {(this.props.userData.reservations && this.check()) &&
         <TouchableWithoutFeedback onPress={() => this.setState({ collapsed: !this.state.collapsed })}>
 
           <View style={styles.header}>
           <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
           <Text h3 bold gray2>Location</Text>
-            <Text h3 bold>Via Fabrizio de André, 8</Text>
+            <Text h3 bold>{this.props.activeParking.parkingAddress}</Text>
             <Text style={styles.headerText}></Text>
             <Text h3 bold gray2>Vehicle</Text>
             <Text h3 bold>AB 456CD</Text>
             <Text style={styles.headerText}></Text>
-            <Text h3 bold gray2>Start</Text>
-            <Text h3 bold>14.30</Text>
-            <Text style={styles.headerText}></Text>
+            
           </View>
           <View style = {{flexDirection:"row", alignItems:"flex-start", justifyContent:"space-between"}}>
             <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
-            <Text h3 bold gray2>Your parking time</Text>
-            <Text h1 secondary bold>02:30:40</Text>
+            <Text h3 bold gray2>Remaining time</Text>
+            <Text h1 secondary bold>{(((this.props.activeParking.endDate - this.state.curTime) / (1000*60*60)) % 24 ).toFixed(0) + ":" + (((this.props.activeParking.endDate - this.state.curTime) / (1000*60)) % 60).toFixed(0) + ":" + (((this.props.activeParking.endDate - this.state.curTime) / 1000) % 60 ).toFixed(0) }
+</Text>
             </View>
             <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
               <Text h3 bold gray2>Price</Text>
-              <Text h1 secondary bold>5 €</Text>
+              <Text h1 secondary bold>{this.props.activeParking.amount} €</Text>
             </View>
           </View>
           </View>
         </TouchableWithoutFeedback>
+  }
+  
+  {!this.check() &&
+  <Text h3 bold gray2>You currently have no active parkings!</Text>
+  }
         <Collapsible collapsed={this.state.collapsed} align="center">
           <View style={styles.content}>
 
-            <Text style={{ textAlign: 'center' }}>
-              Gestisci il tuo parking
-              </Text>
+          <Text h3 bold gray2>Start Time</Text>
+            <Text h3 bold>{new Date(this.props.activeParking.startDate).toLocaleString()}</Text>
+            <Text style={styles.headerText}></Text>
+
+            <Text h3 bold gray2>End Time</Text>
+            <Text h3 bold>{new Date(this.props.activeParking.endDate).toLocaleString()}</Text>
+            <Text style={styles.headerText}></Text>
+
             <Button style={styles.end}>
-              <Text center white bold h2>Stop parking</Text>
+              <Text center white bold h2>Extend</Text>
             </Button>
           </View>
         </Collapsible>
-
+  
 
       </Container>
     );
@@ -215,6 +251,8 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    activeParking: state.activeParking,
+    userData: state.userData,
     mapRef: state.mapRef,
     showRoute: state.showRoute,
     areas: state.areas,
@@ -224,6 +262,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateActiveParking: (param) => dispatch({ type: "UPDATE_ACTIVE_PARKING", param: param }),
     updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
     updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),

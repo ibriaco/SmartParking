@@ -64,36 +64,33 @@ class Login extends Component {
           .auth()
           .signInWithCredential(credential)
           .then(() => {
-            //console.log(firebase.auth().currentUser)            
-
-            var result;
+    
             var tempUser = firebase.auth().currentUser;
             firebase.database().ref('Users/' + tempUser.uid).on('value', (snapshot) => {
-              result = snapshot.val();
+             
+              if(!snapshot.val()){
+                //no user data => signup
+                this.props.updateUserData({
+                  uid: tempUser.uid,
+                  name: tempUser.displayName,
+                  email: tempUser.email,
+                  photoUrl: tempUser.photoURL,
+                  points: 0,
+                  bonus: 0
+                });
+                console.log("NULL")
+  
+                firebase.database().ref('Users/' + tempUser.uid).set(
+                  this.props.userData
+                );
+  
+              } else {
+                console.log("NOT NULL")
+                //user data => login
+                this.props.updateUserData(snapshot.val());
+              }
+
             });
-
-            if(result == null){
-              //no user data => signup
-              this.props.updateUserData({
-                uid: tempUser.uid,
-                name: tempUser.displayName,
-                email: tempUser.email,
-                photoUrl: tempUser.photoURL,
-                points: 0,
-                bonus: 0
-              });
-              console.log("NULL")
-
-              firebase.database().ref('Users/' + tempUser.uid).set(
-                this.props.userData
-              );
-
-            } else {
-              console.log("NOT NULL")
-              //user data => login
-              this.props.updateUserData(result);
-            }
-            
             
             this.props.navigation.navigate("Home")
           }
@@ -121,38 +118,35 @@ class Login extends Component {
       const credential = firebase.auth.FacebookAuthProvider.credential(token);
       await firebase
         .auth()
-        .signInWithCredential(credential) //signInWithReadCredential is deprecated!
+        .signInWithCredential(credential) 
         .then(() => {
 
-          //console.log(firebase.auth().currentUser)
-
-          var result;
             var tempUser = firebase.auth().currentUser;
             firebase.database().ref('Users/' + tempUser.uid).on('value', (snapshot) => {
-              result = snapshot.val();
+
+              if(!snapshot.val()){
+                //no user data => signup
+                this.props.updateUserData({
+                  uid: tempUser.uid,
+                  name: tempUser.displayName,
+                  email: tempUser.email,
+                  photoUrl: tempUser.photoURL,
+                  points: 0,
+                  bonus: 0
+                });
+                console.log("NULL")
+  
+                firebase.database().ref('Users/' + tempUser.uid).set(
+                  this.props.userData
+                );
+  
+              } else {
+                console.log("NOT NULL")
+                //user data => login
+                this.props.updateUserData(snapshot.val());
+                console.log(snapshot.val())
+              }
             });
-
-            if(result == null){
-              //no user data => signup
-              this.props.updateUserData({
-                uid: tempUser.uid,
-                name: tempUser.displayName,
-                email: tempUser.email,
-                photoUrl: tempUser.photoURL,
-                points: 0,
-                bonus: 0
-              });
-              console.log("NULL")
-
-              firebase.database().ref('Users/' + tempUser.uid).set(
-                this.props.userData
-              );
-
-            } else {
-              console.log("NOT NULL")
-              //user data => login
-              this.props.updateUserData(result);
-            }
 
           this.props.navigation.navigate("Home")})
         .catch(error => this.setState({ errorMessage: error.message }));; 

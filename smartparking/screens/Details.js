@@ -13,13 +13,9 @@ import PayPal from 'react-native-paypal-wrapper';
 import axios from 'axios'
 import qs from 'qs';
 import { WebView } from 'react-native-webview';
-
 import { Container, Header, Content, Tab, Tabs } from 'native-base';
+
 const HEADER_HEIGHT = Platform.OS == 'ios' ? 55 : 100 + StatusBar.currentHeight;
-
-
-
-
 const { width } = Dimensions.get('screen');
 
 
@@ -31,10 +27,13 @@ class Details extends Component {
     super(props);
 
     this.state = {
+      
       isWebViewLoading: false,
       paypalUrl: '',
       accessToken: "",
       shouldShowWebViewLoading: true,
+      currentAmount: 0,
+      endDate: 0,
 
       showPicker: false,
       showModal: false,
@@ -44,6 +43,7 @@ class Details extends Component {
       userProgress: 50,
       notificationsEnabled: false,
       scrollOffset: null,
+
       settings: {
         url: "https://api.sandbox.paypal.com/v1/oauth2/token",
         method: "POST",
@@ -241,33 +241,17 @@ class Details extends Component {
 
           {this.state.isTimeSelected &&
             <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-              From now to: {this.state.selectedTime}
+              From now to: {this.state.endDate}
             </Text>
           }
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Text h2 secondary center style={{ fontFamily: 'Montserrat-Bold' }}>
-              Price: {(((this.state.timeInMS - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price).toFixed(2) + " €"}
+              Price: {this.state.currentAmount.toFixed(2) + " €"}
             </Text>
           }
 
 
-          <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-          </Text>
 
-
-          {this.props.tappedArea.price > 0 &&
-            <Button onPress={() => this.setState({ showModal: true })} style={{
-              shadowOpacity: 0.3,
-              backgroundColor: '#fff', width: '80%', alignSelf: "center", alignItems: "center", flexDirection: "column"
-            }}>
-              <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                Favourite Payment Method
-                </Text>
-            </Button>
-          }
-
-          <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-          </Text>
           {/**
            * {this.props.tappedArea.price > 0 &&
 
@@ -285,8 +269,6 @@ class Details extends Component {
            */}
 
 
-          <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-          </Text>
 
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
@@ -297,7 +279,7 @@ class Details extends Component {
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
             <Text h2 secondary center style={{ fontFamily: 'Montserrat-Bold' }}>
-              Total: {((((this.state.timeInMS - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(2)} €
+              Total: {(this.state.currentAmount - this.props.userData.bonus).toFixed(2)} €
             </Text>
           }
 
@@ -324,17 +306,51 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.5, alignSelf: "center" }} onPress={() => {
-              this.props.navigation.navigate("Purchase");
+              
+              //this.props.navigation.navigate("Purchase");
+              
               var now = new Date()
-              firebase.database().ref('Users/' + this.props.userData.uid + "/Reservations").push({
-                startDate: now.toDateString(),
-                endDate: this.state.selectedTime,
-                amount: ((((this.state.timeInMS - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(2),
+
+              var reservation = {
+                startDate: now.getTime(),
+                endDate: this.state.endDate,
+                amount: (this.state.currentAmount - this.props.userData.bonus).toFixed(2),
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
-                earnedPoints: 10
+                earnedPoints: this.state.currentPoints
+              }
+
+              firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
+                
+                startDate: reservation.startDate,
+                endDate: reservation.endDate,
+                amount: reservation.amount,
+                parkingAddress: reservation.parkingAddress,
+                parkingCity: reservation.parkingCity,
+                earnedPoints: reservation.earnedPoints
+
               });
-              this.setState({ userProgress: this.state.userProgress + 40 })
+
+
+              var userReservations = [];
+
+              if(this.props.userData.reservations){
+                userReservations = userReservations.concat(this.props.userData.reservations);
+              } 
+
+              userReservations.push(reservation);
+
+
+              var temp = {
+                ...this.props.userData,
+                points: this.props.userData.points + this.state.currentPoints,
+                reservations: userReservations
+              }
+              
+              console.log(temp)
+
+              this.props.updateUserData(temp);
+              
             }}>
               <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
                 Pay with Credit Card
@@ -345,27 +361,32 @@ class Details extends Component {
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "#3b7bbf", width: '80%', alignSelf: "center" }} onPress={() => {
 
-              /*
-          axios(this.state.settings)
-          .then(function (response) {
-            console.log(response)
-          });
-              */
-
-              this.buyBook();
-              //this.props.navigation.navigate("Paypal")
+              //this.buyBook();
 
               var now = new Date()
-              firebase.database().ref('Users/' + this.props.userData.uid + "/Reservations").push({
-                startDate: now.toDateString(),
-                endDate: this.state.selectedTime,
-                amount: ((((this.state.timeInMS - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(2),
+
+              var reservation = {
+                startDate: now.getTime(),
+                endDate: this.state.endDate,
+                amount: (this.state.currentAmount - this.props.userData.bonus).toFixed(2),
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
-                earnedPoints: 10
+                earnedPoints: this.state.currentPoints
+              }
+
+
+              firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
+
+                startDate: reservation.startDate,
+                endDate: reservation.endDate,
+                amount: reservation.amount,
+                parkingAddress: reservation.parkingAddress,
+                parkingCity: reservation.parkingCity,
+                earnedPoints: reservation.earnedPoints
+
               });
 
-              this.setState({ userProgress: this.state.userProgress + 40 })
+              this.setState({ userProgress: this.state.userProgress + this.state.currentPoints })
             }}>
 
 
@@ -388,7 +409,7 @@ class Details extends Component {
     </Text>
 
               <Text h1 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                {((((this.state.timeInMS - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price) - this.props.userData.bonus).toFixed(1) * 5}
+                {(this.state.currentAmount - this.props.userData.bonus).toFixed(1) * 5}
               </Text>
 
               <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
@@ -415,29 +436,11 @@ class Details extends Component {
 
             </View>
           }
-          <Progress.Bar progress={(this.state.userProgress / 100)} height={10} width={null} color="rgba(3, 166, 150,0.6)" />
-
-
 
           {this.state.isTimeSelected &&
-            <View>
-              <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                Notifications?
-    </Text>
+          <Progress.Bar progress={(this.state.userProgress / 100)} height={10} width={null} color="rgba(3, 166, 150,0.6)" />
 
-              <Switch
-                value={this.state.notificationsEnabled}
-                onValueChange={value => {
-                  this.setState({ notificationsEnabled: value })
-                }}
-              />
-
-            </View>
           }
-
-
-
-
         </View>
 
         <DateTimePickerModal
@@ -446,54 +449,23 @@ class Details extends Component {
           date={new Date()}
           onCancel={() => this.setState({ showPicker: false })}
           onConfirm={(date) => {
-            if (date >= new Date())
+
+            if (date >= new Date()){
+            var x = ((((date.getTime() - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price)); 
               this.setState({
                 isTimeSelected: true,
-                selectedTime: date.toLocaleTimeString(),
-                timeInMS: date.getTime(),
+                endDate: date.getTime(),
+                currentAmount: x,
+                currentPoints: (x - this.props.userData.bonus).toFixed(1) * 5,
                 showPicker: false
               })
+
+            }
 
             else
               this.setState({ showPicker: false })
           }} />
 
-
-
-        <Modal
-          isVisible={this.state.showModal}
-          onBackdropPress={() => this.setState({ showModal: false })}
-          style={styles.modal}>
-          <View style={styles.scrollableModal}>
-            <ScrollView
-              scrollEventThrottle={16}>
-              <TouchableWithoutFeedback>
-                <View style={styles.scrollableModalContent}>
-                  <Text style={{ fontFamily: "Montserrat-Bold" }}>
-                    Paypal
-              </Text>
-
-                  <Text style={{ fontFamily: "Montserrat" }}>
-                    griggoswaggo@gmail.com
-              </Text>
-                </View>
-              </TouchableWithoutFeedback>
-
-              <TouchableWithoutFeedback>
-                <View style={styles.scrollableModalContent}>
-                  <Text style={{ fontFamily: "Montserrat-Bold" }}>
-                    Credit Card
-              </Text>
-                  <Text style={{ fontFamily: "Montserrat" }}>
-                    VISA 4444 4444 4444 4444
-              </Text>
-                </View>
-              </TouchableWithoutFeedback>
-
-
-            </ScrollView>
-          </View>
-        </Modal>
 
 
 
@@ -648,7 +620,6 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     position: 'absolute',
-    marginTop: StatusBar.currentHeight,
     top: 0,
     left: 0,
     right: 0,

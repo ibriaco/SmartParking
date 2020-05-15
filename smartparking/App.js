@@ -42,12 +42,19 @@ const initialState = {
   userData: {
 
   },
+  activeParking: {
+
+  },
   mapRef: null,
   circleRadius: 0,
   distanceFromUser: true //true = the distance range in filter is centered in the user's coordinates, false = centered in destination coord 
 }
 const reducer = (state = initialState, action) => {
   switch(action.type){
+    case "UPDATE_ACTIVE_PARKING": 
+      return {
+        ...state,
+        activeParking: action.param};
     case "UPDATE_CIRCLE_RADIUS": 
       return {
         ...state,

@@ -191,7 +191,6 @@ class Map extends React.Component {
         if (initialPosition) {
           let geocode = await Location.reverseGeocodeAsync(newCoordinate);
           this.props.updateCity(geocode[0].city)
-          console.log("Prima lettura coordinate: " + this.props.currentCity)
 
           initialPosition = !initialPosition
           this.updateCamera();
@@ -234,9 +233,6 @@ class Map extends React.Component {
   DA QUA DEVO GESTIRE LA MADONNA DEL MODAL
   */
   async onAreaTapped(area) {
-
-    console.log(area.distance)
-
 
     if (this.props.showRoute)
       this.props.updateShowRoute(false);
@@ -353,7 +349,6 @@ class Map extends React.Component {
     //second version (standard for)
     var tempAreas = this.props.areas;
     var newAreas = [];
-    console.log("LUNGHEZZA: " + tempAreas.length)
 
     for (var i = 0; i < tempAreas.length; i++) {
 
@@ -370,7 +365,6 @@ class Map extends React.Component {
 
         newAreas.push(tempAreas[i]);
 
-        console.log(tempAreas[i])
       } catch (error) {
         console.error(error);
 
