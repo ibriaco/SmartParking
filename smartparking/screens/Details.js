@@ -340,6 +340,13 @@ class Details extends Component {
 
               userReservations.push(reservation);
 
+              console.log(userReservations)
+
+
+              var temp = this.props.reservationsArray;
+              temp.push(reservation);
+              this.props.updateReservationsArray(temp);
+
 
               var temp = {
                 ...this.props.userData,
@@ -498,6 +505,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    reservationsArray: state.reservationsArray,
     currentCity: state.currentCity,
     userData: state.userData,
     tappedArea: state.tappedArea
@@ -506,6 +514,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateReservationsArray: (param) => dispatch({ type: "UPDATE_RESERVATIONS_ARRAY", param: param }),
     updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
   }
 }

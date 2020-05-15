@@ -45,12 +45,17 @@ const initialState = {
   activeParking: {
 
   },
+  reservationsArray: [],
   mapRef: null,
   circleRadius: 0,
   distanceFromUser: true //true = the distance range in filter is centered in the user's coordinates, false = centered in destination coord 
 }
 const reducer = (state = initialState, action) => {
   switch(action.type){
+    case "UPDATE_RESERVATIONS_ARRAY": 
+      return {
+        ...state,
+        reservationsArray: action.param};
     case "UPDATE_ACTIVE_PARKING": 
       return {
         ...state,

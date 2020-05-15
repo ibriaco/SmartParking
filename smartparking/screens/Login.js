@@ -29,6 +29,19 @@ class Login extends Component {
     errorMessage: null
   };
 
+  setToArray()  {
+    var temp = this.props.userData.reservations;
+    var newArr = [];
+
+    for(var i in temp)
+       newArr.push(temp[i]);
+    
+    this.props.updateReservationsArray(newArr);
+
+  }
+
+
+
   handleLogin() {
     const { navigation } = this.props;
     const { email, password } = this.state;
@@ -40,6 +53,7 @@ class Login extends Component {
         
         firebase.database().ref('Users/' + firebase.auth().currentUser.uid).on('value', (snapshot) => {
           this.props.updateUserData(snapshot.val());
+          this.setToArray();
         });
 
         this.props.navigation.navigate("Home")})
@@ -78,16 +92,15 @@ class Login extends Component {
                   points: 0,
                   bonus: 0
                 });
-                console.log("NULL")
   
                 firebase.database().ref('Users/' + tempUser.uid).set(
                   this.props.userData
                 );
   
               } else {
-                console.log("NOT NULL")
                 //user data => login
                 this.props.updateUserData(snapshot.val());
+                this.setToArray();
               }
 
             });
@@ -134,17 +147,15 @@ class Login extends Component {
                   points: 0,
                   bonus: 0
                 });
-                console.log("NULL")
   
                 firebase.database().ref('Users/' + tempUser.uid).set(
                   this.props.userData
                 );
   
               } else {
-                console.log("NOT NULL")
                 //user data => login
                 this.props.updateUserData(snapshot.val());
-                console.log(snapshot.val())
+                this.setToArray();
               }
             });
 
@@ -357,12 +368,14 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
-    userData: state.userData
+    userData: state.userData,
+    reservationsArray: state.reservationsArray
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateReservationsArray: (param) => dispatch({ type: "UPDATE_RESERVATIONS_ARRAY", param: param }),
     updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
   }
 }

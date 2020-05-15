@@ -47,10 +47,9 @@ class ParkingsNoImage extends Component {
     }
 
 
-    check = () =>
-    {
+    check = () => {
       var temp = this.props.userData.reservations
-
+      console.log("CHECK")
       for(var i in temp){
         var nowInMs = (new Date()).getTime();
 
@@ -59,6 +58,9 @@ class ParkingsNoImage extends Component {
           return (true)
         }          
       }
+      
+      if(!this.state.collapsed)
+        this.setState({ collapsed: !this.state.collapsed })
       return (false)
     }
     

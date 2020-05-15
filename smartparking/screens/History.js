@@ -37,6 +37,7 @@ class History extends Component {
       outputRange: [0, -HEADER_HEIGHT]
     });
 
+
   _renderSectionTitle = section => {
     return (
       <View style={styles.content}>
@@ -50,21 +51,21 @@ class History extends Component {
       <View style={styles.header}>
         <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
           <Text h3 bold gray2>Location</Text>
-          <Text h3 bold>{section.address}</Text>
+          <Text h3 bold>{section.parkingAddress}</Text>
           <Text style={styles.headerText}></Text>
           <Text h3 bold gray2>Your parking time</Text>
-          <Text h3 bold>10:30 - 12:30</Text>
+          <Text h3 bold>{section.startDate} - {section.endDate}</Text>
           <Text style={styles.headerText}></Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" }}>
           <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
             <Text h3 bold gray2>Price</Text>
-            <Text h1 secondary bold>{section.price} €</Text>
+            <Text h1 secondary bold>{section.amount} €</Text>
           </View>
           <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
             <Text h3 bold gray2>Tokens</Text>
             <View style = {{flexDirection:"row", alignItems:"center"}}>
-            <Text h1 secondary bold style = {{color:"#FFAB5B"}}>40</Text>
+            <Text h1 secondary bold style = {{color:"#FFAB5B"}}>{section.earnedPoints}</Text>
             </View>
           </View>
         </View>
@@ -120,7 +121,7 @@ class History extends Component {
         <Accordion
           touchableComponent={TouchableWithoutFeedback}
           duration={600}
-          sections={this.props.areas}
+          sections={this.props.reservationsArray}
           activeSections={this.state.activeSections}
           renderHeader={this._renderHeader}
           renderContent={this._renderContent}
@@ -181,6 +182,8 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    reservationsArray: state.reservationsArray,
+    userData: state.userData,
     mapRef: state.mapRef,
     showRoute: state.showRoute,
     areas: state.areas,
