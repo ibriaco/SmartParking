@@ -7,7 +7,7 @@ import ActiveParkings from './ActiveParkings';
 import History from './History'
 import { Text, Block } from '../components';
 
-const HEADER_HEIGHT = Platform.OS == 'ios' ? 45 : 100 + StatusBar.currentHeight;
+const HEADER_HEIGHT = Platform.OS == 'ios' ? 45 : StatusBar.currentHeight;
 export default class TabsExample extends Component {
   render() {
     return (
