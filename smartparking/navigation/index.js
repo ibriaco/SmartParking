@@ -210,12 +210,6 @@ const screens = createStackNavigator(
           tabBarOptions: {
             showLabel: false,
             elevation: 0,
-            tabStyle:{
-              height: 70,
-              borderTopColor:"transparent",
-              borderTopLeftRadius: 20,
-              borderTopRightRadius: 20
-            }
           }
         }
       ),

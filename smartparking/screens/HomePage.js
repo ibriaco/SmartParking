@@ -589,8 +589,8 @@ class Map extends React.Component {
               <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text h1 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
-                    <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 30 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
+                    <Text h2 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
+                    <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 28 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <Text h3 gray2 style={{ fontFamily: "Montserrat" }}>{this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>

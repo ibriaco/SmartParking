@@ -13,6 +13,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 import Collapsible from 'react-native-collapsible';
 
 const { width } = Dimensions.get('screen');
+const { height} = Dimensions.get('screen');
 
 
 //const HEADER_HEIGHT = Platform.OS == 'ios' ? 115 : 70 + StatusBar.currentHeight;
@@ -145,7 +146,7 @@ class ParkingsNoImage extends Component {
   }
   
   {!this.check() &&
-  <Text h3 bold gray2>You currently have no active parkings!</Text>
+  <Text center h3 bold gray2 style = {{top: height/3-50}}>You have no active parkings!</Text>
   }
         <Collapsible collapsed={this.state.collapsed} align="center">
           <View style={styles.content}>
