@@ -287,7 +287,57 @@ class Details extends Component {
           </Text>
 
           {this.props.tappedArea.price == 0 &&
-            <Button style={{ backgroundColor: "gray" }}>
+            <Button style={{ backgroundColor: "gray" }} onPress={() => {
+
+              //UPDATE NTAKEN FOR THE TAPPED AREA 
+
+              var now = new Date()
+
+              var reservation = {
+                startDate: now.getTime(),
+                endDate: now.getTime() + 1 * 3600000 ,
+                amount: 0,
+                parkingAddress: this.props.tappedArea.address,
+                parkingCity: this.props.currentCity,
+                earnedPoints: 0
+              }
+
+              firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
+                
+                startDate: reservation.startDate,
+                endDate: reservation.endDate,
+                amount: reservation.amount,
+                parkingAddress: reservation.parkingAddress,
+                parkingCity: reservation.parkingCity,
+                earnedPoints: reservation.earnedPoints
+
+              });
+
+
+              var userReservations = [];
+
+              if(this.props.userData.reservations){
+                userReservations = userReservations.concat(this.props.userData.reservations);
+              } 
+
+              userReservations.push(reservation);
+
+              console.log(userReservations)
+
+
+              var temp = this.props.reservationsArray;
+              temp.push(reservation);
+              this.props.updateReservationsArray(temp);
+
+
+              var temp = {
+                ...this.props.userData,
+                reservations: userReservations
+              }
+              
+              this.props.updateUserData(temp);
+
+            }}>
               <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
                 Skip
               </Text>
@@ -296,7 +346,55 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.props.tappedArea.price == 0) &&
             <Button style={{ backgroundColor: "orange" }} onPress={() => {
-              this.setState({ userProgress: this.state.userProgress + 10 })
+              //UPDATE NTAKEN FOR THE TAPPED AREA 
+
+              var now = new Date()
+
+              var reservation = {
+                startDate: now.getTime(),
+                endDate: this.state.endDate,
+                amount: 0,
+                parkingAddress: this.props.tappedArea.address,
+                parkingCity: this.props.currentCity,
+                earnedPoints: 10
+              }
+
+              firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
+                
+                startDate: reservation.startDate,
+                endDate: reservation.endDate,
+                amount: reservation.amount,
+                parkingAddress: reservation.parkingAddress,
+                parkingCity: reservation.parkingCity,
+                earnedPoints: reservation.earnedPoints
+
+              });
+
+
+              var userReservations = [];
+
+              if(this.props.userData.reservations){
+                userReservations = userReservations.concat(this.props.userData.reservations);
+              } 
+
+              userReservations.push(reservation);
+
+              console.log(userReservations)
+
+
+              var temp = this.props.reservationsArray;
+              temp.push(reservation);
+              this.props.updateReservationsArray(temp);
+
+
+              var temp = {
+                ...this.props.userData,
+                points: this.props.userData.points + 10,
+                reservations: userReservations
+              }
+              
+              this.props.updateUserData(temp);
+
             }}>
               <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
                 Continue
@@ -307,7 +405,7 @@ class Details extends Component {
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.5, alignSelf: "center" }} onPress={() => {
               
-              //this.props.navigation.navigate("Purchase");
+              this.props.navigation.navigate("Purchase");
               
               var now = new Date()
 
@@ -368,7 +466,7 @@ class Details extends Component {
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "#3b7bbf", width: '80%', alignSelf: "center" }} onPress={() => {
 
-              //this.buyBook();
+              this.buyBook();
 
               var now = new Date()
 
@@ -381,9 +479,8 @@ class Details extends Component {
                 earnedPoints: this.state.currentPoints
               }
 
-
               firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
-
+                
                 startDate: reservation.startDate,
                 endDate: reservation.endDate,
                 amount: reservation.amount,
@@ -393,8 +490,32 @@ class Details extends Component {
 
               });
 
-              this.setState({ userProgress: this.state.userProgress + this.state.currentPoints })
-            }}>
+
+              var userReservations = [];
+
+              if(this.props.userData.reservations){
+                userReservations = userReservations.concat(this.props.userData.reservations);
+              } 
+
+              userReservations.push(reservation);
+
+              console.log(userReservations)
+
+
+              var temp = this.props.reservationsArray;
+              temp.push(reservation);
+              this.props.updateReservationsArray(temp);
+
+
+              var temp = {
+                ...this.props.userData,
+                points: this.props.userData.points + this.state.currentPoints,
+                reservations: userReservations
+              }
+              
+              console.log(temp)
+
+              this.props.updateUserData(temp);}}>
 
 
               <Text h2 white center style={{ fontFamily: 'Montserrat-Bold' }}>
@@ -445,7 +566,7 @@ class Details extends Component {
           }
 
           {this.state.isTimeSelected &&
-          <Progress.Bar progress={(this.state.userProgress / 100)} height={10} width={null} color="rgba(3, 166, 150,0.6)" />
+          <Progress.Bar progress={(this.props.userData.points / 100)} height={10} width={null} color="rgba(3, 166, 150,0.6)" />
 
           }
         </View>

@@ -268,7 +268,17 @@ class Map extends React.Component {
     this.props.navigation.navigate("Payment");
   }
 
-  _centerMap() {
+  async _centerMap() {
+
+    if(this.state.destinationCoordinates != null){
+      this.setState({destinationCoordinates: null})
+
+      let geocode = await Location.reverseGeocodeAsync(this.state.currentCoordinates);
+      this.props.updateCity(geocode[0].city)
+
+      await this.readAndDrawAreas();
+      this.props.updateDistanceFrom(true)
+    }
 
     //funziona solo cosi? pazzesco
     if (this.mapView !== null)

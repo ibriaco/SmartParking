@@ -133,7 +133,7 @@ class ParkingsNoImage extends Component {
           <View style = {{flexDirection:"row", alignItems:"flex-start", justifyContent:"space-between"}}>
             <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
             <Text h3 bold gray2>Remaining time</Text>
-            <Text h1 secondary bold>{(((this.props.activeParking.endDate - this.state.curTime) / (1000*60*60)) % 24 ).toFixed(0) + ":" + (((this.props.activeParking.endDate - this.state.curTime) / (1000*60)) % 60).toFixed(0) + ":" + (((this.props.activeParking.endDate - this.state.curTime) / 1000) % 60 ).toFixed(0) }
+            <Text h1 secondary bold>{parseInt(((this.props.activeParking.endDate - this.state.curTime) / (1000*60*60)) % 24 ) + ":" + parseInt(((this.props.activeParking.endDate - this.state.curTime) / (1000*60)) % 60) + ":" + parseInt(((this.props.activeParking.endDate - this.state.curTime) / 1000) % 60 ) }
 </Text>
             </View>
             <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
