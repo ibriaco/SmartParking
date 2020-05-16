@@ -59,6 +59,19 @@ class Details extends Component {
     };
   }
 
+  updateNTaken(){
+    
+      var index = this.props.allAreas.indexOf(this.props.tappedArea);
+      var oldNTaken = this.props.allAreas[index].nTaken;
+
+      firebase.database().ref('Cities/' + this.props.currentCity + "/Areas/" + index).update({
+                
+        nTaken: oldNTaken + 1
+
+      });
+
+
+  }
   /*---Paypal checkout section---*/
   buyBook = async () => {
 
@@ -290,7 +303,7 @@ class Details extends Component {
             <Button style={{ backgroundColor: "gray" }} onPress={() => {
 
               //UPDATE NTAKEN FOR THE TAPPED AREA 
-
+              this.updateNTaken()
               var now = new Date()
 
               var reservation = {
@@ -322,9 +335,6 @@ class Details extends Component {
 
               userReservations.push(reservation);
 
-              console.log(userReservations)
-
-
               var temp = this.props.reservationsArray;
               temp.push(reservation);
               this.props.updateReservationsArray(temp);
@@ -347,6 +357,7 @@ class Details extends Component {
           {(this.state.isTimeSelected && this.props.tappedArea.price == 0) &&
             <Button style={{ backgroundColor: "orange" }} onPress={() => {
               //UPDATE NTAKEN FOR THE TAPPED AREA 
+              this.updateNTaken()
 
               var now = new Date()
 
@@ -379,8 +390,6 @@ class Details extends Component {
 
               userReservations.push(reservation);
 
-              console.log(userReservations)
-
 
               var temp = this.props.reservationsArray;
               temp.push(reservation);
@@ -404,7 +413,8 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.5, alignSelf: "center" }} onPress={() => {
-              
+              this.updateNTaken()
+
               this.props.navigation.navigate("Purchase");
               
               var now = new Date()
@@ -438,9 +448,6 @@ class Details extends Component {
 
               userReservations.push(reservation);
 
-              console.log(userReservations)
-
-
               var temp = this.props.reservationsArray;
               temp.push(reservation);
               this.props.updateReservationsArray(temp);
@@ -465,6 +472,7 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "#3b7bbf", width: '80%', alignSelf: "center" }} onPress={() => {
+              this.updateNTaken()
 
               this.buyBook();
 
@@ -498,9 +506,6 @@ class Details extends Component {
               } 
 
               userReservations.push(reservation);
-
-              console.log(userReservations)
-
 
               var temp = this.props.reservationsArray;
               temp.push(reservation);
@@ -626,6 +631,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    allAreas: state.allAreas,
     reservationsArray: state.reservationsArray,
     currentCity: state.currentCity,
     userData: state.userData,
