@@ -127,6 +127,9 @@ class History extends Component {
           renderContent={this._renderContent}
           onChange={this._updateSections}
         />
+        {this.props.reservationsArray.length == 0 && 
+         <Text h3 bold gray2>You currently have no parkings in your history!</Text>
+        }
 
       </ScrollView>
     );

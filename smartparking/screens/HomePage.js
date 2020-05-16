@@ -319,36 +319,14 @@ class Map extends React.Component {
 
   async updateDist() {
 
-    /*first version (for..of)
-    var tempAreas = this.props.areas;
-    var newAreas = [];
-
-    for (var area of tempAreas) {
-
-      try {
-        let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.currentCoordinates.latitude + ',' + this.state.currentCoordinates.longitude + '&destinations=' + area.latitude + ',' + area.longitude + '&key=' + GOOGLE_MAPS_APIKEY);
-        let json = await response.json();
-
-        area = {
-          ...area,
-          distance: json.rows[0].elements[0].distance.text,
-          time: json.rows[0].elements[0].duration.text
-        };
-
-        newAreas.push(area);
-
-      } catch (error) {
-        console.error(error);
-
-      };
-    }
-    this.props.updateArea(newAreas)
-    */
-
-
     //second version (standard for)
+
+
     var tempAreas = this.props.areas;
+    var tempAreas2 = this.props.areas;
+
     var newAreas = [];
+    var newAreas2 = [];
 
     for (var i = 0; i < tempAreas.length; i++) {
 
@@ -372,7 +350,37 @@ class Map extends React.Component {
     }
 
     this.props.updateArea(newAreas)
-    this.props.updateAllAreas(newAreas)
+
+    if(this.state.destinationCoordinates == null) {
+      this.props.updateDistanceFrom(true);
+      this.props.updateAllAreas(newAreas)
+    }
+    else {
+      console.log("NOT NULL")
+      for (var i = 0; i < tempAreas2.length; i++) {
+
+        try {
+          let response = await fetch('https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + this.state.destinationCoordinates.latitude + ',' + this.state.destinationCoordinates.longitude + '&destinations=' + tempAreas2[i].latitude + ',' + tempAreas2[i].longitude + '&key=' + GOOGLE_MAPS_APIKEY);
+          let json = await response.json();
+  
+          tempAreas2[i] = {
+            ...tempAreas2[i],
+            distance: json.rows[0].elements[0].distance.text,
+            time: json.rows[0].elements[0].duration.text
+          };
+  
+  
+          newAreas2.push(tempAreas2[i]);
+  
+        } catch (error) {
+          console.error(error);
+  
+        };
+      }
+      this.props.updateDistanceFrom(false);
+      this.props.updateAllAreas(newAreas2);
+    }
+    
 
   }
 
@@ -784,6 +792,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateDistanceFrom: (param) => dispatch({ type: "UPDATE_DISTANCE_FROM", param: param }),
     updateMapRef: (param) => dispatch({ type: "UPDATE_MAP_REF", param: param }),
     updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
     updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),

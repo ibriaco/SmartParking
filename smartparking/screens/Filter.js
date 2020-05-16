@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Image, StyleSheet, ScrollView, TextInput, View, Dimensions } from "react-native";
+import { Image, StyleSheet, ScrollView, TextInput, View, Dimensions, TouchableWithoutFeedback } from "react-native";
 import Slider from "react-native-slider";
 
 import { Divider, Button, Block, Text, Switch } from "../components";
@@ -12,6 +12,7 @@ import {Container} from 'native-base'
 import * as Animatable from 'react-native-animatable';
 import {showMessage} from "react-native-flash-message";
 import {Header, Left, Right, Body, Title} from 'native-base'
+import Collapsible from 'react-native-collapsible';
 
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
@@ -67,6 +68,13 @@ class Filter extends Component {
 
   _resetFields(){
     this.setState({
+
+      typeCollapsed: true,
+      timeCollapsed: true,
+      distanceCollapsed: true,
+      avaCollapsed: true,
+      priceCollapsed: true,
+      spotCollapsed: true,
 
       disabled: false,
 
@@ -237,7 +245,7 @@ class Filter extends Component {
 
       tempAreas = tempAreas.filter(function (area) {
         var s = area.distance.substr(0, area.distance.length - 3)
-
+        console.log("Distance: " + s)
         return parseFloat(s) < distance;
       });
     }else{
@@ -308,7 +316,7 @@ class Filter extends Component {
       });
     }
 
-console.log(tempAreas.length)
+console.log(tempAreas)
 
 
     //FINAL CONTROL: TO APPLY OR NOT TO APPLY
@@ -378,12 +386,19 @@ console.log(tempAreas.length)
 
         <View style={styles.sliders}>
         <Animatable.View animation="slideInUp" duration={600} delay={100}>
+
+        <TouchableWithoutFeedback onPress={() => this.setState({ typeCollapsed: !this.state.typeCollapsed })}>
+
               <Text center h2 bold>
                 Type
               </Text>
+              </TouchableWithoutFeedback>
+              <Collapsible collapsed={this.state.typeCollapsed} align="center" style={{flex:1}}>
+
               <Block row center style={{ justifyContent: "space-around" }}>
 
               <Button style={this.state.payType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
+                console.log(this.state.typeCollapsed)
                 this.setState({
                   payType: true,
                   allType: false,
@@ -396,6 +411,8 @@ console.log(tempAreas.length)
               </Button>
 
               <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
+                                console.log(this.state.typeCollapsed)
+
                 this.setState({
                   freeType: true,
                   payType: false,
@@ -409,6 +426,8 @@ console.log(tempAreas.length)
               </Button>
 
               <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
+                                console.log(this.state.typeCollapsed)
+
                 this.setState({
                   allType: true,
                   payType: false,
@@ -422,12 +441,20 @@ console.log(tempAreas.length)
 
               
               </Block>
-              
+              </Collapsible>
+
 
             <Animatable.View ref={p => this.priceView = p}>
-            <Text h2 bold style={{ marginBottom: 10,}}>
+
+            <TouchableWithoutFeedback onPress={() => this.setState({ priceCollapsed: !this.state.priceCollapsed })}>
+
+            <Text h2 bold center style={{ marginBottom: 10,}}>
             Maximum Price
               </Text>
+              </TouchableWithoutFeedback>
+
+              <Collapsible collapsed={this.state.priceCollapsed} align="center">
+
             <Slider
               disabled={this.state.disabled}
               minimumValue={0.00}
@@ -444,6 +471,7 @@ console.log(tempAreas.length)
             <Text h2 bold right>
               {this.state.maxPrice} €
               </Text>
+              </Collapsible>
               </Animatable.View>
 
         </Animatable.View>
@@ -461,10 +489,15 @@ console.log(tempAreas.length)
 
 <Animatable.View animation="slideInUp" duration={600} delay={200}>
 
+        <TouchableWithoutFeedback onPress={() => this.setState({ timeCollapsed: !this.state.timeCollapsed })}>
 
-            <Text h2 bold style={{ marginBottom: 10, }}>
+            <Text h2 bold center style={{ marginBottom: 10, }}>
             Maximum Time
               </Text>
+
+              </TouchableWithoutFeedback>
+              <Collapsible collapsed={this.state.timeCollapsed} align="center">
+
             <Slider
               minimumValue={0}
               maximumValue={60}
@@ -481,18 +514,24 @@ console.log(tempAreas.length)
             <Text h2 bold right>
               {this.state.maxTime} min
               </Text>
+              </Collapsible>
               </Animatable.View>
 
 
               <Animatable.View animation="slideInUp" duration={600} delay={300}>
 
+              <TouchableWithoutFeedback onPress={() => this.setState({ distanceCollapsed: !this.state.distanceCollapsed })}>
 
-              <Text h2 bold  style={{ marginBottom: 5, }}>
+              <Text h2 bold center style={{ marginBottom: 5, }}>
               Maximum Distance
               </Text>
+              </TouchableWithoutFeedback>
+
+              <Collapsible collapsed={this.state.distanceCollapsed} align="center">
+
               <Slider
               minimumValue={0}
-              maximumValue={60}
+              maximumValue={200}
               style={{ height: 19 }}
               thumbStyle={styles.thumb}
               trackStyle={{ height: 3, borderRadius: 3 }}
@@ -506,13 +545,20 @@ console.log(tempAreas.length)
               <Text h2 bold right>
               {this.state.maxDistance} km
               </Text>
-
+              </Collapsible>
               </Animatable.View>
 
             <Animatable.View animation="slideInUp" duration={600} delay={400}>
+
+            <TouchableWithoutFeedback onPress={() => this.setState({ avaCollapsed: !this.state.avaCollapsed })}>
+
               <Text center h2 bold >
                 Minimum Availability
               </Text>
+              </TouchableWithoutFeedback>
+              <Collapsible collapsed={this.state.avaCollapsed} align="center">
+
+              
               <Block row center style={{ justifyContent: "space-around" }}>
                 <Button style={this.state.lowAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleLowButton}>
                   {this.state.lowAvailability && <Text center bold secondary>Low</Text>}
@@ -527,14 +573,20 @@ console.log(tempAreas.length)
                   {!this.state.highAvailability && <Text center bold black>High</Text>}
                 </Button>
               </Block>
-              
+              </Collapsible>
             </Animatable.View>
 
 
             <Animatable.View animation="slideInUp" duration={600} delay={500}>
+            <TouchableWithoutFeedback onPress={() => this.setState({ spotCollapsed: !this.state.spotCollapsed })}>
+
               <Text center h2 bold >
                 Spot for
               </Text>
+              </TouchableWithoutFeedback>
+
+              <Collapsible collapsed={this.state.spotCollapsed} align="center">
+
               <Block row center style={{ justifyContent: "space-around" }}>
 
                 <Button style={this.state.hSpot ? styles.filterButtonTriggered : styles.filterButton} onPress={() => this.setState({hSpot: !this.state.hSpot})}>
@@ -553,7 +605,7 @@ console.log(tempAreas.length)
                 </Button>
 
               </Block>
-              
+              </Collapsible>
             </Animatable.View>
 
 
