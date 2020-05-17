@@ -33,6 +33,7 @@ class Details extends Component {
       accessToken: "",
       shouldShowWebViewLoading: true,
       currentAmount: 0,
+      finalAmount: 0,
       endDate: 0,
 
       showPicker: false,
@@ -69,9 +70,8 @@ class Details extends Component {
         nTaken: oldNTaken + 1
 
       });
-
-
   }
+
   /*---Paypal checkout section---*/
   buyBook = async () => {
 
@@ -206,6 +206,7 @@ class Details extends Component {
         }
       )
         .then(response => {
+          this.props.navigation.navigate("Home")
           this.setState({ shouldShowWebViewLoading: true })
           console.log(response)
           return;
@@ -216,8 +217,6 @@ class Details extends Component {
 
     }
   }
-
-
 
 
   handleOnScroll = event => {
@@ -254,7 +253,7 @@ class Details extends Component {
 
           {this.state.isTimeSelected &&
             <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-              From now to: {this.state.endDate}
+              From now to: {new Date(this.state.endDate).toLocaleTimeString()}
             </Text>
           }
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
@@ -292,7 +291,7 @@ class Details extends Component {
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
             <Text h2 secondary center style={{ fontFamily: 'Montserrat-Bold' }}>
-              Total: {(this.state.currentAmount - this.props.userData.bonus).toFixed(2)} €
+              Total: {this.state.finalAmount.toFixed(2)} €
             </Text>
           }
 
@@ -303,8 +302,8 @@ class Details extends Component {
             <Button style={{ backgroundColor: "gray" }} onPress={() => {
 
               //UPDATE NTAKEN FOR THE TAPPED AREA 
-              this.updateNTaken()
-              var now = new Date()
+              this.updateNTaken();
+              var now = new Date();
 
               var reservation = {
                 startDate: now.getTime(),
@@ -312,7 +311,8 @@ class Details extends Component {
                 amount: 0,
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
-                earnedPoints: 0
+                earnedPoints: 0,
+                plate: "AA 666 BB"
               }
 
               firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
@@ -322,7 +322,8 @@ class Details extends Component {
                 amount: reservation.amount,
                 parkingAddress: reservation.parkingAddress,
                 parkingCity: reservation.parkingCity,
-                earnedPoints: reservation.earnedPoints
+                earnedPoints: reservation.earnedPoints,
+                plate: reservation.plate
 
               });
 
@@ -346,6 +347,9 @@ class Details extends Component {
               }
               
               this.props.updateUserData(temp);
+              
+              this.props.navigation.navigate("Home")
+            
 
             }}>
               <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
@@ -396,9 +400,29 @@ class Details extends Component {
               this.props.updateReservationsArray(temp);
 
 
+              //check if the user reached 100 points
+              var newPoints = this.props.userData.points + this.state.currentPoints;
+              var newBonus= this.state.finalBonus;
+
+              if(newPoints == 100)  {
+                newBonus = newBonus + 1;
+                newPoints = 0;
+              } else if (newPoints > 100)  {
+                newBonus = newBonus + 1;
+                newPoints = newPoints - 100;
+              }              
+
+              //update firebase data
+              firebase.database().ref('Users/' + this.props.userData.uid).update({                
+                bonus: newBonus,
+                points: newPoints,        
+              });
+
+              //update local data
               var temp = {
                 ...this.props.userData,
-                points: this.props.userData.points + 10,
+                bonus: newBonus,
+                points: newPoints, 
                 reservations: userReservations
               }
               
@@ -453,14 +477,32 @@ class Details extends Component {
               this.props.updateReservationsArray(temp);
 
 
+              //check if the user reached 100 points
+              var newPoints = this.props.userData.points + this.state.currentPoints;
+              var newBonus= this.state.finalBonus;
+
+              if(newPoints == 100)  {
+                newBonus = newBonus + 1;
+                newPoints = 0;
+              } else if (newPoints > 100)  {
+                newBonus = newBonus + 1;
+                newPoints = newPoints - 100;
+              }              
+
+              //update firebase data
+              firebase.database().ref('Users/' + this.props.userData.uid).update({                
+                bonus: newBonus,
+                points: newPoints,        
+              });
+
+              //update local data
               var temp = {
                 ...this.props.userData,
-                points: this.props.userData.points + this.state.currentPoints,
+                bonus: newBonus,
+                points: newPoints, 
                 reservations: userReservations
               }
               
-              console.log(temp)
-
               this.props.updateUserData(temp);
               
             }}>
@@ -472,11 +514,11 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Button style={{ backgroundColor: "#3b7bbf", width: '80%', alignSelf: "center" }} onPress={() => {
-              this.updateNTaken()
+              this.updateNTaken();
 
               this.buyBook();
 
-              var now = new Date()
+              var now = new Date();
 
               var reservation = {
                 startDate: now.getTime(),
@@ -512,13 +554,35 @@ class Details extends Component {
               this.props.updateReservationsArray(temp);
 
 
+              //check if the user reached 100 points
+              var newPoints = this.props.userData.points + this.state.currentPoints;
+              var newBonus= this.state.finalBonus;
+
+              if(newPoints == 100)  {
+                newBonus = newBonus + 1;
+                newPoints = 0;
+              } else if (newPoints > 100)  {
+                newBonus = newBonus + 1;
+                newPoints = newPoints - 100;
+              }              
+
+              console.log(newPoints)
+
+console.log(newBonus)
+              
+              //update firebase data
+              firebase.database().ref('Users/' + this.props.userData.uid).update({                
+                bonus: newBonus,
+                points: newPoints,        
+              });
+
+              //update local data
               var temp = {
                 ...this.props.userData,
-                points: this.props.userData.points + this.state.currentPoints,
+                bonus: newBonus,
+                points: newPoints, 
                 reservations: userReservations
-              }
-              
-              console.log(temp)
+              }              
 
               this.props.updateUserData(temp);}}>
 
@@ -535,14 +599,14 @@ class Details extends Component {
           </Text>
 
 
-          {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
+          {this.state.isTimeSelected && 
             <View>
               <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
                 With this payment you will get
     </Text>
 
               <Text h1 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                {(this.state.currentAmount - this.props.userData.bonus).toFixed(1) * 5}
+                {this.state.currentPoints}
               </Text>
 
               <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
@@ -553,27 +617,8 @@ class Details extends Component {
           }
 
 
-          {(this.state.isTimeSelected && this.props.tappedArea.price == 0) &&
-            <View>
-              <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                By telling us when you will leave you will get
-    </Text>
 
-              <Text h1 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                10
-    </Text>
-
-              <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-                bonus points!
-    </Text>
-
-            </View>
-          }
-
-          {this.state.isTimeSelected &&
-          <Progress.Bar progress={(this.props.userData.points / 100)} height={10} width={null} color="rgba(3, 166, 150,0.6)" />
-
-          }
+          
         </View>
 
         <DateTimePickerModal
@@ -584,19 +629,43 @@ class Details extends Component {
           onConfirm={(date) => {
 
             if (date >= new Date()){
-            var x = ((((date.getTime() - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price)); 
-              this.setState({
-                isTimeSelected: true,
-                endDate: date.getTime(),
-                currentAmount: x,
-                currentPoints: (x - this.props.userData.bonus).toFixed(1) * 5,
-                showPicker: false
-              })
+              if(this.props.tappedArea.price > 0) {
+
+                var total = ((((date.getTime() - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price)); 
+                var newBonus = this.props.userData.bonus;
+                var x = total;
+                
+                if(newBonus >= x) {
+                  newBonus = newBonus - x + 0.01;
+                  x = 0.01;
+                }
+                else {
+                  x = x - newBonus;
+                  newBonus = 0;                  
+                }
+
+                  this.setState({
+                    isTimeSelected: true,
+                    endDate: date.getTime(),
+                    currentAmount: parseFloat(total.toFixed(2)),
+                    finalAmount: parseFloat(x.toFixed(2)),
+                    currentPoints: parseFloat((x * 5).toFixed(0)),
+                    finalBonus: newBonus,
+                    showPicker: false
+                  })
+                }
+                else
+                  this.setState({
+                    isTimeSelected: true,
+                    endDate: date.getTime(),
+                    showPicker: false,
+                    currentPoints: 10,
+                    finalBonus: newBonus
+                  })
 
             }
 
-            else
-              this.setState({ showPicker: false })
+            
           }} />
 
 

@@ -101,7 +101,7 @@ class Map extends React.Component {
 
   async readAndDrawAreas() {
 
-    firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
+    firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').once('value', (snapshot) => {
 
       //this means that we don't have parkings in the current city
       if (snapshot.numChildren() == 0) {
@@ -270,14 +270,17 @@ class Map extends React.Component {
 
   async _centerMap() {
 
-    if(this.state.destinationCoordinates != null){
-      this.setState({destinationCoordinates: null})
+    this.props.updateDistanceFrom(true);
+    
 
       let geocode = await Location.reverseGeocodeAsync(this.state.currentCoordinates);
       this.props.updateCity(geocode[0].city)
 
       await this.readAndDrawAreas();
-      this.props.updateDistanceFrom(true)
+
+      if(this.state.destinationCoordinates != null){
+        this.setState({destinationCoordinates: null})
+      
     }
 
     //funziona solo cosi? pazzesco
@@ -611,7 +614,7 @@ class Map extends React.Component {
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"baseline"}}>
                     <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.9)">
                     </FontAwesome5>
-                    <Text h1 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  3</Text> 
+                  <Text h1 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  {this.props.tappedArea.nTot - this.props.tappedArea.nTaken}</Text> 
                     <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>

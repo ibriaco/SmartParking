@@ -41,7 +41,7 @@ class History extends Component {
   _renderSectionTitle = section => {
     return (
       <View style={styles.content}>
-        <Text>{section.distance}</Text>
+          <Text h2 gray2 style={{ fontFamily: "Montserrat-Bold" }}>{new Date(section.startDate).toLocaleDateString()}</Text>
       </View>
     );
   };
@@ -54,7 +54,7 @@ class History extends Component {
           <Text h3 bold>{section.parkingAddress}</Text>
           <Text style={styles.headerText}></Text>
           <Text h3 bold gray2>Your parking time</Text>
-          <Text h3 bold>{section.startDate} - {section.endDate}</Text>
+          <Text h3 bold>{new Date(section.startDate).toLocaleTimeString()} - {new Date(section.endDate).toLocaleTimeString()}</Text>
           <Text style={styles.headerText}></Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" }}>
@@ -113,9 +113,7 @@ class History extends Component {
     
             </Animated.View> 
            */}
-        <View style={{ marginLeft: 20, marginTop: 20 }}>
-          <Text h2 gray2 style={{ fontFamily: "Montserrat-Bold" }}>Today</Text>
-        </View>
+        
 
 
         <Accordion
@@ -125,6 +123,7 @@ class History extends Component {
           activeSections={this.state.activeSections}
           renderHeader={this._renderHeader}
           renderContent={this._renderContent}
+          renderSectionTitle={this._renderSectionTitle}
           onChange={this._updateSections}
         />
         {this.props.reservationsArray.length == 0 && 

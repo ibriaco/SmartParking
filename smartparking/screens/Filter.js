@@ -68,14 +68,6 @@ class Filter extends Component {
 
   _resetFields(){
     this.setState({
-
-      typeCollapsed: true,
-      timeCollapsed: true,
-      distanceCollapsed: true,
-      avaCollapsed: true,
-      priceCollapsed: true,
-      spotCollapsed: true,
-
       disabled: false,
 
       maxPrice: DEFAULT_PRICE,
@@ -387,13 +379,9 @@ console.log(tempAreas)
         <View style={styles.sliders}>
         <Animatable.View animation="slideInUp" duration={600} delay={100}>
 
-        <TouchableWithoutFeedback onPress={() => this.setState({ typeCollapsed: !this.state.typeCollapsed })}>
-
               <Text center h2 bold>
                 Type
               </Text>
-              </TouchableWithoutFeedback>
-              <Collapsible collapsed={this.state.typeCollapsed} align="center" style={{flex:1}}>
 
               <Block row center style={{ justifyContent: "space-around" }}>
 
@@ -441,19 +429,15 @@ console.log(tempAreas)
 
               
               </Block>
-              </Collapsible>
 
 
             <Animatable.View ref={p => this.priceView = p}>
 
-            <TouchableWithoutFeedback onPress={() => this.setState({ priceCollapsed: !this.state.priceCollapsed })}>
 
             <Text h2 bold center style={{ marginBottom: 10,}}>
             Maximum Price
               </Text>
-              </TouchableWithoutFeedback>
 
-              <Collapsible collapsed={this.state.priceCollapsed} align="center">
 
             <Slider
               disabled={this.state.disabled}
@@ -471,7 +455,6 @@ console.log(tempAreas)
             <Text h2 bold right>
               {this.state.maxPrice} €
               </Text>
-              </Collapsible>
               </Animatable.View>
 
         </Animatable.View>
@@ -489,14 +472,11 @@ console.log(tempAreas)
 
 <Animatable.View animation="slideInUp" duration={600} delay={200}>
 
-        <TouchableWithoutFeedback onPress={() => this.setState({ timeCollapsed: !this.state.timeCollapsed })}>
 
             <Text h2 bold center style={{ marginBottom: 10, }}>
             Maximum Time
               </Text>
 
-              </TouchableWithoutFeedback>
-              <Collapsible collapsed={this.state.timeCollapsed} align="center">
 
             <Slider
               minimumValue={0}
@@ -514,20 +494,16 @@ console.log(tempAreas)
             <Text h2 bold right>
               {this.state.maxTime} min
               </Text>
-              </Collapsible>
               </Animatable.View>
 
 
               <Animatable.View animation="slideInUp" duration={600} delay={300}>
 
-              <TouchableWithoutFeedback onPress={() => this.setState({ distanceCollapsed: !this.state.distanceCollapsed })}>
 
               <Text h2 bold center style={{ marginBottom: 5, }}>
               Maximum Distance
               </Text>
-              </TouchableWithoutFeedback>
 
-              <Collapsible collapsed={this.state.distanceCollapsed} align="center">
 
               <Slider
               minimumValue={0}
@@ -545,18 +521,14 @@ console.log(tempAreas)
               <Text h2 bold right>
               {this.state.maxDistance} km
               </Text>
-              </Collapsible>
               </Animatable.View>
 
             <Animatable.View animation="slideInUp" duration={600} delay={400}>
 
-            <TouchableWithoutFeedback onPress={() => this.setState({ avaCollapsed: !this.state.avaCollapsed })}>
 
               <Text center h2 bold >
                 Minimum Availability
               </Text>
-              </TouchableWithoutFeedback>
-              <Collapsible collapsed={this.state.avaCollapsed} align="center">
 
               
               <Block row center style={{ justifyContent: "space-around" }}>
@@ -573,19 +545,15 @@ console.log(tempAreas)
                   {!this.state.highAvailability && <Text center bold black>High</Text>}
                 </Button>
               </Block>
-              </Collapsible>
             </Animatable.View>
 
 
             <Animatable.View animation="slideInUp" duration={600} delay={500}>
-            <TouchableWithoutFeedback onPress={() => this.setState({ spotCollapsed: !this.state.spotCollapsed })}>
 
               <Text center h2 bold >
                 Spot for
               </Text>
-              </TouchableWithoutFeedback>
 
-              <Collapsible collapsed={this.state.spotCollapsed} align="center">
 
               <Block row center style={{ justifyContent: "space-around" }}>
 
@@ -605,7 +573,6 @@ console.log(tempAreas)
                 </Button>
 
               </Block>
-              </Collapsible>
             </Animatable.View>
 
 

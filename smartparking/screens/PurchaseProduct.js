@@ -11,11 +11,17 @@ class PurchaseProduct extends Component {
   // Called everytime the URL stats to load in the webview
   onLoadStart = (syntheticEvent) => {
     const { nativeEvent } = syntheticEvent;
+
+    console.log(nativeEvent)
     
-    if (nativeEvent.url === STRIPE.SUCCESS_URL || nativeEvent.url === STRIPE.CANCELED_URL) {
-        this.props.navigation.navigate("Details");
+    if (nativeEvent.url === STRIPE.SUCCESS_URL )  {
+        this.props.navigation.navigate("Home");
         return;
     }
+    if( nativeEvent.url === STRIPE.CANCELED_URL) {
+      this.props.navigation.navigate("Home");
+      return;
+  }
   };
 
 render(){

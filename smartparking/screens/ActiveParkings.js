@@ -152,11 +152,11 @@ class ParkingsNoImage extends Component {
           <View style={styles.content}>
 
           <Text h3 bold gray2>Start Time</Text>
-            <Text h3 bold>{new Date(this.props.activeParking.startDate).toLocaleString()}</Text>
+            <Text h3 bold>{new Date(this.props.activeParking.startDate).toLocaleTimeString()}</Text>
             <Text style={styles.headerText}></Text>
 
             <Text h3 bold gray2>End Time</Text>
-            <Text h3 bold>{new Date(this.props.activeParking.endDate).toLocaleString()}</Text>
+            <Text h3 bold>{new Date(this.props.activeParking.endDate).toLocaleTimeString()}</Text>
             <Text style={styles.headerText}></Text>
 
             <Button style={styles.end}>
