@@ -244,6 +244,9 @@ class Details extends Component {
           <Text h2 secondary style={{ fontFamily: 'Montserrat' }}>
             {this.props.tappedArea.address}
           </Text>
+          <Text h2 secondary style={{ fontFamily: 'Montserrat' }}>
+            {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}
+          </Text>
 
           <Button style={{ backgroundColor: "black", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
             <Text h3 white center style={{ fontFamily: 'Montserrat-Bold' }}>
@@ -358,7 +361,7 @@ class Details extends Component {
             </Button>
           }
 
-          {(this.state.isTimeSelected && this.props.tappedArea.price == 0) &&
+          {(this.state.isTimeSelected && this.state.finalAmount == 0) &&
             <Button style={{ backgroundColor: "orange" }} onPress={() => {
               //UPDATE NTAKEN FOR THE TAPPED AREA 
               this.updateNTaken()
@@ -371,7 +374,9 @@ class Details extends Component {
                 amount: 0,
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
-                earnedPoints: 10
+                earnedPoints: this.state.currentPoints,
+                plate: "AA 666 BB"
+
               }
 
               firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
@@ -381,7 +386,8 @@ class Details extends Component {
                 amount: reservation.amount,
                 parkingAddress: reservation.parkingAddress,
                 parkingCity: reservation.parkingCity,
-                earnedPoints: reservation.earnedPoints
+                earnedPoints: reservation.earnedPoints,
+                plate: reservation.plate
 
               });
 
@@ -435,7 +441,7 @@ class Details extends Component {
             </Button>
           }
 
-          {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
+          {(this.state.isTimeSelected && this.state.finalAmount > 0) &&
             <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.5, alignSelf: "center" }} onPress={() => {
               this.updateNTaken()
 
@@ -446,10 +452,12 @@ class Details extends Component {
               var reservation = {
                 startDate: now.getTime(),
                 endDate: this.state.endDate,
-                amount: (this.state.currentAmount - this.props.userData.bonus).toFixed(2),
+                amount: this.state.finalAmount,
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
-                earnedPoints: this.state.currentPoints
+                earnedPoints: this.state.currentPoints,
+                plate: "AA 666 BB"
+
               }
 
               firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
@@ -459,7 +467,8 @@ class Details extends Component {
                 amount: reservation.amount,
                 parkingAddress: reservation.parkingAddress,
                 parkingCity: reservation.parkingCity,
-                earnedPoints: reservation.earnedPoints
+                earnedPoints: reservation.earnedPoints,
+                plate: reservation.plate
 
               });
 
@@ -512,7 +521,7 @@ class Details extends Component {
             </Button>
           }
 
-          {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
+          {(this.state.isTimeSelected && this.state.finalAmount > 0) &&
             <Button style={{ backgroundColor: "#3b7bbf", width: '80%', alignSelf: "center" }} onPress={() => {
               this.updateNTaken();
 
@@ -523,10 +532,12 @@ class Details extends Component {
               var reservation = {
                 startDate: now.getTime(),
                 endDate: this.state.endDate,
-                amount: (this.state.currentAmount - this.props.userData.bonus).toFixed(2),
+                amount: this.state.finalAmount,
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
-                earnedPoints: this.state.currentPoints
+                earnedPoints: this.state.currentPoints,
+                plate: "AA 666 BB"
+
               }
 
               firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
@@ -536,7 +547,8 @@ class Details extends Component {
                 amount: reservation.amount,
                 parkingAddress: reservation.parkingAddress,
                 parkingCity: reservation.parkingCity,
-                earnedPoints: reservation.earnedPoints
+                earnedPoints: reservation.earnedPoints,
+                plate: reservation.plate
 
               });
 
@@ -622,6 +634,7 @@ console.log(newBonus)
         </View>
 
         <DateTimePickerModal
+          display="spinner"
           isVisible={this.state.showPicker}
           mode="time"
           date={new Date()}
@@ -631,25 +644,79 @@ console.log(newBonus)
             if (date >= new Date()){
               if(this.props.tappedArea.price > 0) {
 
-                var total = ((((date.getTime() - (new Date()).getTime()) / 3600000) * this.props.tappedArea.price)); 
+                var total;
+                var totalTimeMS = (date.getTime() - (new Date()).getTime());
+                //convert in format HH:MM:SS
+                var startArr = (new Date()).toLocaleTimeString().split(':');
+                var endArr = date.toLocaleTimeString().split(':');
+
+
+                if(startArr[0] >= this.props.tappedArea.fromH)  {
+
+                  if(startArr[0] >= this.props.tappedArea.toH)  {
+                    //CASO 3       
+                    totalTimeMS = 0;
+                    console.log("caso 3")
+
+                  } else  {
+                    if(endArr[0] >= this.props.tappedArea.toH)  {
+                      //CASO 2 - devo togliere al tempo totale quello che "avanza" tra Pe e Re
+                      //totaltime (ms) = totaltime (ms) - ore (ms) - minuti (ms)
+                      totalTimeMS = totalTimeMS - ((endArr[0] - this.props.tappedArea.toH) * 3600000) - (endArr[1] * 60000);
+                      console.log("caso 2")
+
+                    } else  {
+                      //CASO 1
+                      console.log("caso 1")
+                    }
+                  }
+                } else  {
+                  if(endArr[0] >= this.props.tappedArea.fromH)  {
+                    if(endArr[0] >= this.props.tappedArea.toH)  {
+                      console.log("caso 5")
+
+                      //CASO 5 - devo togliere al tempo totale quello che "avanza" tra Pe e Re e quello che "avanza" tra Ps e Rs
+                      totalTimeMS = totalTimeMS - ((this.props.tappedArea.fromH - startArr[0]) * 3600000) + (startArr[1] * 60000) - ((endArr[0] - this.props.tappedArea.toH) * 3600000) - (endArr[1] * 60000);
+                    } else  {
+                      console.log("caso 6")
+
+                      //CASO 6 - devo togliere al tempo totale quello che "avanza" tra Ps e Rs
+                      totalTimeMS = totalTimeMS - ((this.props.tappedArea.fromH - startArr[0]) * 3600000) + (startArr[1] * 60000);
+                    }
+                  } else  {
+                    //CASO 4
+                    console.log("caso 4")
+
+                    totalTimeMS = 0;
+                  }
+                }
+                
+                total = totalTimeMS / 3600000 * this.props.tappedArea.price; 
+                
                 var newBonus = this.props.userData.bonus;
                 var x = total;
                 
                 if(newBonus >= x) {
-                  newBonus = newBonus - x + 0.01;
-                  x = 0.01;
+                  newBonus = newBonus - x;
+                  x = 0;
                 }
                 else {
                   x = x - newBonus;
                   newBonus = 0;                  
                 }
 
+                var points;
+                if(total == 0)
+                  points = 10;
+                else
+                  points = parseFloat((x * 5).toFixed(0));
+
                   this.setState({
                     isTimeSelected: true,
                     endDate: date.getTime(),
                     currentAmount: parseFloat(total.toFixed(2)),
                     finalAmount: parseFloat(x.toFixed(2)),
-                    currentPoints: parseFloat((x * 5).toFixed(0)),
+                    currentPoints: points,
                     finalBonus: newBonus,
                     showPicker: false
                   })

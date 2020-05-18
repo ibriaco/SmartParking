@@ -47,6 +47,7 @@ class History extends Component {
   };
 
   _renderHeader = section => {
+    console.log(section)
     return (
       <View style={styles.header}>
         <View style={{ flexDirection: "column", alignItems: "flex-start" }}>

@@ -50,7 +50,7 @@ class ParkingsNoImage extends Component {
 
     check = () => {
       var temp = this.props.userData.reservations
-      console.log("CHECK")
+
       for(var i in temp){
         var nowInMs = (new Date()).getTime();
 
