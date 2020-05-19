@@ -14,7 +14,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import * as Animatable from 'react-native-animatable';
 
-import { Button, Block, Text } from "../components";
+import { Button, Block, Text, Switch } from "../components";
 import { theme } from "../constants";
 import {Input} from "galio-framework"
 import { connect } from 'react-redux';
@@ -31,8 +31,8 @@ class Register extends Component {
     secondProgress: 0,
     index: 0,
     vehiclePlate: "",
-    vehicleType: "",
-    license: ""
+    license: "",
+    notifications: false
   };
 
   handleSignUp() {
@@ -76,7 +76,7 @@ class Register extends Component {
 
   handleContinue() {
 
-    if(this.state.vehicleType != "" && this.state.vehiclePlate != "" && this.state.license != ""){
+    if(this.state.vehiclePlate != "" && this.state.license != ""){
 
       //all data inserted, proceed with the registration
       this.setState({ secondProgress: 1 });
@@ -92,10 +92,7 @@ class Register extends Component {
       this.props.updateUserData({
         ...this.props.userData,
         license: this.state.license,
-        vehicle: {
-          vehicleType: this.state.vehicleType,
-          vehiclePlate: this.state.vehiclePlate
-        }
+        vehiclePlate: this.state.vehiclePlate
       });
       
     Keyboard.dismiss();
@@ -109,26 +106,13 @@ class Register extends Component {
 
   handleFinish() {
 
-
-    var newData ={
-      ...this.props.userData,
-      payment: {
-        paymentType: "paypal",
-        paypayEmail: "nananan@bella.it"
-      }
-    };
-
     firebase.database().ref('Users/' + this.props.userData.uid).set(
-      newData
+      this.props.userData
     );
 
-    this.props.updateUserData(newData);
-
     this.props.navigation.navigate("Home");
-
     
   }
-
 
 
   render() {
@@ -136,25 +120,14 @@ class Register extends Component {
 
     return (
 
-      
+    
       <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.signup}
     >
-      <Block middle padding={[0, theme.sizes.base * 2]}>
-      {this.state.index == 0 &&
-        
-        <Animatable.View style={{flex: 1}} animation="slideInRight" duration={800} delay={600} ref={r => this.userView = r}>
-
-        <Text h1 bold>
-          </Text>
-          <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
-          Register
-          </Text>
-          <Text gray2 h3 style={{fontFamily: "Montserrat"}}></Text>
-           
-        <Animatable.View style={{flexDirection: "row", justifyContent: "space-between"}} animation="slideInRight" duration={800} delay={200}>
+      <Animatable.View style={{marginHorizontal: theme.sizes.base * 2, flexDirection: "row", justifyContent: "space-between"}} animation="slideInRight" duration={800} delay={200}>
           <View style = {{flexDirection:"column"}}>
+
           <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
              <Text h2>1</Text>
           </Animatable.View>
@@ -162,14 +135,9 @@ class Register extends Component {
           </View>        
 
           <View style={{flex: 1, paddingTop: 16}}>
-             <Progress.Bar progress={this.state.firstProgress} height = {null} width={null} color="rgba(0, 0, 0, 0.2)"/>
+             <Progress.Bar progress={this.state.firstProgress} height = {3} width={null} borderWidth={0} color="rgba(3, 166, 150, 0.7)" unfilledColor="rgba(0,0,0,0.1)"/>
           </View> 
 
-          {(this.state.index == 1 || this.state.index == 2) && 
-          <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800}>
-             <Icon name="car" size={24} color="white"/>
-          </Animatable.View>        
-          }
 
           {this.state.index == 0 && 
           <View style = {{flexDirection:"column"}}>
@@ -179,9 +147,18 @@ class Register extends Component {
           <Text center caption style = {{top: 5}}>Vehicle</Text>
         </View>
           }
+
+        {(this.state.index == 1 || this.state.index == 2) && 
+          <View style = {{flexDirection:"column"}}>
+          <Animatable.View style={styles.selectedButtonCircle} ref={r => this.creditView = r} animation="bounceIn" duration={800}>
+            <Text h2>2</Text>
+          </Animatable.View> 
+          <Text center caption secondary style = {{top: 5}}>Vehicle</Text>
+        </View>
+          }
           
           <View style={{flex: 1,paddingTop: 16}}>
-             <Progress.Bar progress={this.state.secondProgress} height={null} width={null} color="rgba(0, 0, 0, 0.2)"/>
+             <Progress.Bar progress={this.state.secondProgress} height={3} width={null} borderWidth={0} color="rgba(3, 166, 150, 0.7)" unfilledColor="rgba(0,0,0,0.1)"/>
           </View> 
 
 
@@ -190,7 +167,7 @@ class Register extends Component {
           <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} >
             <Text h2>3</Text>
           </Animatable.View> 
-          <Text center caption style = {{top: 5}} secondary>Payment</Text>     
+          <Text center caption style = {{top: 5}} secondary>Complete</Text>     
           </View>       
           }
 
@@ -199,11 +176,24 @@ class Register extends Component {
           <View style={styles.buttonCircle} ref={r => this.creditView = r}>
             <Text h2>3</Text>
           </View> 
-          <Text center caption style = {{top: 5}}>Payment</Text>
+          <Text center caption style = {{top: 5}}>Complete</Text>
         </View>
         }
 
         </Animatable.View>
+
+      <Block middle padding={[0, theme.sizes.base * 2]}>
+      {this.state.index == 0 &&
+        
+        <Animatable.View style={{flex: 1}} animation="slideInRight" duration={800} delay={600} ref={r => this.userView = r}>
+
+        <Text h1 bold>
+          </Text>
+          <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
+          About you
+          </Text>
+           
+        
           <Block middle>
           <View style = {styles.errorMessage}>
             {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -276,86 +266,18 @@ class Register extends Component {
   {this.state.index == 1 &&
   
   <Animatable.View style={{flex: 1}} animation="slideInRight" duration={300} ref={r => this.vehicleView = r}>
-
-  <Text h1 bold>
-    </Text>
-    <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}}>
-    Vehicle
-    </Text>
-    <Text gray2 h3 style={{fontFamily: "Montserrat"}}></Text>
-     
-    <Animatable.View style={{flexDirection: "row", justifyContent: "space-between"}} animation="slideInRight" duration={800} delay={200}>
-      <View style = {{flexDirection:"column"}}>
-          <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
-             <Text h2>1</Text>
-          </Animatable.View>
-          <Text center caption style = {{top: 5}}>Account</Text> 
-          </View>        
-
-          <View style={{flex: 1, paddingTop: 16}}>
-             <Progress.Bar progress={this.state.firstProgress} height={null} width={null} color="rgba(3, 166, 150, 0.7)"/>
-          </View> 
-
-          {(this.state.index == 1 || this.state.index == 2) && 
-         <View style = {{flexDirection:"column"}}>
-         <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} >
-           <Text h2>2</Text>
-         </Animatable.View> 
-         <Text center caption style = {{top: 5}} secondary>Vehicle</Text>     
-       </View>        
-          }
-
-          {this.state.index == 0 && 
-          <View style = {{flexDirection:"column"}}>
-          <View style={styles.buttonCircle} ref={r => this.creditView = r}>
-            <Text h2>2</Text>
-          </View> 
-          <Text center caption style = {{top: 5}} secondary>Vehicle</Text>
-        </View>
-          }
-          
-          <View style={{flex: 1,paddingTop: 16}}>
-             <Progress.Bar progress={this.state.secondProgress} height={null} width={null} color="rgba(0, 0, 0, 0.2)"/>
-          </View> 
-
-
-          {this.state.index == 2 &&
-          <View style = {{flexDirection:"column"}}>
-            <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} >
-              <Text h2>3</Text>
-            </Animatable.View> 
-            <Text center caption style = {{top: 5}} secondary>Payment</Text>     
-          </View>  
-          }
-
-          {(this.state.index == 0 || this.state.index == 1) && 
-          <View style = {{flexDirection:"column"}}>
-          <View style={styles.buttonCircle} ref={r => this.creditView = r}>
-            <Text h2>3</Text>
-          </View> 
-          <Text center caption style = {{top: 5}}>Payment</Text>
-        </View>
-        }
-
-        </Animatable.View>
+<Text h1 bold>
+          </Text>
+          <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
+          Vehicle Data
+          </Text>
     <Block middle>
     <View style = {styles.errorMessage}>
       {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
     </View>
     <Block middle>
       </Block>
-      <Input
-        placeholder="Vehicle Type"
-        style={[styles.input]}
-        onChangeText={vehicleType => this.setState({ vehicleType })}
-        value = {this.state.vehicleType}
-        right
-        icon = "car"
-        family="material-community"
-        iconSize={24}
-        iconColor="#a5a5a5"
-        style={styles.input}
-      />
+      
       <Input
         placeholder ="Vehicle Plate"
         right
@@ -417,127 +339,50 @@ class Register extends Component {
   {this.state.index == 2 && 
         <Animatable.View style={{flex: 1}} animation="slideInRight" duration={300} ref={r => this.payView = r}>
         <Text h1 bold>
-    </Text>
-    <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
-    Payment
-    </Text>
-    <Text gray2 h3 style={{fontFamily: "Montserrat"}}></Text>
-     
-    <Animatable.View style={{flexDirection: "row", justifyContent: "space-between"}} animation="slideInRight" duration={800} delay={200}>
-        <View style = {{flexDirection:"column"}}>
-          <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
-             <Text h2>1</Text>
-          </Animatable.View>   
-          <Text center caption style = {{top: 5}}>Account</Text>
-          </View>
-
-          <View style={{flex: 1, paddingTop: 16}}>
-             <Progress.Bar progress={this.state.firstProgress} height={null} width={null} color="rgba(3, 166, 150, 0.7)"/>
-          </View> 
-
-          {(this.state.index == 1 || this.state.index == 2) && 
-          <View style = {{flexDirection:"column"}}>
-          <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800}>
-             <Text h2>2</Text>
-          </Animatable.View>
-            <Text center caption style = {{top: 5}}>Vehicle</Text>
-          </View>        
-          }
-
-          {this.state.index == 0 && 
-          <View style = {{flexDirection:"column"}}>
-          <View style={styles.buttonCircle} ref={r => this.creditView = r}>
-            <Text h2>2</Text>
-          </View> 
-          <Text center caption style = {{top: 5}}>Vehicle</Text>
-        </View>
-          }
-          
-          <View style={{flex: 1,paddingTop: 16}}>
-             <Progress.Bar progress={this.state.secondProgress} height={null} width={null} color="rgba(3, 166, 150, 0.7)"/>
-          </View> 
-
-
-          {this.state.index == 2 && 
-          <View style = {{flexDirection:"column"}}>
-          <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800}>
-             <Text h2>3</Text>
-          </Animatable.View>
-            <Text center caption style = {{top: 5}} secondary>Payment</Text>
-          </View>         
-          }
-
-          {(this.state.index == 0 || this.state.index == 1) && 
-          <View style = {{flexDirection:"column"}}>
-            <View style={styles.buttonCircle} ref={r => this.creditView = r}>
-              <Text h2>3</Text>
-            </View> 
-            <Text center caption style = {{top: 5}}>Payment</Text>
-          </View>
-        }
-
-        </Animatable.View>
+          </Text>
+          <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
+          Complete your Profile
+          </Text>
     <Block middle>
-    <View style = {styles.errorMessage}>
-      {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
-    </View>
-    <Block middle>
-      </Block>
-      <Input
-        placeholder="Vehicle Type"
-        style={[styles.input]}
-        onChangeText={name => this.setState({ name })}
-        value = {this.state.name}
-        right
-        icon = "user"
-        family="font-awesome"
-        iconSize={18}
-        iconColor="#a5a5a5"
-        style={styles.input}
-      />
-      <Input
-        placeholder ="Vehicle Plate"
-        right
-        icon="envelope"
-        family="font-awesome"
-        iconSize={18}
-        iconColor="#a5a5a5"
-        style={styles.input}
-        onChangeText={email => this.setState({ email })}
-        value={this.state.email}
-      />
-      <Input
-        iconColor ="#a5a5a5"
-        iconSize = {20}
-        placeholder="Driving License"
-        style={[styles.input]}
-        onChangeText={password => this.setState({ password })}
-        value={this.state.password}
-      />
-      <Block>
-        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Already registered?
-        <Text center secondary h3 style={{fontFamily: "Montserrat-Bold"}} onPress={() => navigation.navigate("Login")}> Sign In</Text></Text>
+    
+        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>If you want, you can upload a picture photo to personalize your account!</Text>
       </Block>
       <Block top>
       </Block>
-      <Block top></Block>
+      <Block
+              row
+              center
+              space="between"
+              style={{ marginBottom: theme.sizes.base * 2 }}
+            >
+              <Text gray2>Notifications</Text>
+              <Switch
+                value={this.state.notifications}
+                onValueChange={value => {
+                  this.setState({ notifications: value });
+
+                  this.handleNotifications();
+                  
+              }}
+              />
+            </Block>
       <Block top ></Block>
       <Button style = {styles.button} onPress={() => this.handleFinish()}>
           <Text h2  white center style={{fontFamily: "Montserrat-Bold"}}>
-            Register
+            Upload
           </Text>
       </Button>
-      <Button onPress={() => console.log(this.props.userData)}>
+      <Button >
         <Text
           gray2
           h3
           center
           style={{fontFamily: "Montserrat-Bold"}}
         >
-          SKIP
+          NOT NOW
         </Text>
       </Button>
-    </Block>
+      
     </Animatable.View>
   }
       </Block>
