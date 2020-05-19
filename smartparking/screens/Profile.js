@@ -21,7 +21,9 @@ class Profile extends Component {
 
   getStyle = function(dTheme) {
     return {
-      backgroundColor: dTheme ? "black" : "white"
+      backgroundColor: dTheme ? "black" : "white",
+      flexDirection: "column", 
+      justifyContent:"space-between"
     }
   }
   
@@ -66,14 +68,13 @@ class Profile extends Component {
           <Text bold style = {{fontSize:32}}>
             Profile
           </Text>
-          <Text h3 gray2>Edit your profile information</Text>
         </Block>
         <ScrollView showsVerticalScrollIndicator={false}>
           <Block style={styles.inputs}>
             <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
               <Block>
                 <Text gray2 style={{ marginBottom: 10 }}>
-                  Full Name
+                  FULL NAME
                 </Text>
                 {this.renderEdit("fullname")}
               </Block>
@@ -85,58 +86,11 @@ class Profile extends Component {
                 {editing === "fullname" ? "Save" : "Edit"}
               </Text>
             </Block>
-            <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
-              <Block>
-                <Text gray2 style={{ marginBottom: 10 }}>
-                  Email Address
-                </Text>
-                {this.renderEdit("email")}
-              </Block>
-              <Text
-                medium
-                secondary
-                onPress={() => this.toggleEdit("email")}
-              >
-                {editing === "email" ? "Save" : "Edit"}
-              </Text>
-            </Block>
 
             <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
               <Block>
                 <Text gray2 style={{ marginBottom: 10 }}>
-                  Street Address
-                </Text>
-                {this.renderEdit("street")}
-              </Block>
-              <Text
-                medium
-                secondary
-                onPress={() => this.toggleEdit("street")}
-              >
-                {editing === "street" ? "Save" : "Edit"}
-              </Text>
-            </Block>
-
-            <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
-              <Block>
-                <Text gray2 style={{ marginBottom: 10 }}>
-                  Phone Number
-                </Text>
-                {this.renderEdit("phone")}
-              </Block>
-              <Text
-                medium
-                secondary
-                onPress={() => this.toggleEdit("phone")}
-              >
-                {editing === "phone" ? "Save" : "Edit"}
-              </Text>
-            </Block>
-
-            <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
-              <Block>
-                <Text gray2 style={{ marginBottom: 10 }}>
-                  Driving License
+                  DRIVING LICENSE
                 </Text>
                 {this.renderEdit("license")}
               </Block>
@@ -152,7 +106,7 @@ class Profile extends Component {
             <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
               <Block>
                 <Text gray2 style={{ marginBottom: 10 }}>
-                  Plate Number
+                  PLATE NUMBER
                 </Text>
                 {this.renderEdit("plate")}
               </Block>
@@ -189,21 +143,32 @@ class Profile extends Component {
             </Block>
 
           </Block>
-          <Block style = {styles.toggles}>
-
-          <Block
+          <Block style={styles.toggles}>
+            <Block
               row
               center
               space="between"
-              style={{ marginBottom: theme.sizes.base * 2, alignItems:"baseline" }}
+              style={{ marginBottom: theme.sizes.base * 2 }}
             >
-              <Text h3 bold>Logout</Text>
-              <Icon
-                name ="exit-to-app"
-                size = {28}
-                color="#03A696"
+              <Text gray2>Enable Notifications</Text>
+              <Switch
+                value={this.state.dark}
+                onValueChange={value => {
+                  this.setState({ dark: value })
+                  this.props.updateDarkTheme(value);
+              }}
               />
+            </Block>
 
+          </Block>
+          <Block style = {styles.toggles}>
+
+          <Block bottom
+            >
+             <Button style = {styles.modalContent}>
+               <Text h2 bold>LOGOUT   </Text>
+               <Icon name="exit-to-app" size = {26}/>
+             </Button>
             </Block>
           </Block>
 
@@ -248,7 +213,21 @@ const styles = StyleSheet.create({
   },
   toggles: {
     paddingHorizontal: theme.sizes.base * 2
-  }
+  },
+  modalContent: {
+    backgroundColor: '#fff',
+    width: '65%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
+    alignSelf:"center",
+    flexDirection: 'row'
+  },
 });
 
 function mapStateToProps(state) {

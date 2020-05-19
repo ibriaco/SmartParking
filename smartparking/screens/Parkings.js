@@ -37,21 +37,6 @@ class Parkings extends Component {
     return (
 
       <Container style={{ flex: 1, paddingTop: 10, backgroundColor:"rgba(3, 166, 150,0.02)" }}>
-        {/*
-      <Animated.View style={{
-          justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
-
-          elevation: 6,
-        }}>
-          <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 32 }}>
-            Parkings
-        </Text>
-          <Text h3 style={{ fontFamily: "Montserrat" }} gray2>Choose the best parking for you</Text>
-
-        </Animated.View> 
-      */}
-
-
         <Animated.ScrollView
           contentContainerStyle={styles.cards}
           showsVerticalScrollIndicator={false}
@@ -99,11 +84,11 @@ class Parkings extends Component {
                     }
 
                     {area.nPregnant > 0 &&
-                      <Icon name="human-pregnant" size={30} color="#FF69B4" style={{ alignSelf: "center", paddingRight: 20 }} />
+                      <Icon name="human-pregnant" size={30} color="#FEB8C6" style={{ alignSelf: "center", paddingRight: 20 }} />
                     }
 
                     {area.nElectric > 0 &&
-                      <Icon name="car-electric" size={30} color="#FFD800" style={{ alignSelf: "center", paddingRight: 20 }} />
+                      <Icon name="car-electric" size={30} color="#FED000" style={{ alignSelf: "center", paddingRight: 20 }} />
                     }
 
                   </View>
@@ -136,7 +121,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 2
   },
   cards: {
-    width,
     backgroundColor: "white",
     alignItems: 'center',
     justifyContent: 'flex-start',

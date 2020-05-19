@@ -596,13 +596,13 @@ class Map extends React.Component {
 
 
         <Block>
-          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', height: '60%', }}
+          <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', height: '60%', bottom: 20}}
             onBackdropPress={() => { this.props.updateModalVisible(false) }}>
-            <View style={{ flex: 0.4, backgroundColor: "#f8f8ff", borderRadius: 14, justifyContent: "space-between", width: '100%', marginVertical: -40, alignSelf: "flex-start" }}>
+            <View style={{ flex: 0.45, backgroundColor: "#f8f8ff", borderRadius: 10, justifyContent: "space-between", width: '100%', marginVertical: -40, alignSelf: "center" }}>
               <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text h2 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
+                    <Text h1 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
                     <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 28 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -614,8 +614,12 @@ class Map extends React.Component {
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"baseline"}}>
                     <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.9)">
                     </FontAwesome5>
-                  <Text h1 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  {this.props.tappedArea.nTot - this.props.tappedArea.nTaken}</Text> 
+                  <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  {this.props.tappedArea.nTot - this.props.tappedArea.nTaken}</Text> 
                     <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
+                  </View>
+                  <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"center"}}>
+                    <Icon name ="clock-outline" size = {24} color="#A5A5A5"/>
+                    <Text h1 bold>  8:00 - 16:00</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -623,15 +627,18 @@ class Map extends React.Component {
                         <Icon name="wheelchair-accessibility" size={30} color="#6592F7" style={{ alignSelf: "center", paddingRight: 20 }} />
                       }
                       {this.props.tappedArea.nPregnant > 0 &&
-                        <Icon name="human-pregnant" size={30} color="#FF69B4" style={{ alignSelf: "center", paddingRight: 20 }} />
+                        <Icon name="human-pregnant" size={30} color="#FEB8C6" style={{ alignSelf: "center", paddingRight: 20 }} />
                       }
                       {this.props.tappedArea.nElectric > 0 &&
-                        <Icon name="car-electric" size={30} color="#FFD800" style={{ alignSelf: "center", paddingRight: 20 }} />
+                        <Icon name="car-electric" size={30} color="#FED000" style={{ alignSelf: "center", paddingRight: 20 }} />
                       }
                     </View>
-                    <View style={{ flexDirection: "row" }}>
+                    <View style={{ flexDirection: "column", alignSelf:"flex-end" }}>
+                    <Button style = {styles.report}>
+                      <Text h3 bold style = {{color:"#C02501"}}>REPORT</Text>
                       <Icon name="alert-circle-outline" color="#C02501" size={36} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }} />
-                    </View>
+                    </Button>
+                      </View>
                   </View>
                 </View>
                 <View style={{ flexDirection: "column", position: "relative" }} >
@@ -742,7 +749,23 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 1 },
     elevation: 3,
-    alignSelf:"center"
+    alignSelf:"center",
+    flexDirection: 'row'
+  },
+  report:{
+    backgroundColor: '#fff',
+    height: 50,
+    width: '65%',
+    //justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: "#fff",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
+    alignSelf:"flex-end",
+    flexDirection: 'row'
   },
   pay: {
     backgroundColor: '#03A696',
