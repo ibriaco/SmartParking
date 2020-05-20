@@ -602,7 +602,7 @@ class Map extends React.Component {
               <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text h1 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
+                    <Text h2 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
                     <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 28 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
@@ -619,7 +619,7 @@ class Map extends React.Component {
                   </View>
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"center"}}>
                     <Icon name ="clock-outline" size = {24} color="#A5A5A5"/>
-                    <Text h1 bold>  8:00 - 16:00</Text>
+                    <Text h2 bold>  8:00 - 16:00</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -634,12 +634,15 @@ class Map extends React.Component {
                       }
                     </View>
                     <View style={{ flexDirection: "column", alignSelf:"flex-end" }}>
-                    <Button style = {styles.report}>
+                    <Button style = {styles.report} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }}>
                       <Text h3 bold style = {{color:"#C02501"}}>REPORT</Text>
-                      <Icon name="alert-circle-outline" color="#C02501" size={36} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }} />
+                      <Icon name="alert-circle-outline" color="#C02501" size={36}  />
                     </Button>
                       </View>
                   </View>
+                </View>
+                <View>
+                  <Text caption center style = {{color:"#C02501"}}>Reports for this parking have been issued</Text>
                 </View>
                 <View style={{ flexDirection: "column", position: "relative" }} >
                   <Text></Text>
