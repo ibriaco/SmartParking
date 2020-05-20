@@ -354,7 +354,7 @@ console.log(tempAreas)
         <Header style = {{backgroundColor:"#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
           <Left>
             <Button style = {{flexDirection:"column"}}>
-              <Icon name="arrow-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
+              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
             </Button>
           </Left>
           <Body>

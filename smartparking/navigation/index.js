@@ -194,6 +194,13 @@ const screens = createStackNavigator(
           }
         },
 
+        Filter: {
+          screen: Filter,
+          navigationOptions: {
+            tabBarIcon: ({ focused }) => <FontAwesome5 name="sliders-h" size={28} color={focused ? "#000" : "#CDCCCE"} />
+          }
+        },
+
         
         Profile: {
             screen: Profile,

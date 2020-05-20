@@ -19,7 +19,7 @@ import { Notifications } from "expo";
 import * as Permissions from 'expo-permissions';
 import Constants from 'expo-constants';
 
-const HEADER_HEIGHT = Platform.OS == 'ios' ? 55 : 100 + StatusBar.currentHeight;
+const HEADER_HEIGHT = Platform.OS == 'ios' ? 55 : 20 + StatusBar.currentHeight;
 const { width } = Dimensions.get('screen');
 
 
@@ -67,8 +67,9 @@ class Details extends Component {
   updateNTaken(){
     
       var index = this.props.allAreas.indexOf(this.props.tappedArea);
+      console.log("valore di index: " + index);
+      
       var oldNTaken = this.props.allAreas[index].nTaken;
-
       firebase.database().ref('Cities/' + this.props.currentCity + "/Areas/" + index).update({
                 
         nTaken: oldNTaken + 1
@@ -278,7 +279,7 @@ class Details extends Component {
         </View>
         <View style={{ marginTop: 30 }}>
           <Text h3 black style={{ fontFamily: 'Montserrat' }}>
-            Choose all the options for your stop at
+            Choose the options for your stop at
           </Text>
 
           <Text h2 secondary style={{ fontFamily: 'Montserrat' }}>
@@ -289,16 +290,17 @@ class Details extends Component {
           </Text>
 
           <Button style={{ backgroundColor: "black", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
-            <Text h3 white center style={{ fontFamily: 'Montserrat-Bold' }}>
+            <Text h3 white center style={{ fontFamily: 'Montserrat' }}>
               Select end time
           </Text>
           </Button>
 
           {this.state.isTimeSelected &&
-            <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
+            <Text h3 black center style={{ fontFamily: 'Montserrat' }}>
               From now to: {new Date(this.state.endDate).toLocaleTimeString()}
             </Text>
           }
+          <Text></Text>
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
             <Text h2 secondary center style={{ fontFamily: 'Montserrat-Bold' }}>
               Price: {this.state.currentAmount.toFixed(2) + " €"}
@@ -331,9 +333,10 @@ class Details extends Component {
               Bonus: {this.props.userData.bonus.toFixed(2)} €
             </Text>
           }
+          <Text></Text>
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
-            <Text h2 secondary center style={{ fontFamily: 'Montserrat-Bold' }}>
+            <Text h1 secondary center style={{ fontFamily: 'Montserrat-Bold' }}>
               Total: {this.state.finalAmount.toFixed(2)} €
             </Text>
           }
@@ -483,7 +486,7 @@ class Details extends Component {
           }
 
           {(this.state.isTimeSelected && this.state.finalAmount > 0) &&
-            <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.5, alignSelf: "center" }} onPress={() => {
+            <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.2, elevation:3, alignSelf: "center" }} onPress={() => {
               this.updateNTaken()
 
               this.props.navigation.navigate("Purchase");
@@ -556,7 +559,7 @@ class Details extends Component {
               this.props.updateUserData(temp);
               
             }}>
-              <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
+              <Text h2 black center style={{ fontFamily: 'Montserrat' }}>
                 Pay with Credit Card
     </Text>
             </Button>
@@ -641,7 +644,7 @@ console.log(newBonus)
               this.props.updateUserData(temp);}}>
 
 
-              <Text h2 white center style={{ fontFamily: 'Montserrat-Bold' }}>
+              <Text h2 white center style={{ fontFamily: 'Montserrat' }}>
                 Pay with Paypal
     </Text>
             </Button>

@@ -183,7 +183,7 @@ class Login extends Component {
           <Text style = {{fontFamily: 'Helvetica-Bold', fontSize: 32}}>
           Login
           </Text>
-          <Text gray2 h3 style={{fontFamily: 'Montserrat'}}>Enter your credentials to sign in</Text>
+          <Text gray2 h3 style={{fontFamily: 'Montserrat'}}>Enter your credentials to login</Text>
           <Block top>
             <View style={styles.errorMessage}>
               {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -216,13 +216,7 @@ class Login extends Component {
               value={this.state.password}
             />
             <Button style={styles.forget}>
-              <Text
-                gray2
-                h4
-                right
-                style={{ textDecorationLine: "underline", fontFamily: 'Montserrat',}}>
-                Forgot your password?
-            </Text>
+             
             </Button>
 
             <Text></Text>
@@ -282,7 +276,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   input: {
-    borderRadius: 50,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: "#fff",
     backgroundColor: "#fff",
@@ -290,6 +284,7 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     elevation: 3,
     height: 60,
+    shadowColor: "#a5a5a5"
   },
   hasErrors: {
     borderBottomColor: theme.colors.accent
@@ -297,20 +292,21 @@ const styles = StyleSheet.create({
   loginButton: {
     backgroundColor: '#03A696',
     height: 60,
-    borderRadius: 50,
+    borderRadius: 20,
     marginHorizontal: 25,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
     elevation: 6,
   },
   registerButton: {
-    backgroundColor: '#ffffff',
-    height: 60,
-    borderRadius: 50,
-    marginHorizontal: 25,
+    backgroundColor: "#fff",
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
-    elevation: 6,
+    elevation: 3,
+    height: 60,
+    borderRadius: 20,
+    shadowColor: "#a5a5a5",
+    marginHorizontal: 25,
   },
   bottom: {
     marginBottom: 30

@@ -756,17 +756,17 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   },
   report:{
-    backgroundColor: '#fff',
+    //backgroundColor: '#fff',
     height: 50,
     width: '65%',
     //justifyContent: 'center',
     alignItems: 'center',
-    borderRadius: 10,
-    borderWidth: 1,
+    //borderRadius: 10,
+    //borderWidth: 1,
     borderColor: "#fff",
-    shadowOpacity: 0.2,
-    shadowOffset: { width: 0, height: 1 },
-    elevation: 3,
+    //shadowOpacity: 0.2,
+    //shadowOffset: { width: 0, height: 1 },
+    //elevation: 3,
     alignSelf:"flex-end",
     flexDirection: 'row'
   },

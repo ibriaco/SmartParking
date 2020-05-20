@@ -247,14 +247,6 @@ class Register extends Component {
                 </Text>
             </Button>
             <Button onPress={() => navigation.navigate("ParkingsContainer")}>
-              <Text
-                gray2
-                caption
-                center
-                style={{ textDecorationLine: "underline", fontFamily: "Montserrat" }}
-              >
-                Terms of service
-              </Text>
             </Button>
           </Block>
             </Animatable.View>
@@ -345,7 +337,11 @@ class Register extends Component {
           </Text>
     <Block middle>
     
-        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>If you want, you can upload a picture photo to personalize your account!</Text>
+        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>You are ready to go now!</Text>
+        <Text></Text>
+        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Go and find parkings around you</Text>
+        <Text></Text>
+        <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Stay safe driving!</Text>
       </Block>
       <Block top>
       </Block>
@@ -369,7 +365,7 @@ class Register extends Component {
       <Block top ></Block>
       <Button style = {styles.button} onPress={() => this.handleFinish()}>
           <Text h2  white center style={{fontFamily: "Montserrat-Bold"}}>
-            Upload
+            Find parkings
           </Text>
       </Button>
       <Button >
@@ -409,7 +405,7 @@ const styles = StyleSheet.create({
   button:{
     backgroundColor: '#03A696',
     height: 60,
-    borderRadius: 50,
+    borderRadius: 20,
     marginHorizontal: 25,
     shadowOpacity: 0.6,
     shadowOffset: {width: 0, height: 2},
@@ -430,7 +426,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30
   },
   input: {
-    borderRadius: 50,
+    borderRadius: 20,
     borderWidth: 1,
     borderColor: "#fff",
     backgroundColor: "#fff",

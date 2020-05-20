@@ -3,9 +3,9 @@ import { WebView } from 'react-native-webview';
 import { STRIPE } from './stripeSettings';
 import { stripeCheckoutRedirectHTML } from './stripeCheckout';
 import { connect } from 'react-redux';
-import {  StatusBar } from 'react-native'
+import {  Platform, StatusBar } from 'react-native'
 
-
+const HEADER_HEIGHT = Platform.OS == 'ios' ? 20 : StatusBar.currentHeight;
 class PurchaseProduct extends Component {
 
   // Called everytime the URL stats to load in the webview
@@ -27,7 +27,7 @@ class PurchaseProduct extends Component {
 render(){
   return (      
     <WebView
-      style={{marginTop: StatusBar.currentHeight}}
+      style={{marginTop: HEADER_HEIGHT}}
       originWhitelist={['*']}
       source={{ html: stripeCheckoutRedirectHTML(this.props.userData.email) }}
       onLoadStart={this.onLoadStart}
