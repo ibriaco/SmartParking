@@ -5,7 +5,7 @@ import { stripeCheckoutRedirectHTML } from './stripeCheckout';
 import { connect } from 'react-redux';
 import {  Platform, StatusBar } from 'react-native'
 
-const HEADER_HEIGHT = Platform.OS == 'ios' ? 20 : StatusBar.currentHeight;
+const HEADER_HEIGHT = Platform.OS == 'ios' ? 45 : StatusBar.currentHeight;
 class PurchaseProduct extends Component {
 
   // Called everytime the URL stats to load in the webview

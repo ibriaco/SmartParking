@@ -350,19 +350,7 @@ console.log(tempAreas)
     const { profile, editing } = this.state;
 
     return (
-      <ScrollView style={{flex: 1}}>
-        <Header style = {{backgroundColor:"#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
-          <Left>
-            <Button style = {{flexDirection:"column"}}>
-              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
-            </Button>
-          </Left>
-          <Body>
-          </Body>
-          <Right>
-            <Button/>
-          </Right>
-        </Header>
+      <ScrollView style={{flex: 1, marginTop: 55}}>
     <Animatable.View  ref={v => this.bigView = v}> 
     <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
         {/*
@@ -374,7 +362,7 @@ console.log(tempAreas)
         </Text>
         </View>
         
-        <Text h3 gray2>Filter parkings according to your needs</Text>
+        <Text h3 gray2></Text>
 
         <View style={styles.sliders}>
         <Animatable.View animation="slideInUp" duration={600} delay={100}>
@@ -678,7 +666,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#03A696',
     height: 60,
-    borderRadius: 20,
+    borderRadius: 12,
     marginHorizontal: 45,
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },

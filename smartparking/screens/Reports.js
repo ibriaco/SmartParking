@@ -131,11 +131,11 @@ class Reports extends Component {
         <Modal isVisible={this.state.reportSent} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', alignContent:"center" }}>
 
           <Animatable.View animation="bounceIn" duration={600} delay={200}>
-            <Text h3 gray2>+ 10 points!</Text>
+            <Text h3 gray2>Thank you for your report!</Text>
           </Animatable.View>
 
           <Animatable.View animation="bounceIn" duration={600} delay={200}>
-            <Text h3 gray2>here the progress bar</Text>
+            <Text h3 gray2>You have been awarded +20 bonus points!</Text>
           </Animatable.View>
 
         </Modal>

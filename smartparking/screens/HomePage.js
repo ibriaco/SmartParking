@@ -404,12 +404,6 @@ class Map extends React.Component {
     return (
 
       <View style={styles.container}>
-        <TouchableOpacity
-          style={{ alignItems: "flex-start", margin: 16, position: "absolute", backgroundColor: "#147c" }}
-          onPress={this.props.navigation.openDrawer}
-        >
-          <FontAwesome5 name="bars" size={24} color="#161924" />
-        </TouchableOpacity>
         <MapView
           style={styles.map}
           provider={PROVIDER_GOOGLE}
@@ -438,7 +432,7 @@ class Map extends React.Component {
               stopPropagation={true}
               coordinate={{ latitude: area.latitude, longitude: area.longitude }}
               onPress={() => this.onAreaTapped(area)}>
-              <FontAwesome5 name="parking" color="#FF9800" size={30} />
+              <FontAwesome5 name="parking" color="#FF9800" size={32} />
             </MapView.Marker>
           ))}
 
@@ -493,11 +487,7 @@ class Map extends React.Component {
 
         </MapView>
 
-        <Animatable.View animation="slideInDown" duration={800} delay={1700} style={{
-          backgroundColor: '#fff', position: 'absolute', width: '80%', top: 50, alignSelf: 'center', shadowOpacity: 0.3, borderRadius: 0,
-          shadowOffset: { width: 0, height: 2 },
-          elevation: 3,
-        }}>
+        <Animatable.View animation="slideInDown" duration={800} delay={1700} style={styles.searchbar}>
           <GooglePlacesAutocomplete
 
             minLength={2} // minimum length of text to search
@@ -526,20 +516,25 @@ class Map extends React.Component {
                 borderColor: '#fff',
                 backgroundColor: "#fff",
                 height: '100%',
+                borderRadius: 14
               },
               poweredContainer: {
-                width: 0,
-                height: 0
+                //width: 0,
+                //height: 0
+                borderRadius: 14
               },
               powered: {
                 width: 0,
-                height: 0
+                height: 0,
+                borderRadius: 14
+
               },
               loader: {
                 width: '50%',
+                borderRadius: 14
               },
               textInputContainer: {
-
+                borderRadius: 14,
                 borderTopWidth: 0,
                 borderBottomWidth: 0,
                 borderWidth: 10,
@@ -564,6 +559,7 @@ class Map extends React.Component {
                 backgroundColor: "#fff",
                 alignSelf: 'center',
                 color: '#a5a5a5',
+                borderRadius: 14
               }
             }}
 
@@ -724,13 +720,16 @@ const styles = StyleSheet.create({
     height: HEIGHT / 2
   },
   searchbar: {
-    marginTop: 40,
-    marginHorizontal: 20,
-    borderRadius: 10,
-    opacity: 1,
-    height: 60,
-    //bottom: HEIGHT*5/6
-
+    backgroundColor: '#fff', 
+    position: 'absolute', 
+    width: '80%', 
+    top: 50, 
+    alignSelf: 'center', 
+    shadowOpacity: 0.3, 
+    borderRadius: 0,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    borderRadius: 14
   },
   labels: {
     width: 100,

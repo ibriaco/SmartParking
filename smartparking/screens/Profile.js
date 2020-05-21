@@ -75,12 +75,15 @@ class Profile extends Component {
     return (
       <Block style={[this.getStyle(this.props.darkTheme)]}>
         <View style={styles.header}>
-          <View>
+            <View>
             <Text bold style={{ fontSize: 32 }}>
               Profile
-          </Text>
+            </Text>
             <Text h3 secondary>Hello Ibrahim!</Text>
-          </View>
+            </View>
+            <View>
+              <Text h2 bold style ={{color:"orange"}}>Bonus: 45</Text>
+            </View>
 
         </View>
         <View style={{paddingHorizontal: theme.sizes.base * 2, flex: 0.2, marginTop: 10, alignContent: "center", justifyContent: "space-between", flexDirection:"row" }}>
@@ -94,13 +97,7 @@ class Profile extends Component {
                 </Text>
               {this.renderEdit("email")}
             </Block>
-            <Text
-              medium
-              secondary
-              onPress={() => this.toggleEdit("email")}
-            >
-              {editing === "email" ? "Save" : "Edit"}
-            </Text>
+            <Icon name = {editing === "email" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("email")}/>
           </Block>
 
 
@@ -111,13 +108,7 @@ class Profile extends Component {
                 </Text>
               {this.renderEdit("plate")}
             </Block>
-            <Text
-              medium
-              secondary
-              onPress={() => this.toggleEdit("plate")}
-            >
-              {editing === "plate" ? "Save" : "Edit"}
-            </Text>
+            <Icon name = {editing === "plate" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("plate")}/>
           </Block>
           <Block row space="between" style={styles.inputRow}>
             <Block>
@@ -126,13 +117,7 @@ class Profile extends Component {
                 </Text>
               {this.renderEdit("license")}
             </Block>
-            <Text
-              medium
-              secondary
-              onPress={() => this.toggleEdit("license")}
-            >
-              {editing === "license" ? "Save" : "Edit"}
-            </Text>
+            <Icon name = {editing === "license" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("license")}/>
           </Block>
           <View style={{ flex: 0.1, marginTop: 10, alignSelf: "flex-start", justifyContent: "center", }}>
             <Text h1 bold>Settings</Text>

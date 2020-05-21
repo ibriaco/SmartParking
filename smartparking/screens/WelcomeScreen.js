@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'space-around',
-    padding: 100,
+    padding: 50,
     //backgroundColor: "#38BC7C",
     backgroundColor:"#03A696"
     //flexDirection: 'row'
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     width: 240,
     height: 240,
     resizeMode: 'contain',
-    marginBottom: 80
+    marginTop: 80
   },
   buttonCircle: {
     width: 40,
@@ -139,7 +139,7 @@ const slides = [
   {
     title:'Search',
     key: 's1',
-    text: 'Explore the map, the list or choose your destination: we will find all parking slots nearby',
+    text: 'Explore the map, the list or choose your destination.\n We will find all parking slots nearby',
     //image: require("../assets/animations/search.gif"),
     image: require("../assets/icons/search.png"),
     titleStyle: styles.title,
@@ -151,7 +151,7 @@ const slides = [
   {
     title:'Payment',
     key: 's2',
-    text: 'Pay in a few touches with any payment system',
+    text: 'Pay in a few touches with any payment system\n\n',
     image: require("../assets/icons/payment.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
@@ -161,7 +161,7 @@ const slides = [
   {
     title:'Time',
     key: 's3',
-    text: 'Save your time searching the perfect parking, pay and extend your stop when you want',
+    text: 'Save your time searching the perfect parking, pay and extend your stop\nwhenever you want',
     image: require("../assets/icons/clock.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
@@ -171,7 +171,7 @@ const slides = [
   {
     title:'Reports',
     key: 's4',
-    text: 'If something is wrong, let us know with a simple report: this also helps the other users',
+    text: 'If something is wrong, let us know with a simple report.\nThis helps the other users\n',
     image: require("../assets/icons/report.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
@@ -179,9 +179,9 @@ const slides = [
     backgroundColor: 'rgba(13,182,101, 0.9)',
   },
   {
-    title:'Points',
+    title:'Reward',
     key: 's5',
-    text: 'Every payment, every report and every stop you tell us will get you point, that you can convert in bonus €',
+    text: 'For every payment,report and stop you will get some points you can convert in bonus €\n',
     image: require("../assets/icons/points.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
