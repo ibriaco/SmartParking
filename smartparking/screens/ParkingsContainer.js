@@ -13,11 +13,11 @@ export default class TabsExample extends Component {
     return (
       <Container style={{ marginTop: HEADER_HEIGHT}}>
           <View style = {{flex: 0.1, alignContent:"center", flexDirection:"row", alignItems:"center", marginHorizontal:30}}>
-            <Text style = {{fontSize: 32}} bold>Parkings</Text>
+            <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >Parkings</Text>
           </View>
         <Tabs activeTabStyle = {{backgroundColor:"#fff"}} style = {{backgroundColor:"#fff"}} tabBarUnderlineStyle={{backgroundColor:"#03A696", height: 3}} noShadow tabContainerStyle={{elevation:0}}>
           <Tab heading="Available" style={{backgroundColor:"#fff"}} textStyle={{color:"#C7CCD5", fontSize:16, fontFamily: "Montserrat", }} activeTextStyle={{color:"#000", fontSize:16 , fontFamily:"Montserrat-Bold"}} tabStyle = {{backgroundColor:"#fff", borderWidth: 0}} activeTabStyle = {{backgroundColor:"#fff"}} style = {{backgroundColor:"#fff"}} >
-            <Parkings />
+            <Parkings navigation={this.props.navigation}/>
           </Tab>
           <Tab heading="Active" style={{backgroundColor:"#fff"}} textStyle={{color:"#C7CCD5", fontSize: 16, fontFamily: "Montserrat"}} activeTextStyle={{color:"#000", fontSize: 16, fontFamily:"Montserrat-Bold"}} activeTabStyle = {{backgroundColor:"#fff"}} tabStyle = {{backgroundColor:"#fff"}} style = {{backgroundColor:"#fff"}}>
             <ActiveParkings/>

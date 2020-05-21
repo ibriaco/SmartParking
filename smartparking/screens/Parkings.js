@@ -53,6 +53,7 @@ class Parkings extends Component {
                 this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
                 this.props.updateTappedArea(area);
                 this.props.updateShowRoute(false);
+                setTimeout(() => this.props.updateModalVisible(true), 1400);
                 this.props.navigation.navigate("Home");
               }}>
                 <Card
@@ -73,7 +74,7 @@ class Parkings extends Component {
                   <View style={{ flexDirection: "row", paddingVertical: 10, justifyContent: "center", alignItems:"baseline" }}>
                     <FontAwesome5 name="parking" size={30} color="rgba(3, 166, 150,0.5)">
                     </FontAwesome5>
-                    <Text h1 secondary center style={{ fontFamily: "Montserrat-Bold" }}>  3</Text>
+                    <Text h1 secondary center style={{ fontFamily: "Montserrat-Bold" }}>  {area.nTot - area.nTaken}</Text>
                     <Text h2 secondary center secondary style={{ fontFamily: "Montserrat-Bold" }}> available spots</Text>
                   </View>
 
@@ -98,9 +99,9 @@ class Parkings extends Component {
             </Animatable.View>
           ))}
           {this.props.areas.length == 0 && <Animatable.View animation="slideInUp" duration={600} delay={100} style={{ flex: 1, margin: 10 }}>
-            <FontAwesome5 name="times" size={30} color="red" style={{ paddingTop: 30 }}><Text h1 style={{ color: "red" }}> There are no parkings!</Text></FontAwesome5>
+            <Text h1 style={{ color: "red", fontFamily: "Montserrat-Bold" }}>There are no parkings!</Text>
 
-            <Text>Please change location, destination or try using different filter paramenters!</Text>
+            <Text style={{ fontFamily: "Montserrat-Bold" }}>Please change location, destination or try using different filter paramenters!</Text>
 
           </Animatable.View>
           }

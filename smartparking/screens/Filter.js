@@ -353,28 +353,27 @@ console.log(tempAreas)
       <ScrollView style={{flex: 1, marginTop: 55}}>
     <Animatable.View  ref={v => this.bigView = v}> 
     <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
-        {/*
         
-        */}
         <View style = {{flexDirection: "row", justifyContent:"space-between"}}>
-          <Text bold style={{ fontSize: 32 }}>
+          <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold" }}>
           Filters
         </Text>
         </View>
         
-        <Text h3 gray2></Text>
 
         <View style={styles.sliders}>
         <Animatable.View animation="slideInUp" duration={600} delay={100}>
 
-              <Text center h2 bold>
+              <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>
                 Type
               </Text>
 
               <Block row center style={{ justifyContent: "space-around" }}>
 
               <Button style={this.state.payType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
-                console.log(this.state.typeCollapsed)
+                if(this.state.disabled)
+                  this.priceView.slideInRight(600);
+
                 this.setState({
                   payType: true,
                   allType: false,
@@ -387,7 +386,9 @@ console.log(tempAreas)
               </Button>
 
               <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
-                                console.log(this.state.typeCollapsed)
+
+                if(!this.state.disabled)
+                this.priceView.slideOutRight(600);
 
                 this.setState({
                   freeType: true,
@@ -397,12 +398,14 @@ console.log(tempAreas)
                   disabled: true
                 })
               }}>
-                  {this.state.freeType && <Text center bold secondary>FREE</Text>}
-                  {!this.state.freeType && <Text center bold black>FREE</Text>}
+                  {this.state.freeType && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>FREE</Text>}
+                  {!this.state.freeType && <Text center style={{fontFamily: "Montserrat-Bold"}} black>FREE</Text>}
               </Button>
 
               <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
-                                console.log(this.state.typeCollapsed)
+                
+                if(this.state.disabled)
+                this.priceView.slideInRight(600);
 
                 this.setState({
                   allType: true,
@@ -411,8 +414,8 @@ console.log(tempAreas)
                   disabled: false
                 })
               }}>
-                  {this.state.allType && <Text center bold secondary>All</Text>}
-                  {!this.state.allType && <Text center bold black>All</Text>}
+                  {this.state.allType && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>All</Text>}
+                  {!this.state.allType && <Text center style={{fontFamily: "Montserrat-Bold"}} black>All</Text>}
               </Button>
 
               
@@ -422,7 +425,7 @@ console.log(tempAreas)
             <Animatable.View ref={p => this.priceView = p}>
 
 
-            <Text h2 bold center style={{ marginBottom: 10,}}>
+            <Text h2 style={{marginBottom: 10, fontFamily: "Montserrat-Bold"}} center>
             Maximum Price
               </Text>
 
@@ -440,28 +443,19 @@ console.log(tempAreas)
               step={0.50}
               onValueChange={value => this.setState({ maxPrice: value })}
             />
-            <Text h2 bold right>
+            <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>
               {this.state.maxPrice} €
               </Text>
               </Animatable.View>
 
         </Animatable.View>
 
-            {/*
-              <Picker
-                style={{ backgroundColor: 'white', width: 300, height: 215 }}
-                selectedValue='item4'
-                pickerData={['item1', 'item2', 'item3', 'item4', 'item5', 'item6', 'item7']}
-                onValueChange={value => { }}
-                itemSpace={30} // this only support in android
-              />
-              */}
 
 
 <Animatable.View animation="slideInUp" duration={600} delay={200}>
 
 
-            <Text h2 bold center style={{ marginBottom: 10, }}>
+            <Text h2 center style={{ marginBottom: 10, fontFamily:"Montserrat-Bold"}}>
             Maximum Time
               </Text>
 
@@ -479,7 +473,7 @@ console.log(tempAreas)
 
               onValueChange={value => this.setState({ maxTime: value })}
             />
-            <Text h2 bold right>
+            <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>
               {this.state.maxTime} min
               </Text>
               </Animatable.View>
@@ -488,7 +482,7 @@ console.log(tempAreas)
               <Animatable.View animation="slideInUp" duration={600} delay={300}>
 
 
-              <Text h2 bold center style={{ marginBottom: 5, }}>
+              <Text h2 style={{ marginBottom: 5,fontFamily: "Montserrat-Bold"}} center >
               Maximum Distance
               </Text>
 
@@ -506,7 +500,7 @@ console.log(tempAreas)
 
               onValueChange={value => this.setState({ maxDistance: value })}
             />
-              <Text h2 bold right>
+              <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>
               {this.state.maxDistance} km
               </Text>
               </Animatable.View>
@@ -514,23 +508,23 @@ console.log(tempAreas)
             <Animatable.View animation="slideInUp" duration={600} delay={400}>
 
 
-              <Text center h2 bold >
+              <Text center h2 style={{fontFamily: "Montserrat-Bold"}} >
                 Minimum Availability
               </Text>
 
               
               <Block row center style={{ justifyContent: "space-around" }}>
                 <Button style={this.state.lowAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleLowButton}>
-                  {this.state.lowAvailability && <Text center bold secondary>Low</Text>}
-                  {!this.state.lowAvailability && <Text center bold black>Low</Text>}
+                  {this.state.lowAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>Low</Text>}
+                  {!this.state.lowAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} black>Low</Text>}
                 </Button>
                 <Button style={this.state.mediumAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleMediumButton}>
-                  {this.state.mediumAvailability && <Text center bold secondary>Medium</Text>}
-                  {!this.state.mediumAvailability && <Text center bold black>Medium</Text>}
+                  {this.state.mediumAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>Medium</Text>}
+                  {!this.state.mediumAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} black>Medium</Text>}
                 </Button>
                 <Button style={this.state.highAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleHighButton}>
-                  {this.state.highAvailability && <Text center bold secondary>High</Text>}
-                  {!this.state.highAvailability && <Text center bold black>High</Text>}
+                  {this.state.highAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>High</Text>}
+                  {!this.state.highAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} black>High</Text>}
                 </Button>
               </Block>
             </Animatable.View>
@@ -538,7 +532,7 @@ console.log(tempAreas)
 
             <Animatable.View animation="slideInUp" duration={600} delay={500}>
 
-              <Text center h2 bold >
+              <Text center h2 style={{fontFamily: "Montserrat-Bold"}} >
                 Spot for
               </Text>
 
@@ -574,7 +568,7 @@ console.log(tempAreas)
         <Animatable.View animation="bounceIn" duration={600} delay={1200}>
 
           <Button style={styles.button} onPress={() => this.handleApply()}>
-            <Text h1 bold white center>
+            <Text h1 style={{fontFamily: "Montserrat-Bold"}} white center>
               Apply
                 </Text>
           </Button>

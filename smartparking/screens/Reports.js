@@ -10,9 +10,17 @@ import * as Animatable from 'react-native-animatable';
 import { Checkbox } from 'galio-framework';
 import Modal from "react-native-modal";
 import {Header, Left, Right, Body, Title} from 'native-base'
+import * as firebase from 'firebase';
+import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
 const { width } = Dimensions.get('screen');
+var radio_props = [
+  {label: "The price is different", value: 0 },
+  {label: "The time is different", value: 1 },
+  {label: "The road is unaccessible", value: 2 },
+  {label: "The parking has been removed", value: 3 }
 
+];
 
 //const HEADER_HEIGHT = Platform.OS == 'ios' ? 115 : 70 + StatusBar.currentHeight;
 const HEADER_HEIGHT = Platform.OS == 'ios' ? 145 : 100 + StatusBar.currentHeight;
@@ -24,11 +32,12 @@ class Reports extends Component {
     this.state = {
       animation: new Animated.Value(0),
       reportSent: false,
+      value: 0
     }
 
   }
 
-  async handleSend() {
+  handleSend() {
 
     //show modal
     this.setState({ reportSent: true });
@@ -36,16 +45,43 @@ class Reports extends Component {
     //increment user points (in the local copy)
     //questo valore sarà quello collegato a PROGRESS della progressbar
 
-    //and dismiss modal
-    setTimeout(() => {
-      setTimeout(() => {
-        //this.props.updateUserData(this.props.userData.points + 10);
-      }, 1000);
-      this.setState({ reportSent: false });
-    }, 2000);
+    var newPoints = this.props.userData.points + 10;
+    var newBonus = this.props.userData.bonus;
 
+    if(newPoints == 100)  {
+      newBonus = newBonus + 1;
+      newPoints = 0;
+    } else if (newPoints > 100)  {
+      newBonus = newBonus + 1;
+      newPoints = newPoints - 100;
+    }              
 
-    //this.props.navigation.navigate("Home");
+    //update firebase data
+    firebase.database().ref('Users/' + this.props.userData.uid).update({                
+      bonus: newBonus,
+      points: newPoints,        
+    });
+
+    //update local data
+    var temp = {
+      ...this.props.userData,
+      bonus: newBonus,
+      points: newPoints, 
+    }
+    
+    this.props.updateUserData(temp);
+
+    var index = this.props.allAreas.indexOf(this.props.tappedArea);
+    
+      
+      firebase.database().ref('Cities/' + this.props.currentCity + "/Areas/" + index).update({
+                
+        reports: radio_props[this.state.value].label
+
+      });
+    
+
+    setTimeout(() => this.props.navigation.navigate("Home"), 2000);
   }
 
 
@@ -97,48 +133,54 @@ class Reports extends Component {
               nativeEvent: { contentOffset: { y: this.scrollY } }
             }
           ])}>
+            <Animatable.View animation="zoomIn" duration={600} delay={100}>
 
-          <Animatable.View animation="slideInRight" duration={600} delay={100}>
-            <View style={{ flexDirection: "column", justifyContent: "space-around" }}>
-              <Checkbox label="The price is different" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
-              <Checkbox label="The time is different" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
-              <Checkbox label="The road is unaccessible" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
-              <Checkbox label="The parking has been removed" style={{ paddingVertical: 20 }} labelStyle={{ fontSize: 20 }} checkboxStyle={{ borderColor: "#03A696", borderWidth: 2 }} />
-            </View>
+            <RadioForm
+              labelStyle={{ fontSize: 20, fontFamily: "Montserrat" }} 
+              radio_props={radio_props}
+              initial={0}
+              buttonColor='#03A696'
+              animation={true}
+
+              onPress={(value) => {this.setState({value:value})}}
+            />
 
 
           </Animatable.View>
+          <Text h1 gray2></Text>
+          <Text h1 gray2></Text>
 
 
+{this.state.reportSent &&
+            <Animatable.View animation="slideInRight" duration={600} delay={100}>
+
+            <Text h3 black style={{fontFamily: "Montserrat-Bold"}}>Thank you for your report!</Text>
+            </Animatable.View>
+  }
+{this.state.reportSent &&
+            <Animatable.View animation="slideInRight" duration={600} delay={200}>
+
+            <Text h3 gray2 style={{fontFamily: "Montserrat-Bold"}}>You have been awarded +10 bonus points!</Text>
+  </Animatable.View>
+  }
 
 
 
         </Animated.ScrollView>
-        <Block bottom style={{ marginBottom: 30 }}>
+        <Block center bottom style={{ marginBottom: 30 }}>
 
           <Animatable.View animation="bounceIn" duration={600} delay={100}>
-            <Block bottom center>
               <Button style={styles.button} onPress={() => this.handleSend()}>
                 <Text h1 bold white center>
                   Send
               </Text>
               </Button>
-            </Block>
 
           </Animatable.View>
 
         </Block>
-        <Modal isVisible={this.state.reportSent} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', alignContent:"center" }}>
 
-          <Animatable.View animation="bounceIn" duration={600} delay={200}>
-            <Text h3 gray2>Thank you for your report!</Text>
-          </Animatable.View>
-
-          <Animatable.View animation="bounceIn" duration={600} delay={200}>
-            <Text h3 gray2>You have been awarded +20 bonus points!</Text>
-          </Animatable.View>
-
-        </Modal>
+          
       </View>
     );
   }
@@ -192,6 +234,9 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    currentCity: state.currentCity,
+    allAreas: state.allAreas,
+    userData: state.userData,
     showRoute: state.showRoute,
     areas: state.areas,
     tappedArea: state.tappedArea
@@ -200,6 +245,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
     updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),
     updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),

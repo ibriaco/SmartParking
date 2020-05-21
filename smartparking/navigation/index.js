@@ -104,25 +104,8 @@ const screens = createStackNavigator(
     },
     Login: {
       screen: Login,
-      navigationOptions: {
-        headerTitle: "SmartParking",
-        headerStyle: {
-          backgroundColor: "#03A696",
-          elevation: null,
-          shadowOpacity: 0.9,
-          height: 100,
-        },
-        headerTitleStyle: {
-          color: "#FFF",
-          fontWeight: "500",
-          fontSize: 32,
-          textAlign: "center",
-          flexGrow: 1,
-          fontFamily: "Helvetica-Bold"
-        },
-        headerTintColor: "#fff",
-        headerLeft: null,
-        headerRight: null
+      navigationOptions: {        
+        header: null
       },
     },
     Register: {

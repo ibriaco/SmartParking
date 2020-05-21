@@ -32,7 +32,8 @@ class Register extends Component {
     index: 0,
     vehiclePlate: "",
     license: "",
-    notifications: false
+    notifications: false,
+    darkMode: false
   };
 
   handleSignUp() {
@@ -106,9 +107,17 @@ class Register extends Component {
 
   handleFinish() {
 
+    var tempData =  {
+      ...this.props.userData,
+      notifications: this.state.notifications,
+      darkMode: this.state.darkMode
+    };
+
     firebase.database().ref('Users/' + this.props.userData.uid).set(
-      this.props.userData
+      tempData
     );
+
+    this.props.updateUserData(tempData)
 
     this.props.navigation.navigate("Home");
     
@@ -129,9 +138,9 @@ class Register extends Component {
           <View style = {{flexDirection:"column"}}>
 
           <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} delay={200}>
-             <Text h2>1</Text>
+             <Text h2 style={{ fontFamily: 'Montserrat' }}>1</Text>
           </Animatable.View>
-            <Text center caption style = {{top: 5}} secondary>Account</Text>
+            <Text center caption style = {{top: 5, fontFamily: 'Montserrat'}} secondary>Account</Text>
           </View>        
 
           <View style={{flex: 1, paddingTop: 16}}>
@@ -142,18 +151,18 @@ class Register extends Component {
           {this.state.index == 0 && 
           <View style = {{flexDirection:"column"}}>
           <View style={styles.buttonCircle} ref={r => this.creditView = r}>
-            <Text h2>2</Text>
+            <Text h2 style={{ fontFamily: 'Montserrat' }}>2</Text>
           </View> 
-          <Text center caption style = {{top: 5}}>Vehicle</Text>
+          <Text center caption style = {{top: 5, fontFamily: 'Montserrat'}}>Vehicle</Text>
         </View>
           }
 
         {(this.state.index == 1 || this.state.index == 2) && 
           <View style = {{flexDirection:"column"}}>
           <Animatable.View style={styles.selectedButtonCircle} ref={r => this.creditView = r} animation="bounceIn" duration={800}>
-            <Text h2>2</Text>
+            <Text h2 style={{ fontFamily: 'Montserrat' }}>2</Text>
           </Animatable.View> 
-          <Text center caption secondary style = {{top: 5}}>Vehicle</Text>
+          <Text center caption secondary style = {{top: 5, fontFamily: 'Montserrat'} }>Vehicle</Text>
         </View>
           }
           
@@ -165,18 +174,18 @@ class Register extends Component {
           {this.state.index == 2 && 
           <View style = {{flexDirection:"column"}}>
           <Animatable.View style={styles.selectedButtonCircle} animation="bounceIn" duration={800} >
-            <Text h2>3</Text>
+            <Text h2 style={{ fontFamily: 'Montserrat' }}>3</Text>
           </Animatable.View> 
-          <Text center caption style = {{top: 5}} secondary>Complete</Text>     
+          <Text center caption style = {{top: 5, fontFamily: 'Montserrat'}} secondary>Complete</Text>     
           </View>       
           }
 
           {(this.state.index == 0 || this.state.index == 1) && 
           <View style = {{flexDirection:"column"}}>
           <View style={styles.buttonCircle} ref={r => this.creditView = r}>
-            <Text h2>3</Text>
+            <Text h2 style={{ fontFamily: 'Montserrat' }}>3</Text>
           </View> 
-          <Text center caption style = {{top: 5}}>Complete</Text>
+          <Text center caption style = {{top: 5, fontFamily: 'Montserrat'}}>Complete</Text>
         </View>
         }
 
@@ -246,7 +255,7 @@ class Register extends Component {
                   Continue
                 </Text>
             </Button>
-            <Button onPress={() => navigation.navigate("ParkingsContainer")}>
+            <Button>
             </Button>
           </Block>
             </Animatable.View>
@@ -311,6 +320,11 @@ class Register extends Component {
           setTimeout(() => {
             this.setState({index: 2})
           }, 300);
+          this.props.updateUserData({
+            ...this.props.userData,
+            license: "",
+            vehiclePlate: ""
+          });
           }
           }>
         <Text
@@ -335,8 +349,9 @@ class Register extends Component {
           <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold"}} >
           Complete your Profile
           </Text>
-    <Block middle>
-    
+    <Block middle paddingTop={10}>
+    <Text></Text>
+
         <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>You are ready to go now!</Text>
         <Text></Text>
         <Text center gray2 h4 style={{fontFamily: "Montserrat"}}>Go and find parkings around you</Text>
@@ -349,15 +364,28 @@ class Register extends Component {
               row
               center
               space="between"
-              style={{ marginBottom: theme.sizes.base * 2 }}
             >
-              <Text gray2>Notifications</Text>
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>Notifications</Text>
               <Switch
                 value={this.state.notifications}
                 onValueChange={value => {
                   this.setState({ notifications: value });
 
-                  this.handleNotifications();
+                  
+              }}
+              />
+            </Block>
+            <Block
+              row
+              center
+              space="between"
+            >
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>Dark Mode</Text>
+              <Switch
+                value={this.state.darkMode}
+                onValueChange={value => {
+                  this.setState({ darkMode: value });
+
                   
               }}
               />
@@ -368,7 +396,22 @@ class Register extends Component {
             Find parkings
           </Text>
       </Button>
-      <Button >
+      <Button onPress={() => {
+
+        var tempData =  {
+          ...this.props.userData,
+          notifications: false,
+          darkMode: false
+        };
+
+        firebase.database().ref('Users/' + this.props.userData.uid).set(
+          tempData
+        );
+
+        this.props.updateUserData(tempData)
+    
+        this.props.navigation.navigate("Home");
+      }}>
         <Text
           gray2
           h3

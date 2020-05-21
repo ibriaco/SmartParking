@@ -101,11 +101,12 @@ class Map extends React.Component {
 
   async readAndDrawAreas() {
 
-    firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').once('value', (snapshot) => {
+    firebase.database().ref('Cities/' + this.props.currentCity + '/Areas').on('value', (snapshot) => {
 
       //this means that we don't have parkings in the current city
       if (snapshot.numChildren() == 0) {
 
+        
         //notify the user of that
         showMessage({
           message: "Ooops!",
@@ -120,13 +121,15 @@ class Map extends React.Component {
         this.setState({ isLoading: true });
       }
       else {
+
+        /*
         //notify the user of that
         showMessage({
           message: "Yesss!",
           description: "We found " + snapshot.numChildren() + " parkings here :)",
           type: "success",
         });
-
+*/
         this.props.updateArea(snapshot.val());
         this.props.updateAllAreas(snapshot.val());
         this.setState({ isLoading: false });
@@ -614,8 +617,8 @@ class Map extends React.Component {
                     <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
                   </View>
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"center"}}>
-                    <Icon name ="clock-outline" size = {24} color="#A5A5A5"/>
-                    <Text h2 bold>  8:00 - 16:00</Text>
+                    <Icon name ="clock-outline" size = {30} color="rgba(3, 166, 150,0.9)"/>
+                    <Text secondary h2 style={{ fontFamily: "Montserrat-Bold" }}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -631,15 +634,17 @@ class Map extends React.Component {
                     </View>
                     <View style={{ flexDirection: "column", alignSelf:"flex-end" }}>
                     <Button style = {styles.report} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }}>
-                      <Text h3 bold style = {{color:"#C02501"}}>REPORT</Text>
+                      <Text h3 style = {{color:"#C02501", fontFamily: "Montserrat"}}>REPORT</Text>
                       <Icon name="alert-circle-outline" color="#C02501" size={36}  />
                     </Button>
                       </View>
                   </View>
                 </View>
+                {this.props.tappedArea.reports != "none" &&
                 <View>
-                  <Text caption center style = {{color:"#C02501"}}>Reports for this parking have been issued</Text>
+                  <Text caption center style = {{color:"#C02501", fontFamily:"Montserrat"}}>{this.props.tappedArea.reports}</Text>
                 </View>
+                }
                 <View style={{ flexDirection: "column", position: "relative" }} >
                   <Text></Text>
                   <View style={{ flexDirection: "column", justifyContent:"center" }}>
@@ -652,8 +657,8 @@ class Map extends React.Component {
                     </Button>
                     </View>
                     <Button style={styles.pay} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Details"); }}>
-                      {this.props.tappedArea.price != 0 && <Text h2 white bold >PAY PARKING</Text>}
-                      {this.props.tappedArea.price == 0 && <Text h2 white bold >RESERVE PARKING</Text>}
+                      {this.props.tappedArea.price != 0 && <Text h2 white style={{ fontFamily: "Montserrat-Bold" }} >PAY PARKING</Text>}
+                      {this.props.tappedArea.price == 0 && <Text h2 white style={{ fontFamily: "Montserrat-Bold" }} >RESERVE PARKING</Text>}
                     </Button>
                   </View>
                 </View>

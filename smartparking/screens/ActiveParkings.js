@@ -81,32 +81,11 @@ class ParkingsNoImage extends Component {
         <Text style={styles.headerText}>{section.distance}</Text>
         <Text style={styles.headerText}>{section.time}</Text>
 
-
       </View>
     );
   };
 
-  _renderContent(section, i, isActive, sections) {
-    return (
-      <View style={styles.content}>
-        <Animatable.Text
-          duration={300}
-          easing="ease-out"
-          animation={isActive ? 'zoomIn' : "zoomOut"}>
-          Diooooooooooooooooooooooooooooooooooooooo
-          canklfenkwejhfoxiuch
-              </Animatable.Text>
-        <Animatable.Text
-          duration={300}
-          easing="ease-out"
-          animation={isActive ? 'zoomIn' : "zoomOut"}>
-          Diooooooooooooooooooooooooooooooooooooooo
-          canklfenkwejhfoxiuch
-              </Animatable.Text>
-
-      </View>
-    );
-  };
+ 
 
   _updateSections = activeSections => {
     this.setState({ activeSections });
@@ -122,23 +101,23 @@ class ParkingsNoImage extends Component {
 
           <View style={styles.header}>
           <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
-          <Text h3 bold gray2>Location</Text>
-            <Text h3 bold>{this.props.activeParking.parkingAddress}</Text>
+          <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Location</Text>
+            <Text h3 style={{fontFamily: "Montserrat"}}>{this.props.activeParking.parkingAddress}</Text>
             <Text style={styles.headerText}></Text>
-            <Text h3 bold gray2>Vehicle</Text>
-            <Text h3 bold>AB 456CD</Text>
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Vehicle</Text>
+            <Text h3 style={{fontFamily: "Montserrat"}}>AB 456CD</Text>
             <Text style={styles.headerText}></Text>
             
           </View>
           <View style = {{flexDirection:"row", alignItems:"flex-start", justifyContent:"space-between"}}>
             <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
-            <Text h3 bold gray2>Remaining time</Text>
-            <Text h1 secondary bold>{parseInt(((this.props.activeParking.endDate - this.state.curTime) / (1000*60*60)) % 24 ) + ":" + parseInt(((this.props.activeParking.endDate - this.state.curTime) / (1000*60)) % 60) + ":" + parseInt(((this.props.activeParking.endDate - this.state.curTime) / 1000) % 60 ) }
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Remaining time</Text>
+            <Text h1 secondary style={{fontFamily: "Montserrat"}}>{parseInt(((this.props.activeParking.endDate - this.state.curTime) / (1000*60*60)) % 24 ) + "h " + parseInt(((this.props.activeParking.endDate - this.state.curTime) / (1000*60)) % 60) + "m " + parseInt(((this.props.activeParking.endDate - this.state.curTime) / 1000) % 60 ) +"s"}
 </Text>
             </View>
             <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
-              <Text h3 bold gray2>Price</Text>
-              <Text h1 secondary bold>{this.props.activeParking.amount} €</Text>
+              <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Price</Text>
+              <Text h1 secondary style={{fontFamily: "Montserrat"}}>{this.props.activeParking.amount} €</Text>
             </View>
           </View>
           </View>
@@ -146,21 +125,21 @@ class ParkingsNoImage extends Component {
   }
   
   {!this.check() &&
-  <Text center h3 bold gray2 style = {{top: height/3-50}}>You have no active parkings!</Text>
+  <Text center h3 gray2 style = {{fontFamily: 'Montserrat-Bold', top: height/3-50}}>You have no active parkings!</Text>
   }
         <Collapsible collapsed={this.state.collapsed} align="center">
           <View style={styles.content}>
 
-          <Text h3 bold gray2>Start Time</Text>
-            <Text h3 bold>{new Date(this.props.activeParking.startDate).toLocaleTimeString()}</Text>
+          <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Start Time</Text>
+            <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(this.props.activeParking.startDate).toLocaleTimeString()}</Text>
             <Text style={styles.headerText}></Text>
 
-            <Text h3 bold gray2>End Time</Text>
-            <Text h3 bold>{new Date(this.props.activeParking.endDate).toLocaleTimeString()}</Text>
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>End Time</Text>
+            <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(this.props.activeParking.endDate).toLocaleTimeString()}</Text>
             <Text style={styles.headerText}></Text>
 
             <Button style={styles.end}>
-              <Text center white bold h2>Extend</Text>
+              <Text center white style={{fontFamily: "Montserrat-Bold"}} h2>Extend</Text>
             </Button>
           </View>
         </Collapsible>
@@ -223,6 +202,7 @@ const styles = StyleSheet.create({
     elevation: 6,
   },
   content: {
+    alignItems: "center",
     padding: 20,
     backgroundColor: '#fff',
   },
@@ -244,10 +224,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '500',
   },
-  content: {
-    padding: 20,
-    backgroundColor: '#fff',
-  },
+  
 });
 
 function mapStateToProps(state) {

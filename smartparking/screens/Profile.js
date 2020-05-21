@@ -76,23 +76,23 @@ class Profile extends Component {
       <Block style={[this.getStyle(this.props.darkTheme)]}>
         <View style={styles.header}>
             <View>
-            <Text bold style={{ fontSize: 32 }}>
+            <Text style={{ fontSize: 32, fontFamily: 'Helvetica-Bold' }}>
               Profile
             </Text>
-            <Text h3 secondary>Hello Ibrahim!</Text>
+            <Text h3 secondary style={{ fontFamily: 'Montserrat' }}>Hello {this.props.userData.name}!</Text>
             </View>
             <View>
-              <Text h2 bold style ={{color:"orange"}}>Bonus: 45</Text>
+              <Text h2 style ={{color:"#FFAB5B", fontFamily: 'Montserrat'}}>{this.props.userData.points} points</Text>
             </View>
 
         </View>
         <View style={{paddingHorizontal: theme.sizes.base * 2, flex: 0.2, marginTop: 10, alignContent: "center", justifyContent: "space-between", flexDirection:"row" }}>
-          <Text h1 bold style={{  }}>Account</Text>
+          <Text h1 bold style={{ fontFamily: 'Helvetica-Bold' }}>Account</Text>
         </View>
         <View style={{ flex: 1, paddingHorizontal: theme.sizes.base * 2, alignItems: "center" }}>
           <Block row space="between" style={styles.inputRow}>
             <Block>
-              <Text gray2 >
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>
                 Email Address
                 </Text>
               {this.renderEdit("email")}
@@ -103,7 +103,7 @@ class Profile extends Component {
 
           <Block row space="between" style={styles.inputRow}>
             <Block>
-              <Text gray2>
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>
                 Vehicle Plate
                 </Text>
               {this.renderEdit("plate")}
@@ -112,7 +112,7 @@ class Profile extends Component {
           </Block>
           <Block row space="between" style={styles.inputRow}>
             <Block>
-              <Text gray2 >
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>
                 Driving License
                 </Text>
               {this.renderEdit("license")}
@@ -120,7 +120,7 @@ class Profile extends Component {
             <Icon name = {editing === "license" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("license")}/>
           </Block>
           <View style={{ flex: 0.1, marginTop: 10, alignSelf: "flex-start", justifyContent: "center", }}>
-            <Text h1 bold>Settings</Text>
+            <Text h1 style={{ fontFamily: 'Helvetica-Bold' }}>Settings</Text>
           </View>
           <Block style={styles.toggles}>
             <Block
@@ -128,7 +128,7 @@ class Profile extends Component {
               center
               space="between"
             >
-              <Text gray2>Enable Notifications</Text>
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>Enable Notifications</Text>
               <Switch
                 value={this.state.dark}
                 onValueChange={value => {
@@ -144,7 +144,7 @@ class Profile extends Component {
               center
               space="between"
             >
-              <Text gray2>Dark Mode</Text>
+              <Text gray2 style={{ fontFamily: 'Montserrat' }}>Dark Mode</Text>
               <Switch
                 value={this.state.dark}
                 onValueChange={value => {
@@ -158,7 +158,7 @@ class Profile extends Component {
           
         </View>
         <View style={{ flex: 0.2, marginTop: 10, justifyContent: "space-between", alignItems:"center", flexDirection: "row", paddingHorizontal: theme.sizes.base * 2, }}>
-            <Text secondary h1 bold>Logout</Text>
+            <Text secondary h1 style={{ fontFamily: 'Montserrat' }}>Logout</Text>
               <Button style = {styles.modalContent} onPress = {()=>this.signOutUser()}>
               <Icon name="exit-to-app" size = {32} color="#C02501"/>
               </Button>
@@ -247,6 +247,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    userData: state.userData,
     darkTheme: state.darkTheme
   }
 }

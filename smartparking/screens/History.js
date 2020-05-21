@@ -41,7 +41,7 @@ class History extends Component {
   _renderSectionTitle = section => {
     return (
       <View style={styles.content}>
-          <Text h2 gray2 style={{ fontFamily: "Montserrat-Bold" }}>{new Date(section.startDate).toLocaleDateString()}</Text>
+          <Text h2 gray2 style={{ fontFamily: "Montserrat-Bold" }}>{new Date(section.startDate).toLocaleDateString()}, {section.parkingCity}</Text>
       </View>
     );
   };
@@ -51,31 +51,25 @@ class History extends Component {
     return (
       <View style={styles.header}>
         <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-          <Text h3 bold gray2>Location</Text>
-          <Text h3 bold>{section.parkingAddress}</Text>
+          <Text h3 gray2 style={{fontFamily: "Montserrat-Bold"}}>Location</Text>
+          <Text h3 style={{fontFamily: "Montserrat"}}>{section.parkingAddress}</Text>
           <Text style={styles.headerText}></Text>
-          <Text h3 bold gray2>Your parking time</Text>
-          <Text h3 bold>{new Date(section.startDate).toLocaleTimeString()} - {new Date(section.endDate).toLocaleTimeString()}</Text>
+          <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Your parking time</Text>
+          <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(section.startDate).toLocaleTimeString()} - {new Date(section.endDate).toLocaleTimeString()}</Text>
           <Text style={styles.headerText}></Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" }}>
           <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-            <Text h3 bold gray2>Price</Text>
-            <Text h1 secondary bold>{section.amount} €</Text>
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Price</Text>
+            <Text h1 secondary style={{fontFamily: "Montserrat"}}>{section.amount} €</Text>
           </View>
           <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
-            <Text h3 bold gray2>Tokens</Text>
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Tokens</Text>
             <View style = {{flexDirection:"row", alignItems:"center"}}>
-            <Text h1 secondary bold style = {{color:"#FFAB5B"}}>{section.earnedPoints}</Text>
+            <Text h1 secondary style = {{color:"#FFAB5B", fontFamily: "Montserrat"}}>{section.earnedPoints}</Text>
             </View>
           </View>
         </View>
-
-        {/**
-            <Text style={styles.headerText}></Text>
-              <Text style={styles.headerText}>{section.distance}</Text>
-              <Text style={styles.headerText}>{section.time}</Text>
-             */}
       </View>
     );
   };
@@ -83,11 +77,12 @@ class History extends Component {
   _renderContent = section => {
     return (
       <View style={styles.content}>
-        <Text>{section.price}</Text>
-        <Text> PORCODSIDOSAOFSKIDJFC
-        VSVVJDFVSDKFJC
-        FDIJSFSAKJFAQXHACDUSCDIUCGNISJDGHFCYU
-              </Text>
+          <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Total Time</Text>
+            <Text h3 style={{fontFamily: "Montserrat"}}>{parseInt(((section.endDate - section.startDate) / (1000*60*60)) % 24 ) + " h, " + parseInt(((section.endDate - section.startDate) / (1000*60)) % 60) + " min"}</Text>
+            <Text style={styles.headerText}></Text>
+
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Vehicle Plate</Text>
+            <Text h3 style={{fontFamily: "Montserrat"}}>{section.plate}</Text>
 
       </View>
     );
@@ -101,22 +96,7 @@ class History extends Component {
     return (
 
       <ScrollView style={{ flex: 1 , backgroundColor:"rgba(3, 166, 150,0.02)"}}>
-        {/*
-          <Animated.View style={{
-              justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
-    
-              elevation: 6,
-            }}>
-              <Text style={{ fontFamily: "Helvetica-Bold", fontSize: 32 }}>
-                Parkings
-            </Text>
-              <Text h3 style={{ fontFamily: "Montserrat" }} gray2>Choose the best parking for you</Text>
-    
-            </Animated.View> 
-           */}
-        
-
-
+       
         <Accordion
           touchableComponent={TouchableWithoutFeedback}
           duration={600}
@@ -128,7 +108,7 @@ class History extends Component {
           onChange={this._updateSections}
         />
         {this.props.reservationsArray.length == 0 && 
-         <Text center h3 bold gray2 style = {{top: width/2}}>You have no parkings in your history!</Text>
+         <Text center h3 gray2 style = {{fontFamily: "Montserrat-Bold", top: width/2}}>You have no parkings in your history!</Text>
         }
 
       </ScrollView>
@@ -176,6 +156,7 @@ const styles = StyleSheet.create({
     fontWeight: '500',
   },
   content: {
+    alignItems: "center",
     padding: 20,
     backgroundColor: '#fff',
   },

@@ -13,7 +13,7 @@ import * as Constants from "expo-constants";
 import * as Google from 'expo-google-app-auth';
 
 
-import { Button, Block, Text } from "../components";
+import { Button, Block, Text, Divider } from "../components";
 import { theme } from "../constants";
 import { SocialIcon } from 'react-native-elements'
 
@@ -35,6 +35,7 @@ class Login extends Component {
 
     for(var i in temp)
        newArr.push(temp[i]);
+    
     
     this.props.updateReservationsArray(newArr);
 
@@ -170,20 +171,22 @@ class Login extends Component {
 
     return (
       <View style={{flex: 1}}>
-      <Animatable.View animation="slideOutUp" style={{position: "absolute", top:0, left:0, height: "100%", width: "100%", backgroundColor:"#03A696", zIndex: 1}}></Animatable.View>
-
+      
       <KeyboardAvoidingView
       behavior={Platform.OS == "ios" ? "padding" : "height"}
       style={styles.login}
       >
-      
+      <View style={styles.container2}>
+            <Animatable.Image animation="bounceInRight" duration={1500} source={require('../assets/logo/logoText_green.png')} style={styles.image}/>
+      </View>
+
         <Block padding={[0, theme.sizes.base * 2]}>
+          
           <Text h1 bold>
           </Text>
-          <Text style = {{fontFamily: 'Helvetica-Bold', fontSize: 32}}>
+          <Text style = {{fontFamily: 'Montserrat-Bold', fontSize: 32}}>
           Login
           </Text>
-          <Text gray2 h3 style={{fontFamily: 'Montserrat'}}>Enter your credentials to login</Text>
           <Block top>
             <View style={styles.errorMessage}>
               {this.state.errorMessage && <Text style={styles.error}>{this.state.errorMessage}</Text>}
@@ -356,7 +359,24 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginHorizontal: 30,
-  }
+  },
+  container2: {
+    flex: 0.15,
+    //backgroundColor: theme.colors.secondary,
+    top: 30,
+    justifyContent: "center",
+    alignItems: 'center',
+  },
+  logo: {
+    width: 80,
+    height: 80,
+    resizeMode: 'contain',
+  },
+  image: {
+    width: 340,
+    height: 340,
+    resizeMode: 'contain',
+  },
 });
 
 

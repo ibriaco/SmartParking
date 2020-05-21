@@ -162,7 +162,7 @@ const slides = [
     title:'Time',
     key: 's3',
     text: 'Save your time searching the perfect parking, pay and extend your stop\nwhenever you want',
-    image: require("../assets/icons/clock.png"),
+    image: require("../assets/icons/time.png"),
     titleStyle: styles.title,
     textStyle: styles.text,
     imageStyle: styles.image,

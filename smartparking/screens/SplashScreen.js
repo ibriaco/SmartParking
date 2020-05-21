@@ -23,10 +23,11 @@ export default class SplashScreen extends Component {
 
         return (
           <View style={styles.container}>
-            
-            <Animatable.Image animation="bounceIn" duration={3000} delay={1000} source={require('../assets/icons/car_marker.png')} style={styles.logo} onAnimationEnd={()=>navigation.navigate("Welcome")}/>
-            <Image style={styles.title} source={require('../assets/animations/title.gif')} />
-          
+            <View style={styles.container2}>
+            <Animatable.Image animation="fadeInRight" duration={2000} delay={0} source={require('../assets/logo/logoP.png')} style={styles.logo} />
+
+            <Animatable.Image animation="fadeIn" duration={1500} delay={900} source={require('../assets/logo/logoText.png')} style={styles.image} onAnimationEnd={() => this.props.navigation.navigate("Welcome")}/>
+            </View>
           </View>
         )
     }
@@ -37,19 +38,24 @@ const styles = StyleSheet.create({
       flex: 1,
       backgroundColor: theme.colors.secondary,
       flexDirection: 'column',
+      justifyContent: "center",
+      alignItems: 'center'
+    },
+    container2: {
+      flex: 1,
+      backgroundColor: theme.colors.secondary,
+      flexDirection: 'row',
+      justifyContent: "center",
       alignItems: 'center'
     },
     logo: {
       width: 80,
       height: 80,
-      position: 'absolute',
-      top: 250
+      resizeMode: 'contain',
     },
-    title: {
+    image: {
       width: 300,
-      height: 200,
-      position: 'absolute',
-      top: 250,
-      left: 50
-    }
+      height: 300,
+      resizeMode: 'contain',
+    },
   });
