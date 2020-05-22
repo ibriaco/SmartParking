@@ -186,22 +186,6 @@ class Reports extends Component {
           </Animatable.View>
 
         </Block>
-        <Footer style = {{paddingHorizontal: 40}}>
-          <FooterTab>
-            <Button>
-              <Icon name="map" />
-            </Button>
-            <Button>
-              <Icon name="parking" />
-            </Button>
-            <Button active>
-              <Icon active name="heart" />
-            </Button>
-            <Button>
-              <Icon name="person" />
-            </Button>
-          </FooterTab>
-        </Footer>
           
       </View>
     );
@@ -243,7 +227,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#03A696',
     height: 60,
-    width:'80%',
+    width:300,
     borderRadius: 20,
     marginHorizontal: 25,
     shadowOpacity: 0.3,

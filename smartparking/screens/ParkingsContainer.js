@@ -30,13 +30,13 @@ class ParkingsContainer extends Component {
             <Parkings navigation={this.props.navigation}/>
           </Tab>
           <Tab heading="Active" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} textStyle={{color:"#C7CCD5", fontSize:16, fontFamily: "Montserrat", }} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16 , fontFamily:"Montserrat-Bold"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", borderWidth: 0}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}  >
-            <Parkings navigation={this.props.navigation}/>
+            <ActiveParkings navigation={this.props.navigation}/>
           </Tab>
           <Tab heading="History" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}textStyle={{color:"#C7CCD5", fontSize: 16, fontFamily: "Montserrat"}} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16, fontFamily:"Montserrat-Bold"}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}>
           <History/>
           </Tab>
         </Tabs>
-        <Footer style={{ paddingHorizontal: 40, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
+        <Footer style={{ paddingHorizontal: 60, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
             <FooterTab style={{ backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", alignItems: "center" }}>
               {!this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#CDCCCE" onPress={() => navigation.navigate("Home")}/>}
               {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#CDCCCE" onPress={() => navigation.navigate("Home")}/>}

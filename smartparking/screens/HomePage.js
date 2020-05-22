@@ -27,7 +27,7 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { showMessage } from "react-native-flash-message";
-import { Ionicons } from 'react-native-vector-icons'
+import { Feather } from 'react-native-vector-icons'
 import {Footer, FooterTab} from 'native-base'
 
 const HEIGHT = Dimensions.get('window').height;
@@ -665,12 +665,12 @@ class Map extends React.Component {
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"baseline"}}>
                     <FontAwesome5 name ="parking" size = {30} color="rgba(3, 166, 150,0.9)">
                     </FontAwesome5>
-                  <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  {this.props.tappedArea.nTot - this.props.tappedArea.nTaken}</Text> 
-                    <Text h2 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
+                  <Text h3 secondary center style = {{fontFamily: "Montserrat-Bold"}}>  {this.props.tappedArea.nTot - this.props.tappedArea.nTaken}</Text> 
+                    <Text h3 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
                   </View>
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"center"}}>
-                    <Icon name ="clock-outline" size = {30} color="rgba(3, 166, 150,0.9)"/>
-                    <Text secondary h2 style={{ fontFamily: "Montserrat-Bold" }}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
+                    <Icon name ="clock-outline" size = {26} color="rgba(3, 166, 150,0.9)"/>
+                    <Text secondary h3 style={{ fontFamily: "Montserrat-Bold" }}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -692,7 +692,7 @@ class Map extends React.Component {
                 </View>
                 {this.props.tappedArea.reports != "none" &&
                 <View>
-                  <Text caption center style = {{color:"#C02501", fontFamily:"Montserrat"}}>{this.props.tappedArea.reports}</Text>
+                  <Text caption center style = {{color:"#C02501", fontFamily:"Montserrat",}}>{this.props.tappedArea.reports}</Text>
                 </View>
                 }
                 <View style={{ flexDirection: "column", position: "relative" }} >
@@ -728,11 +728,11 @@ class Map extends React.Component {
           }
           {this.props.userData.darkMode &&
           <Button style={styles.centerUserDark} onPress={this._centerMap}>
-            <Icon name="crosshairs-gps" size={28} color="#000" />
+            <Icon name="crosshairs-gps" size={28} color="#303030" />
           </Button>
           }
         </Animatable.View>
-        <Footer style={{ paddingHorizontal: 40, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
+        <Footer style={{ paddingHorizontal: 60, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
             <FooterTab style={{ backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", alignItems: "center" }}>
               {!this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#000" onPress={() => navigation.navigate("Home")} style = {{alignSelf:'center'}}/> }
               {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#FF9800" onPress={() => navigation.navigate("Home")}/>}
@@ -767,7 +767,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   darkModalStyle: {
-    flex: 0.45, 
+    flex: 0.52, 
     backgroundColor: "#383838", 
     borderRadius: 10, 
     justifyContent: "space-between", 
@@ -908,9 +908,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderWidth: 1,
     borderColor: "#03A696",
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.2,
     shadowOffset: { width: 0, height: 2 },
-    elevation: 3,
+    elevation: 2,
     alignSelf:"flex-end"
   },
   modalContentLowLeft: {

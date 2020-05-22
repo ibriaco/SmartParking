@@ -343,7 +343,7 @@ class Filter extends Component {
     const { navigation } = this.props;
     return (
       <View style = {{flex:1}}>
-      <ScrollView scrollEnabled={false} style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
+      <ScrollView scrollEnabled={true} style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
       <Header style = {{backgroundColor: this.props.userData.darkMode ? "#0303030" : "#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
           <Left>
               <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
@@ -358,7 +358,7 @@ class Filter extends Component {
           <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
 
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-              <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold", marginTop: 55 }}>
+              <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold", color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>
                 Filters
         </Text>
             </View>
@@ -367,8 +367,8 @@ class Filter extends Component {
             <View style={styles.sliders}>
               <Animatable.View animation="slideInUp" duration={600} delay={100}>
 
-                {!this.props.userData.darkMode && <Text center h2 style={{ fontFamily: "Montserrat-Bold" }}>Type</Text>}
-                {this.props.userData.darkMode && <Text center gray2 h2 style={{ fontFamily: "Montserrat-Bold" }}>Type</Text>}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Type</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Type</Text>}
 
 
                 <Block row center style={{ justifyContent: "space-around" }}>
@@ -428,8 +428,8 @@ class Filter extends Component {
                 <Animatable.View ref={p => this.priceView = p}>
 
 
-                  {!this.props.userData.darkMode && <Text center h2 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
-                  {this.props.userData.darkMode && <Text center gray2 h2 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
+                  {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
+                  {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
 
 
                   <Slider
@@ -444,8 +444,8 @@ class Filter extends Component {
                     step={0.50}
                     onValueChange={value => this.setState({ maxPrice: value })}
                   />
-                  {!this.props.userData.darkMode && <Text h2 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxPrice} €</Text>}
-                  {this.props.userData.darkMode && <Text h2 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxPrice} €</Text>}
+                  {!this.props.userData.darkMode && <Text h3 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxPrice} €</Text>}
+                  {this.props.userData.darkMode && <Text h3 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxPrice} €</Text>}
 
                 </Animatable.View>
 
@@ -456,8 +456,8 @@ class Filter extends Component {
               <Animatable.View animation="slideInUp" duration={600} delay={200}>
 
 
-                {!this.props.userData.darkMode && <Text center h2 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
-                {this.props.userData.darkMode && <Text center gray2 h2 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
 
 
                 <Slider
@@ -472,8 +472,8 @@ class Filter extends Component {
 
                   onValueChange={value => this.setState({ maxTime: value })}
                 />
-                {!this.props.userData.darkMode && <Text h2 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxTime} min</Text>}
-                {this.props.userData.darkMode && <Text h2 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxTime} min</Text>}
+                {!this.props.userData.darkMode && <Text h3 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxTime} min</Text>}
+                {this.props.userData.darkMode && <Text h3 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxTime} min</Text>}
 
               </Animatable.View>
 
@@ -481,8 +481,8 @@ class Filter extends Component {
               <Animatable.View animation="slideInUp" duration={600} delay={300}>
 
 
-                {!this.props.userData.darkMode && <Text center h2 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
-                {this.props.userData.darkMode && <Text center gray2 h2 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
 
 
                 <Slider
@@ -497,16 +497,16 @@ class Filter extends Component {
 
                   onValueChange={value => this.setState({ maxDistance: value })}
                 />
-                {!this.props.userData.darkMode && <Text h2 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxDistance} km</Text>}
-                {this.props.userData.darkMode && <Text h2 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxDistance} km</Text>}
+                {!this.props.userData.darkMode && <Text h3 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxDistance} km</Text>}
+                {this.props.userData.darkMode && <Text h3 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxDistance} km</Text>}
 
               </Animatable.View>
 
               <Animatable.View animation="slideInUp" duration={600} delay={400}>
 
 
-                {!this.props.userData.darkMode && <Text center h2 style={{ fontFamily: "Montserrat-Bold" }}>Minimum Availability</Text>}
-                {this.props.userData.darkMode && <Text center gray2 h2 style={{ fontFamily: "Montserrat-Bold" }}>Minimum Availability</Text>}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Minimum Availability</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Minimum Availability</Text>}
 
 
                 <Block row center style={{ justifyContent: "space-around" }}>
@@ -528,8 +528,8 @@ class Filter extends Component {
 
               <Animatable.View animation="slideInUp" duration={600} delay={500}>
 
-                {!this.props.userData.darkMode && <Text center h2 style={{ fontFamily: "Montserrat-Bold" }}>Spot for</Text>}
-                {this.props.userData.darkMode && <Text center gray2 h2 style={{ fontFamily: "Montserrat-Bold" }}>Spot for</Text>}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Spot for</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Spot for</Text>}
 
 
                 <Block row center style={{ justifyContent: "space-around" }}>
@@ -624,7 +624,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection:"column",
-    justifyContent:"space-between"
   },
   darkContainer: {
     flex: 1,

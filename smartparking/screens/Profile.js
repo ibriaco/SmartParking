@@ -170,7 +170,7 @@ class Profile extends Component {
             <Text secondary h1 style={{ fontFamily: 'Montserrat' }}>Logout</Text>
               <Icon name="exit-to-app" size = {32} color="#C02501" onPress = {()=>this.signOutUser()}/>
           </View>
-          <Footer style={{ paddingHorizontal: 40, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
+          <Footer style={{ paddingHorizontal: 60, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
             <FooterTab style={{ backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", alignItems: "center" }}>
               {!this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#CDCCCE" onPress={() => navigation.navigate("Home")}/>}
               {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#CDCCCE" onPress={() => navigation.navigate("Home")}/>}
