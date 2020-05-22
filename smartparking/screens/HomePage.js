@@ -758,7 +758,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   modalStyle: {
-    flex: 0.45, 
+    flex: 0.52, 
     backgroundColor: "#f8f8ff", 
     borderRadius: 10, 
     justifyContent: "space-between", 
