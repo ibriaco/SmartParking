@@ -65,7 +65,11 @@
 \begin{document}
 \begin{figure}[H]
 \centering
-\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{architecture.png}
+\includegraphics[scale=0.3]{logoP_green.png}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{logoText_green.png}
 \end{figure}
 \maketitle
 
@@ -73,14 +77,17 @@
 \newpage
 
 \section{Document Structure}
-\begin{enumerate}
+\begin{itemize}
 
 \item \texttt{Introduction}: This section introduces the Design Document. It explains the Purpose, the Scope and the conventions of the document.
 \item \texttt{Architectural Design}: This section describes the components used for the system and the relations between them, providing information about their deployment and how they works. It also specifies the architectural styles and the design patterns chosen to design the system.
+\item \texttt{Third Party interaction}: This section introduces the interaction of SmartParking with the listed Third Party APIs and services and their functionalities.
 \item \texttt{User Interface Design}: This section provides an overview on how the User Interface will look like. This section will be accurate enough to explain all our decisions about the design and the UI of the Mobile Application. 
-\item \texttt{Implementation, Integration and Testing}: This section contains the order of the system's subcomponents implementation, integration and testing.
+\item \texttt{Implementation and Integration}: This section contains the order of the system's subcomponents implementation and their integration.
+\item \texttt{Testing}: This section describes the test cases submitted to the Application.
 
-\end{enumerate}
+
+\end{itemize}
 
 \section{Introduction}
 
@@ -125,49 +132,243 @@ SmartParking is a crowd-sourced application where users can view all the street 
 \item \textit{LucidChart}: https://www.lucidchart.com/
 \end{itemize}
 
+\subsection{Domain Assumptions}
+\begin{itemize}
+  \item {}[D1]: Users' devices support the GPS technology.
+  \item {}[D2]: Users' devices support receiving push notifications.
+  \item {}[D3]: Users' devices always have an internet connection available during the interaction with the system.
+  \item {}[D4]: User's devices support the Mobile application (including Google Maps services).
+  \item {}[D5]: It is possible to retrieve the current time from the users' devices.
+\end{itemize}
 
+\subsection{Goals}
+The system provides to users a simple and user-friendly interface to:
+\begin{itemize}
+  \item {}[G1]: Register and Login/Logout from the application.
+  \item {}[G2]: Localize themselves on the map and listen to location changes.
+  \item {}[G3]: Find and choose parkings from the map or from the list.
+  \item {}[G4]: Pay or extend their stop.
+  \item {}[G5]: View their parking history or their active parking.
+  \item {}[G6]: Report missing/malformed/outdated information on parkings.
+  \item {}[G7]: Earn points from reports and stops and convert them in Bonus.
+  
+\end{itemize}
+
+\section{Use Cases Analysis}
+\paragraph{UC1}
+
+\begin{center}
+	\begin{table}[H]
+	\noindent\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|c|}
+	 \hline
+	 \textbf{Name} &  Register to SmartParking  \\
+	 \hline
+	 \textbf{Actor} &  Visitor  \\
+	 \hline
+	 \textbf{Goals} &  [G1]  \\
+	 \hline
+	 \textbf{Entry Condition} &  The Visitor has installed the Mobile Application on his/her device  \\
+	 \hline
+	 \textbf{Events Flow} &  
+	 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 
+	 \begin{enumerate}
+	 \item The Visitor fills all fields in the Registration Screen(s)
+	 \item The Visitor taps on the "Continue" button
+	 \item The system checks data validity
+	 \item The system sends a confirmation e-mail to the provided address
+	 \item The system stores the new User's data	 
+	 \end{enumerate}
+	 
+	 \vskip 4pt
+	 \end{minipage}		 
+	   \\
+	 \hline
+	 \textbf{Exit Conditions} &	 The Visitor has registered to SmartParking  \\
+	 \hline
+	 \textbf{Exceptions} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 
+	 \begin{enumerate}
+	 \item The Visitor inserted an e-mail that is already used for an account
+	 \item The Visitor inserted an invalid e-mail
+	 \item Some fields are not filled
+	 \item The Visitor inserted a password that does not satisfy the security rules
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+	   \\
+	 \hline
+	\end{tabular}
+	}
+	\end{table}
+\end{center}
+
+\paragraph{UC2}
+\begin{center}
+	\begin{table}[H]
+	\noindent\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|c|}
+	 \hline
+	 \textbf{Name} &  User Login  \\
+	 \hline
+	 \textbf{Actor} &  User  \\
+	 \hline
+	 \textbf{Goals} &  [G1]  \\
+	 \hline
+	 \textbf{Entry Condition} &  The User is on the Login Screen of the Mobile Application \\
+	 \hline
+	 \textbf{Events Flow} &  
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 \begin{enumerate}
+	 \item The User enters the username
+	 \item The User enters the password
+	 \item The User taps on the "Log in" button
+	 \item The system check the validity of the provided data
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+	   \\
+	 \hline
+	 \textbf{Exit Conditions} &	 The User is logged in  \\
+	 \hline
+	 \textbf{Exceptions} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 \begin{enumerate}
+	 \item The User is not registered
+	 \item The User inserted a wrong username
+	 \item The User inserted a wrong password
+	 \item Some fields are not filled
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+	   \\
+	 \hline
+	\end{tabular}
+	}
+	\end{table}
+\end{center}
+
+\paragraph{UC3}
+\begin{center}
+	\begin{table}[H]
+	\noindent\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|c|}
+	 \hline
+	 \textbf{Name} &  Social Login/Registration  \\
+	 \hline
+	 \textbf{Actor} &  User  \\
+	 \hline
+	 \textbf{Goals} &  [G1]  \\
+	 \hline
+	 \textbf{Entry Condition} &  The User is on the Login Screen of the Mobile Application \\
+	 \hline
+	 \textbf{Events Flow} &  
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 \begin{enumerate}
+	 \item The User taps on the Google/Facebook button
+	 \item The User allows SmartParking to use Google/Facebook for authentication
+	 \item The system stores the User's data	 
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+	   \\
+	 \hline
+	 \textbf{Exit Conditions} &	 The User is registered and logged in  \\
+	 \hline
+	 \textbf{Exceptions} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 \begin{enumerate}
+	 \item The User has no Google/Facebook accounts
+	 \item The User denies the permission to authenticate
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+	   \\
+	 \hline
+	\end{tabular}
+	}
+	\end{table}
+\end{center}
 \section{Architectural Design}
 Our application is composed by two main components: a Front End, developed with the React Native framework, and a Back End that relies on Firebase, and in particular on Firebase Realtime Database.\\
 These two components are highly connected: in fact, the mobile application has the role to show to the user all the data stored in the Database, and also to respond to the user's behaviour.\\
-We can say that the mobile App represents the View of the system (in a Model-View-Controller like architecture), the Database represents the Model, and the entire Back End represent the Controller. That is, the App just shows the relevant data to the user, and provide the possibility to choose between some options to modify the shown data.
 
-HIGH LEVEL DIAGRAM - app e db
 
 \subsection{Front End: Mobile Application}
 The Mobile Application is a React Native application composed by several screens, each one will be described in the User Interface Design Section. The choiche of React Native frameworks comes from the fact that, being SmartParking an application that will be mainly used "in real time", smartphones will be the target devices: it's more reasonable that a user is using his smartphone when driving (obviously respecting the street law code) rather than a tablet or a smartwatch. A \textbf{cross-platform} framework has been identified as the smartest choiche in this case, in order to reach the largest number of users.\\
-This Application will obviously be a \textbf{multi-thread} application. This because we need to be able to handle all user actions and at the same time to keep the Google Map and the shown parkings updated, without having blocking instructions and so performing all the actions in parallel.  
+This Application will obviously be a \textbf{multi-thread} application. This because we need to be able to handle all user actions and at the same time to keep the Google Map and the shown parkings updated, without having blocking instructions and so performing all the actions in parallel.\\
+The Mobile Application is composed of a total of X screens (better described in Section Y), and the most important of these are:
+\begin{itemize}
+\item {Home/Map}
+\item {Parkings}
+\item {Profile}
+\end{itemize}
 
 \subsection{Back End: Firebase}
-The Firebase back end is where all the parkings, users and reservations data are stored. The back end is also encharged of authentication and user session management (a well implemented and tested functionality of Firebase). 
-
-\subsection{Third Party interaction}
+The Firebase back end is where all the parkings, users and reservations data are stored. The back end is also encharged of authentication and user session management (a well implemented and tested functionality of Firebase). \\
+The main data that has to be stored is the parking Area data: every city has some areas, and each of them includes a number of parking spots of different type: everything must be saved. \\
+Since Firebase RD is a NoSQL Database we have a JSON-style structure, where we have 2 main folders: \textbf{Cities} and \textbf{Users}. 
 \begin{itemize}
-\item \textit{Google}: Login
-\item \textit{Facebook}: Login
-\item \textit{Paypal}: Parking payments
-\item \textit{Stripe}: Parking payments with credit cards
-\item \textit{Redux}: Persistent storage of data
-\item \textit{Google Maps APIs}: Directions, Distance matrix, Geocoding
+\item{Cities} 
+IMMAGINE CITIES
+\item{Users} 
+IMMAGINE USERS
 \end{itemize}
+
+\subsection{Architectural styles and patterns}
+\subsubsection{Design Patterns}
+\begin{itemize}
+\item \texttt{Model-View-Controller Pattern}: is a software design pattern commonly used for developing user interfaces which divides the related program logic into three interconnected elements. This is done to separate internal representations of information from the ways information is presented to and accepted from the user. Following the MVC architectural pattern decouples these major components allowing for code reuse and parallel development. \\In SmartParking, we can say that the \texttt{Mobile App} represents both the \textbf{View} and the \textbf{Controller} of the system, while the entire \texttt{Back end} and in particular the Database represents the \textbf{Model}. That is, the App shows the relevant data to the user, and provide the possibility to choose between some options to modify the shown data: it behaves like a Controller, calling fetch methods to update the Server-side data. \\It is worth to mention that, in some cases, the MVC Pattern with a local copy on the client side has been used: this because relying on fetch methods everytime the user modifies some data would be too heavy from a computational point of view, and also too much internet-consuming.  
+
+\item \texttt{Observer/Observable Pattern}: is used when there is one-to-many relationship between objects such as if one object is modified, its depenedent objects are to be notified automatically. Observer pattern falls under behavioral pattern category. This is the natural Design Pattern used to implement the MVC Pattern: in our system, the intent of this pattern is to let the User execute some queries through the UI and after searching the Database, the result is shown back in the UI. If changes occurs in the database, the UI is notified and updates the UI. \\We can say that React Native helped us a lot in implementing this pattern, due to the intrinsic presence of this. All RN components, in fact, are "linked" to state values, and modifying them results in modifying also the UI to which the value is linked. 
+\end{itemize}
+
+\section{Third Party interaction}
+\subsection{Google}
+\subsection{Facebook}
+\subsection{Paypal}
+\subsection{Stripe}
+\subsection{Redux}
+\subsection{Google Maps APIs}
+
 
 \section{User Interface Design}
 In this section we will describe, page by page, all the Screens of the Mobile Application and their functionalities, along with the decisions we made to provide a nice and pleasant User Experience.
+\subsection{Colors}
+\subsection{Fonts}
+
 \subsection{Splash Screen}
-\subsection{Intro Screen}
+\subsection{Welcome Screen}
 \subsection{Login Screen}
 \subsection{Registration Screen}
-\subsection{Home-Map Screen}
-\subsection{List Screen}
+\subsection{Home/Map Screen}
+\subsection{Parking Screen(s)}
+\paragraph{List Screen}
+\paragraph{Active Parking Screen}
+\paragraph{History Screen}
 \subsection{Filter Screen}
 \subsection{Profile Screen}
-\subsection{Vehicle Screen}
-\subsection{Payment Screen}
 
-\section{Implementation, Integration and test plan}
-We can split this section in three main phases: 
+\section{Implementation and Integration}
+We can split this section in three main phases, written in order of implementation: 
+
 \subsection{Front End implementation}
+First of all we created all the needed screens with a very basic design: we were focused on providing a good User eXperience flow first by identifying all the best components to insert, and only after this phase we started thinking about the color, shape and less-relevant details. This is a very common development flow in mobile applications, and works very well when managing a lot of screens and user flow possibilities.   
 \subsection{Back End implementation}
+We created the Back end skeleton of the system, by configuring Firebase Realtime Database in order to store every needed information. In particular, we started by organizing and adding all the involved Cities (in the very first version only Milan and Sondrio, the group members' cities), and then adding to them all the parking Areas. 
 \subsection{Front End and Back End integration}
+This phase was relatively short, because 
 
+\section{Testing}
+Nothing.
 
 \end{document}
