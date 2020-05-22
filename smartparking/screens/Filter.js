@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Image, StyleSheet, ScrollView, TextInput, View, Dimensions, TouchableWithoutFeedback } from "react-native";
-import Slider from "react-native-slider";
+import { Slider } from 'react-native-elements';
 
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
@@ -425,7 +425,6 @@ class Filter extends Component {
               disabled={this.state.disabled}
               minimumValue={0.00}
               maximumValue={5.00}
-              style={{ height: 10 }}
               thumbStyle={styles.thumb}
               trackStyle={{ height: 3, borderRadius: 3 }}
               minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
@@ -453,7 +452,6 @@ class Filter extends Component {
             <Slider
               minimumValue={0}
               maximumValue={60}
-              style={{ height: 19 }}
               thumbStyle={styles.thumb}
               trackStyle={{ height: 3, borderRadius: 3 }}
               minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
@@ -479,7 +477,6 @@ class Filter extends Component {
               <Slider
               minimumValue={0}
               maximumValue={200}
-              style={{ height: 19 }}
               thumbStyle={styles.thumb}
               trackStyle={{ height: 3, borderRadius: 3 }}
               minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
@@ -613,7 +610,6 @@ export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginTop: 55
   },
   darkContainer: {
     flex: 1,

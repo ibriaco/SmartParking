@@ -179,7 +179,6 @@ The system provides to users a simple and user-friendly interface to:
 	 \item The Visitor fills all fields in the Registration Screen(s)
 	 \item The Visitor taps on the "Continue" button
 	 \item The system checks data validity
-	 \item The system sends a confirmation e-mail to the provided address
 	 \item The system stores the new User's data	 
 	 \end{enumerate}
 	 
@@ -317,12 +316,25 @@ The Mobile Application is composed of a total of X screens (better described in 
 The Firebase back end is where all the parkings, users and reservations data are stored. The back end is also encharged of authentication and user session management (a well implemented and tested functionality of Firebase). \\
 The main data that has to be stored is the parking Area data: every city has some areas, and each of them includes a number of parking spots of different type: everything must be saved. \\
 Since Firebase RD is a NoSQL Database we have a JSON-style structure, where we have 2 main folders: \textbf{Cities} and \textbf{Users}. 
-\begin{itemize}
-\item{Cities} 
-IMMAGINE CITIES
-\item{Users} 
-IMMAGINE USERS
-\end{itemize}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{db_general.png}
+\end{figure}
+
+\paragraph{Cities} 
+In this folder are stored all the Cities included in the project, and each of them contains all the parking Areas that will be shown to the user. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{db_area.png}
+\end{figure}
+
+
+\paragraph{Users} 
+In this folder are stored all the Users registered to SmartParking (by their ID), and each of them contains all the needed information about them such as e-mail, name, preferences, etc.. 
+\begin{figure}[H]
+\centering
+\includegraphics[scale=1]{db_users.png}
+\end{figure}
 
 \subsection{Architectural styles and patterns}
 \subsubsection{Design Patterns}
@@ -336,7 +348,22 @@ IMMAGINE USERS
 \subsection{Google}
 \subsection{Facebook}
 \subsection{Paypal}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{paypal_merchant.png}
+\caption{Merchant account history of received payments}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{paypal_customer.png}
+\caption{Customer account history of processed payments}
+\end{figure}
 \subsection{Stripe}
+\begin{figure}[H]
+\centering
+\includegraphics[scale=0.5]{stripe.png}
+\caption{History of payments received or deleted by users}
+\end{figure}
 \subsection{Redux}
 \subsection{Google Maps APIs}
 
