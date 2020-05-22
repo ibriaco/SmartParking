@@ -36,9 +36,10 @@ class Parkings extends Component {
   render() {
     return (
 
-      <Container style={{ flex: 1, paddingTop: 10, backgroundColor:"rgba(3, 166, 150,0.02)" }}>
+      <Container style={{ flex: 1, backgroundColor:"rgba(3, 166, 150,0.02)" }}>
         <Animated.ScrollView
-          contentContainerStyle={styles.cards}
+        
+          contentContainerStyle={this.props.userData.darkMode ? styles.darkCards : styles.cards}
           showsVerticalScrollIndicator={false}
           bounces={false}
           scrollEventThrottle={16}
@@ -60,7 +61,7 @@ class Parkings extends Component {
                   flex
                   borderless
                   shadowColor="black"
-                  style={styles.card}
+                  style={this.props.userData.darkMode ? styles.darkCard : styles.card}
                   title={area.distance + ", " + area.time}
                   avatar="https://i.imgur.com/dQGKmRZ.png"
                   caption={area.price != 0 ? area.price + " €/h" : "FREE"}
@@ -72,7 +73,7 @@ class Parkings extends Component {
 
 
                   <View style={{ flexDirection: "row", paddingVertical: 10, justifyContent: "center", alignItems:"baseline" }}>
-                    <FontAwesome5 name="parking" size={30} color="rgba(3, 166, 150,0.5)">
+                    <FontAwesome5 name="parking" size={30} color="rgba(3, 166, 150,1)">
                     </FontAwesome5>
                     <Text h1 secondary center style={{ fontFamily: "Montserrat-Bold" }}>  {area.nTot - area.nTaken}</Text>
                     <Text h2 secondary center secondary style={{ fontFamily: "Montserrat-Bold" }}> available spots</Text>
@@ -126,12 +127,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
+  darkCards: {
+    backgroundColor: "#202020",
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+  },
   card: {
     backgroundColor: "white",
     width: width - theme.sizes.base * 2,
     elevation: theme.sizes.base / 2,
     borderRadius: theme.sizes.base,
   },
+  darkCard: {
+    backgroundColor: "#404040",
+    width: width - theme.sizes.base * 2,
+    elevation: theme.sizes.base ,
+    borderRadius: theme.sizes.base,
+  },
+  
   rounded: {
     borderRadius: theme.sizes.base,
   },
@@ -149,6 +162,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    userData: state.userData,
     mapRef: state.mapRef,
     showRoute: state.showRoute,
     areas: state.areas,

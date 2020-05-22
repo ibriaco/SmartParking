@@ -6,9 +6,12 @@ import { theme, mocks } from "../constants";
 import ActiveParkings from './ActiveParkings';
 import History from './History'
 import { Text, Block } from '../components';
+import { connect } from 'react-redux';
+
 
 const HEADER_HEIGHT = Platform.OS == 'ios' ? 45 : StatusBar.currentHeight;
-export default class TabsExample extends Component {
+
+class ParkingsContainer extends Component {
   render() {
     return (
       <Container style={{ marginTop: HEADER_HEIGHT}}>
@@ -30,3 +33,13 @@ export default class TabsExample extends Component {
     );
   }
 }
+
+function mapStateToProps(state) {
+  return {
+    //state.areas gets data from the store
+    //and we are mapping that data to the prop named areas
+    userData: state.userData,
+  }
+}
+
+export default connect(mapStateToProps)(ParkingsContainer);

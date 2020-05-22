@@ -67,6 +67,8 @@ class Filter extends Component {
 
 
   _resetFields(){
+    this.props.updateCircleRadius(0);
+
     this.setState({
       disabled: false,
 
@@ -194,12 +196,10 @@ class Filter extends Component {
 
     //TYPE
     if(this.state.allType){
-      console.log("ALL")
       tempAreas = this.props.allAreas;
 
       //PRICE
       if(this.state.maxPrice != 0){
-        console.log("PRICE LIMIT")
 
         tempAreas = tempAreas.filter(function (area) {
           return area.price < price;
@@ -207,14 +207,13 @@ class Filter extends Component {
       }
     }
     else if(this.state.payType){
-      console.log("PAY")
+
       tempAreas = this.props.allAreas.filter(function (area) {
         return area.price > 0;
       }); 
 
       //PRICE
       if(this.state.maxPrice != 0){
-        console.log("PRICE LIMIT")
 
         tempAreas = tempAreas.filter(function (area) {
           return area.price < price;
@@ -222,7 +221,7 @@ class Filter extends Component {
       }
     }
     else if(this.state.freeType){
-      console.log("FREE")
+
       tempAreas = this.props.allAreas.filter(function (area) {
         return area.price == 0;
       });
@@ -231,13 +230,11 @@ class Filter extends Component {
     //DISTANCE
 
     if(this.state.maxDistance != 0){
-      console.log("DISTANCE LIMIT")
 
       this.props.updateCircleRadius(distance);
 
       tempAreas = tempAreas.filter(function (area) {
         var s = area.distance.substr(0, area.distance.length - 3)
-        console.log("Distance: " + s)
         return parseFloat(s) < distance;
       });
     }else{
@@ -247,7 +244,6 @@ class Filter extends Component {
     //TIME
 
     if(this.state.maxTime != 0){
-      console.log("TIME LIMIT")
 
       tempAreas = tempAreas.filter(function (area) {
         return area.time < time;
@@ -284,7 +280,6 @@ class Filter extends Component {
     
     //H
     if(this.state.hSpot){
-      console.log("HANDICAP")
 
       tempAreas = tempAreas.filter(function (area) {
         return (area.nHandicap != 0);
@@ -293,7 +288,6 @@ class Filter extends Component {
     }
     
     if(this.state.pSpot){
-      console.log("PREGNANT")
 
       tempAreas = tempAreas.filter(function (area) {
         return (area.nPregnant != 0);
@@ -301,14 +295,12 @@ class Filter extends Component {
     }
 
     if(this.state.eSpot){
-      console.log("ELECTRICS")
 
       tempAreas = tempAreas.filter(function (area) {
         return (area.nElectric != 0);
       });
     }
 
-console.log(tempAreas)
 
 
     //FINAL CONTROL: TO APPLY OR NOT TO APPLY
@@ -350,12 +342,12 @@ console.log(tempAreas)
     const { profile, editing } = this.state;
 
     return (
-      <ScrollView style={{flex: 1, marginTop: 55}}>
+    <ScrollView style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
     <Animatable.View  ref={v => this.bigView = v}> 
     <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
         
         <View style = {{flexDirection: "row", justifyContent:"space-between"}}>
-          <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold" }}>
+          <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold", marginTop: 55 }}>
           Filters
         </Text>
         </View>
@@ -364,9 +356,9 @@ console.log(tempAreas)
         <View style={styles.sliders}>
         <Animatable.View animation="slideInUp" duration={600} delay={100}>
 
-              <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>
-                Type
-              </Text>
+              {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Type</Text>}
+              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Type</Text>}
+
 
               <Block row center style={{ justifyContent: "space-around" }}>
 
@@ -425,9 +417,8 @@ console.log(tempAreas)
             <Animatable.View ref={p => this.priceView = p}>
 
 
-            <Text h2 style={{marginBottom: 10, fontFamily: "Montserrat-Bold"}} center>
-            Maximum Price
-              </Text>
+            {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Price</Text>}
+              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Price</Text>}
 
 
             <Slider
@@ -443,9 +434,9 @@ console.log(tempAreas)
               step={0.50}
               onValueChange={value => this.setState({ maxPrice: value })}
             />
-            <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>
-              {this.state.maxPrice} €
-              </Text>
+            {!this.props.userData.darkMode && <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxPrice} €</Text>}
+            {this.props.userData.darkMode && <Text h2 white style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxPrice} €</Text>}
+
               </Animatable.View>
 
         </Animatable.View>
@@ -455,9 +446,8 @@ console.log(tempAreas)
 <Animatable.View animation="slideInUp" duration={600} delay={200}>
 
 
-            <Text h2 center style={{ marginBottom: 10, fontFamily:"Montserrat-Bold"}}>
-            Maximum Time
-              </Text>
+              {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Time</Text>}
+              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Time</Text>}
 
 
             <Slider
@@ -473,18 +463,17 @@ console.log(tempAreas)
 
               onValueChange={value => this.setState({ maxTime: value })}
             />
-            <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>
-              {this.state.maxTime} min
-              </Text>
+            {!this.props.userData.darkMode && <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxTime} min</Text>}
+            {this.props.userData.darkMode && <Text h2 white style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxTime} min</Text>}
+
               </Animatable.View>
 
 
               <Animatable.View animation="slideInUp" duration={600} delay={300}>
 
 
-              <Text h2 style={{ marginBottom: 5,fontFamily: "Montserrat-Bold"}} center >
-              Maximum Distance
-              </Text>
+              {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Distance</Text>}
+              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Distance</Text>}
 
 
               <Slider
@@ -500,17 +489,16 @@ console.log(tempAreas)
 
               onValueChange={value => this.setState({ maxDistance: value })}
             />
-              <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>
-              {this.state.maxDistance} km
-              </Text>
+              {!this.props.userData.darkMode && <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxDistance} km</Text>}
+              {this.props.userData.darkMode && <Text h2 white style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxDistance} km</Text>}
+
               </Animatable.View>
 
             <Animatable.View animation="slideInUp" duration={600} delay={400}>
 
 
-              <Text center h2 style={{fontFamily: "Montserrat-Bold"}} >
-                Minimum Availability
-              </Text>
+            {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Minimum Availability</Text>}
+              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Minimum Availability</Text>}
 
               
               <Block row center style={{ justifyContent: "space-around" }}>
@@ -532,9 +520,8 @@ console.log(tempAreas)
 
             <Animatable.View animation="slideInUp" duration={600} delay={500}>
 
-              <Text center h2 style={{fontFamily: "Montserrat-Bold"}} >
-                Spot for
-              </Text>
+            {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Spot for</Text>}
+              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Spot for</Text>}
 
 
               <Block row center style={{ justifyContent: "space-around" }}>
@@ -599,6 +586,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    userData: state.userData,
     showRoute: state.showRoute,
     allAreas: state.allAreas,
     areas: state.areas,
@@ -625,8 +613,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    backgroundColor: '#fff',
+    marginTop: 55
+  },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: "#202020"
   },
   header: {
     paddingHorizontal: theme.sizes.base * 2

@@ -91,7 +91,9 @@ class Login extends Component {
                   email: tempUser.email,
                   photoUrl: tempUser.photoURL,
                   points: 0,
-                  bonus: 0
+                  bonus: 0,
+                  darkMode: false,
+                  notifications: false
                 });
   
                 firebase.database().ref('Users/' + tempUser.uid).set(
@@ -146,7 +148,9 @@ class Login extends Component {
                   email: tempUser.email,
                   photoUrl: tempUser.photoURL,
                   points: 0,
-                  bonus: 0
+                  bonus: 0,          
+                  darkMode: false,
+                  notifications: false
                 });
   
                 firebase.database().ref('Users/' + tempUser.uid).set(

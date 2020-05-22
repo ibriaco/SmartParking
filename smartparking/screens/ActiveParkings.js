@@ -95,17 +95,22 @@ class ParkingsNoImage extends Component {
   render() {
     return (
 
-      <Container style={{ flex: 1, backgroundColor:"rgba(3, 166, 150,0.02)", }}>
+      <Container style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
         {(this.props.userData.reservations && this.check()) &&
         <TouchableWithoutFeedback onPress={() => this.setState({ collapsed: !this.state.collapsed })}>
 
-          <View style={styles.header}>
+          <View style={this.props.userData.darkMode ? styles.darkHeader : styles.header}>
           <View style = {{flexDirection:"column", alignItems:"flex-start"}}>
           <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Location</Text>
-            <Text h3 style={{fontFamily: "Montserrat"}}>{this.props.activeParking.parkingAddress}</Text>
+          
+            {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{this.props.activeParking.parkingAddress}</Text>}
+            {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color: "white"}}>{this.props.activeParking.parkingAddress}</Text>}
+
             <Text style={styles.headerText}></Text>
             <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Vehicle</Text>
-            <Text h3 style={{fontFamily: "Montserrat"}}>AB 456CD</Text>
+            {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>AB 456CD</Text>}
+            {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color: "white"}}>AB 456CD</Text>}
+
             <Text style={styles.headerText}></Text>
             
           </View>
@@ -128,14 +133,18 @@ class ParkingsNoImage extends Component {
   <Text center h3 gray2 style = {{fontFamily: 'Montserrat-Bold', top: height/3-50}}>You have no active parkings!</Text>
   }
         <Collapsible collapsed={this.state.collapsed} align="center">
-          <View style={styles.content}>
+          <View style={this.props.userData.darkMode ? styles.darkContent :styles.content}>
 
-          <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Start Time</Text>
-            <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(this.props.activeParking.startDate).toLocaleTimeString()}</Text>
+            <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Start Time</Text>
+            {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(this.props.activeParking.startDate).toLocaleTimeString()}</Text>}
+            {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color: "white"}}>{new Date(this.props.activeParking.startDate).toLocaleTimeString()}</Text>}
+
             <Text style={styles.headerText}></Text>
 
             <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>End Time</Text>
-            <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(this.props.activeParking.endDate).toLocaleTimeString()}</Text>
+            {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(this.props.activeParking.endDate).toLocaleTimeString()}</Text>}
+            {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color:"white"}}>{new Date(this.props.activeParking.endDate).toLocaleTimeString()}</Text>}
+
             <Text style={styles.headerText}></Text>
 
             <Button style={styles.end}>
@@ -154,7 +163,12 @@ class ParkingsNoImage extends Component {
 const styles = StyleSheet.create({
 
   container: {
-    paddingHorizontal: theme.sizes.base * 2
+    flex: 1, 
+    backgroundColor:"rgba(3, 166, 150,0.02)"
+  },
+  darkContainer: {
+    flex: 1, 
+    backgroundColor:"#202020"
   },
   cards: {
     width,
@@ -206,6 +220,11 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: '#fff',
   },
+  darkContent: {
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: '#202020',
+  },
   header: {
     width: width - theme.sizes.base * 3,
     //alignItems: 'center',
@@ -216,6 +235,19 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowOffset: {width: 0, height: 1},
     backgroundColor: '#fff',
+    padding: 20,
+    marginTop: 20
+  },
+  darkHeader: {
+    width: width - theme.sizes.base * 3,
+    //alignItems: 'center',
+    alignSelf: 'center',
+
+    borderRadius: theme.sizes.base / 2,
+    elevation: theme.sizes.base / 2,
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 1},
+    backgroundColor: '#404040',
     padding: 20,
     marginTop: 20
   },

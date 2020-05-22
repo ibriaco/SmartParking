@@ -40,7 +40,7 @@ class History extends Component {
 
   _renderSectionTitle = section => {
     return (
-      <View style={styles.content}>
+      <View style={this.props.userData.darkMode ? styles.darkContent : styles.content}>
           <Text h2 gray2 style={{ fontFamily: "Montserrat-Bold" }}>{new Date(section.startDate).toLocaleDateString()}, {section.parkingCity}</Text>
       </View>
     );
@@ -49,13 +49,19 @@ class History extends Component {
   _renderHeader = section => {
     console.log(section)
     return (
-      <View style={styles.header}>
+      <View style={this.props.userData.darkMode ? styles.darkHeader : styles.header}>
         <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
           <Text h3 gray2 style={{fontFamily: "Montserrat-Bold"}}>Location</Text>
-          <Text h3 style={{fontFamily: "Montserrat"}}>{section.parkingAddress}</Text>
+
+          {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{section.parkingAddress}</Text>}
+          {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color: "white"}}>{section.parkingAddress}</Text>}
+
           <Text style={styles.headerText}></Text>
           <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Your parking time</Text>
-          <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(section.startDate).toLocaleTimeString()} - {new Date(section.endDate).toLocaleTimeString()}</Text>
+          
+          {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{new Date(section.startDate).toLocaleTimeString()} - {new Date(section.endDate).toLocaleTimeString()}</Text>}
+          {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color:"white"}}>{new Date(section.startDate).toLocaleTimeString()} - {new Date(section.endDate).toLocaleTimeString()}</Text>}
+
           <Text style={styles.headerText}></Text>
         </View>
         <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" }}>
@@ -76,13 +82,17 @@ class History extends Component {
 
   _renderContent = section => {
     return (
-      <View style={styles.content}>
+      <View style={this.props.userData.darkMode ? styles.darkContent : styles.content}>
           <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Total Time</Text>
-            <Text h3 style={{fontFamily: "Montserrat"}}>{parseInt(((section.endDate - section.startDate) / (1000*60*60)) % 24 ) + " h, " + parseInt(((section.endDate - section.startDate) / (1000*60)) % 60) + " min"}</Text>
+          {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{parseInt(((section.endDate - section.startDate) / (1000*60*60)) % 24 ) + " h, " + parseInt(((section.endDate - section.startDate) / (1000*60)) % 60) + " min"}</Text>}
+          {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color: "white"}}>{parseInt(((section.endDate - section.startDate) / (1000*60*60)) % 24 ) + " h, " + parseInt(((section.endDate - section.startDate) / (1000*60)) % 60) + " min"}</Text>}
+
             <Text style={styles.headerText}></Text>
 
             <Text h3 style={{fontFamily: "Montserrat-Bold"}} gray2>Vehicle Plate</Text>
-            <Text h3 style={{fontFamily: "Montserrat"}}>{section.plate}</Text>
+            {!this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat"}}>{section.plate}</Text>}
+            {this.props.userData.darkMode && <Text h3 style={{fontFamily: "Montserrat", color:"white"}}>{section.plate}</Text>}
+
 
       </View>
     );
@@ -95,7 +105,7 @@ class History extends Component {
   render() {
     return (
 
-      <ScrollView style={{ flex: 1 , backgroundColor:"rgba(3, 166, 150,0.02)"}}>
+      <ScrollView style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
        
         <Accordion
           touchableComponent={TouchableWithoutFeedback}
@@ -120,7 +130,12 @@ class History extends Component {
 const styles = StyleSheet.create({
 
   container: {
-    paddingHorizontal: theme.sizes.base * 2
+    flex: 1 , 
+    backgroundColor:"rgba(3, 166, 150,0.02)"
+  },
+  darkContainer: {
+    flex: 1, 
+    backgroundColor:"#202020"
   },
   cards: {
     width,
@@ -150,6 +165,19 @@ const styles = StyleSheet.create({
     padding: 20,
     marginTop: 20
   },
+  darkHeader: {
+    width: width - theme.sizes.base * 2,
+    //alignItems: 'center',
+    alignSelf: 'center',
+
+    borderRadius: theme.sizes.base,
+    elevation: theme.sizes.base / 2,
+    shadowOpacity: 0.2,
+    shadowOffset: {width: 0, height: 1},
+    backgroundColor: '#404040',
+    padding: 20,
+    marginTop: 20
+  },
   headerText: {
     textAlign: 'center',
     fontSize: 16,
@@ -159,6 +187,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 20,
     backgroundColor: '#fff',
+  },
+  darkContent: {
+    alignItems: "center",
+    padding: 20,
+    backgroundColor: '#202020',
   },
 });
 

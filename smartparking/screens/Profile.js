@@ -15,20 +15,11 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      dark: false,
       editing: null,
       profile: {},
     };
   };
 
-  getStyle = function (dTheme) {
-    return {
-      backgroundColor: dTheme ? "black" : "white",
-      flexDirection: "column",
-      justifyContent: "space-between",
-      flex: 1
-    }
-  }
 
   signOutUser() {
     firebase.auth().signOut();
@@ -73,7 +64,7 @@ class Profile extends Component {
     const { navigation } = this.props;
 
     return (
-      <Block style={[this.getStyle(this.props.darkTheme)]}>
+      <Block style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
         <View style={styles.header}>
             <View>
             <Text style={{ fontSize: 32, fontFamily: 'Helvetica-Bold' }}>
@@ -130,10 +121,18 @@ class Profile extends Component {
             >
               <Text gray2 style={{ fontFamily: 'Montserrat' }}>Enable Notifications</Text>
               <Switch
-                value={this.state.dark}
+                value={this.props.userData.notifications}
                 onValueChange={value => {
-                  this.setState({ dark: value })
-                  this.props.updateDarkTheme(value);
+                  this.props.updateUserData({
+                    ...this.props.userData,
+                    notifications: value
+                  });
+
+                  firebase.database().ref('Users/' + this.props.userData.uid).update({
+                
+                    notifications: value
+            
+                  });
                 }}
               />
             </Block>
@@ -146,10 +145,18 @@ class Profile extends Component {
             >
               <Text gray2 style={{ fontFamily: 'Montserrat' }}>Dark Mode</Text>
               <Switch
-                value={this.state.dark}
+                value={this.props.userData.darkMode}
                 onValueChange={value => {
-                  this.setState({ dark: value })
-                  this.props.updateDarkTheme(value);
+                  this.props.updateUserData({
+                    ...this.props.userData,
+                    darkMode: value
+                  });
+
+                  firebase.database().ref('Users/' + this.props.userData.uid).update({
+                
+                    darkMode: value
+            
+                  });
                 }}
               />
             </Block>
@@ -241,6 +248,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     flexDirection: 'row'
   },
+  container: {
+    backgroundColor: "white",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      flex: 1
+  },
+  darkContainer: {
+    backgroundColor: "#202020",
+      flexDirection: "column",
+      justifyContent: "space-between",
+      flex: 1
+  }
 });
 
 function mapStateToProps(state) {
@@ -254,7 +273,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateDarkTheme: (param) => dispatch({ type: "UPDATE_DARK_THEME", param: param }),
+    updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
   }
 }
 

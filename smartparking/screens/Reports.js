@@ -37,7 +37,7 @@ class Reports extends Component {
 
   }
 
-  handleSend() {
+  async handleSend() {
 
     //show modal
     this.setState({ reportSent: true });
@@ -73,6 +73,13 @@ class Reports extends Component {
 
     var index = this.props.allAreas.indexOf(this.props.tappedArea);
     
+    await this.props.updateTappedArea({
+      ...this.props.tappedArea,
+      reports: radio_props[this.state.value].label
+
+    })
+
+    console.log(this.props.tappedArea)
       
       firebase.database().ref('Cities/' + this.props.currentCity + "/Areas/" + index).update({
                 

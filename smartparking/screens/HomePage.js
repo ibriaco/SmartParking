@@ -76,7 +76,6 @@ class Map extends React.Component {
       tappedAreaDistance: "",
       parkCards: [],
       isLoading: true,
-      darkMode: false,
       email: "",
       displayName: "",
 
@@ -199,11 +198,6 @@ class Map extends React.Component {
           this.updateCamera();
           await this.readAndDrawAreas();
         }
-
-
-
-
-
 
       });
     } else alert("Please give us the permission!")
@@ -412,7 +406,7 @@ class Map extends React.Component {
           provider={PROVIDER_GOOGLE}
           maxZoomLevel={19}
           loadingEnabled={true}
-          customMapStyle={this.props.darkTheme ? darkMapStyle : lightMapStyle}
+          customMapStyle={this.props.userData.darkMode ? darkMapStyle : lightMapStyle}
           ref={ref => { this.mapView = ref }}
           initialRegion={initialRegion}
           showsUserLocation={false}
@@ -459,7 +453,7 @@ class Map extends React.Component {
               }}
               apikey={GOOGLE_MAPS_APIKEY}
               strokeWidth={3}
-              strokeColor="rgba(0,0,0,1)"
+              strokeColor={this.props.userData.darkMode ? "#rgba(3, 166, 150, 1)" : "rgba(0,0,0,1)"}
               optimizeWaypoints={true}
 
               onReady={result => {
@@ -514,7 +508,59 @@ class Map extends React.Component {
               language: 'en', // language of the results
             }}
 
-            styles={{
+            styles={this.props.userData.darkMode ? {
+              container: {
+                borderColor: '#202020',
+                backgroundColor: "#202020",
+                height: '100%',
+                borderRadius: 14
+              },
+              poweredContainer: {
+                //width: 0,
+                //height: 0
+                borderRadius: 14,
+                backgroundColor: "#202020"
+              },
+              powered: {
+                width: 0,
+                height: 0,
+                borderRadius: 14
+
+              },
+              loader: {
+                width: '50%',
+                borderRadius: 14
+              },
+              textInputContainer: {
+                borderRadius: 14,
+                borderTopWidth: 0,
+                borderBottomWidth: 0,
+                borderWidth: 10,
+                borderColor: '#202020',
+                backgroundColor: "#202020",
+                height: 60,
+                alignSelf: 'center',
+              },
+              description: {
+                fontFamily: 'Montserrat',
+
+                color: '#a5a5a5',
+              },
+              predefinedPlacesDescription: {
+                color: '#DCDCDC',
+              },
+              textInput: {
+                fontFamily: 'Montserrat',
+                marginHorizontal: 20,
+                marginTop: 0,
+                borderWidth: 0,
+                backgroundColor: "#202020",
+                alignSelf: 'center',
+                color: '#a5a5a5',
+                borderRadius: 14
+              }
+            } : 
+          {
               container: {
                 borderColor: '#fff',
                 backgroundColor: "#fff",
@@ -524,7 +570,7 @@ class Map extends React.Component {
               poweredContainer: {
                 //width: 0,
                 //height: 0
-                borderRadius: 14
+                borderRadius: 14,
               },
               powered: {
                 width: 0,
@@ -597,12 +643,17 @@ class Map extends React.Component {
         <Block>
           <Modal isVisible={this.props.isModalVisible} style={{ flex: 1, justifyContent: "flex-end", alignSelf: "center", width: '100%', height: '60%', bottom: 20}}
             onBackdropPress={() => { this.props.updateModalVisible(false) }}>
-            <View style={{ flex: 0.45, backgroundColor: "#f8f8ff", borderRadius: 10, justifyContent: "space-between", width: '100%', marginVertical: -40, alignSelf: "center" }}>
+            <View style={this.props.userData.darkMode ? styles.darkModalStyle : styles.modalStyle}>
               <View style={{ justifyContent: "space-around", marginVertical: 10, marginHorizontal: 20 }}>
                 <View style={{ flexDirection: "column" }}>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <Text h2 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>
-                    <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 28 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>
+
+                    {!this.props.userData.darkMode && <Text h2 style={{ color: "#000", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>}
+                    {this.props.userData.darkMode && <Text h2 style={{ color: "#fff", fontFamily: "Montserrat-Bold" }}>{this.props.tappedArea.address}</Text>}
+
+                    {!this.props.userData.darkMode && <Text style={{ color: "#000", fontFamily: "Montserrat-Bold", fontSize: 28 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>}
+                    {this.props.userData.darkMode && <Text style={{ color: "#fff", fontFamily: "Montserrat-Bold", fontSize: 28 }}>{this.props.tappedArea.price != 0 && " € "}{this.props.tappedArea.price != 0 && this.props.tappedArea.price}{this.props.tappedArea.price == 0 && "Free"}</Text>}
+
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <Text h3 gray2 style={{ fontFamily: "Montserrat" }}>{this.props.tappedArea.distance}, {this.props.tappedArea.time}</Text>
@@ -633,7 +684,7 @@ class Map extends React.Component {
                       }
                     </View>
                     <View style={{ flexDirection: "column", alignSelf:"flex-end" }}>
-                    <Button style = {styles.report} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }}>
+                    <Button style = {this.props.userData.darkMode ? styles.darkReport : styles.report} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }}>
                       <Text h3 style = {{color:"#C02501", fontFamily: "Montserrat"}}>REPORT</Text>
                       <Icon name="alert-circle-outline" color="#C02501" size={36}  />
                     </Button>
@@ -649,10 +700,10 @@ class Map extends React.Component {
                   <Text></Text>
                   <View style={{ flexDirection: "column", justifyContent:"center" }}>
                   <View style={{ flexDirection: "row", justifyContent:"space-between" }}>
-                    <Button style={styles.modalContent} onPress={this._showParkingRoute}>
+                    <Button style={this.props.userData.darkMode ? styles.darkModalContent : styles.modalContent} onPress={this._showParkingRoute}>
                     <Icon name="directions" color="#0000FF" size={34} />
                     </Button>
-                    <Button style={styles.modalContent} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}>
+                    <Button style={this.props.userData.darkMode ? styles.darkModalContent : styles.modalContent} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}>
                     <Image source = {require('../assets/icons/gmaps.png')} style = {{width: 30, height: 30}}/>
                     </Button>
                     </View>
@@ -670,9 +721,17 @@ class Map extends React.Component {
         <Animatable.View animation="bounceIn" duration={800} delay={1000} style={{
           position: 'absolute', bottom: 30, elevation: 3, alignSelf: "center",
         }}>
+
+          {!this.props.userData.darkMode &&
           <Button style={styles.centerUser} onPress={this._centerMap}>
             <Icon name="crosshairs-gps" size={28} color="#fff" />
           </Button>
+          }
+          {this.props.userData.darkMode &&
+          <Button style={styles.centerUserDark} onPress={this._centerMap}>
+            <Icon name="crosshairs-gps" size={28} color="#000" />
+          </Button>
+          }
         </Animatable.View>
       </View>
 
@@ -689,8 +748,37 @@ const styles = StyleSheet.create({
   map: {
     ...StyleSheet.absoluteFillObject
   },
+  modalStyle: {
+    flex: 0.45, 
+    backgroundColor: "#f8f8ff", 
+    borderRadius: 10, 
+    justifyContent: "space-between", 
+    width: '100%', 
+    marginVertical: -40, 
+    alignSelf: "center"
+  },
+  darkModalStyle: {
+    flex: 0.45, 
+    backgroundColor: "#383838", 
+    borderRadius: 10, 
+    justifyContent: "space-between", 
+    width: '100%', 
+    marginVertical: -40, 
+    alignSelf: "center"
+  },
   centerUser: {
     backgroundColor: "#000",
+    width: 50,
+    height: 50,
+    top: 20,
+    borderRadius: 25,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
+    alignItems: "center"
+  },
+  centerUserDark: {
+    backgroundColor: "#fff",
     width: 50,
     height: 50,
     top: 20,
@@ -725,7 +813,7 @@ const styles = StyleSheet.create({
     height: HEIGHT / 2
   },
   searchbar: {
-    backgroundColor: '#fff', 
+    backgroundColor: '#202020', 
     position: 'absolute', 
     width: '80%', 
     top: 50, 
@@ -759,6 +847,20 @@ const styles = StyleSheet.create({
     alignSelf:"center",
     flexDirection: 'row'
   },
+  darkModalContent: {
+    backgroundColor: '#303030',
+    height: 50,
+    width: '45%',
+    //justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 10,
+    borderColor: "#fff",
+    shadowOpacity: 0.2,
+    shadowOffset: { width: 0, height: 1 },
+    elevation: 3,
+    alignSelf:"center",
+    flexDirection: 'row'
+  },
   report:{
     //backgroundColor: '#fff',
     height: 50,
@@ -767,6 +869,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     //borderRadius: 10,
     //borderWidth: 1,
+    borderColor: "#fff",
+    //shadowOpacity: 0.2,
+    //shadowOffset: { width: 0, height: 1 },
+    //elevation: 3,
+    alignSelf:"flex-end",
+    flexDirection: 'row'
+  },
+  darkReport:{
+    backgroundColor: '#303030',
+    height: 50,
+    width: '65%',
+    //justifyContent: 'center',
+    alignItems: 'center',
+    //borderRadius: 10,
     borderColor: "#fff",
     //shadowOpacity: 0.2,
     //shadowOffset: { width: 0, height: 1 },
@@ -824,7 +940,6 @@ function mapStateToProps(state) {
     userData: state.userData,
 
     allAreas: state.allAreas,
-    darkTheme: state.darkTheme,
     showRoute: state.showRoute,
     areas: state.areas,
     tappedArea: state.tappedArea,

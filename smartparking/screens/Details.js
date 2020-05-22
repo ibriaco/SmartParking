@@ -64,12 +64,19 @@ class Details extends Component {
     };
   }
 
-  updateNTaken(){
+  async updateNTaken(){
     
       var index = this.props.allAreas.indexOf(this.props.tappedArea);
       console.log("valore di index: " + index);
       
       var oldNTaken = this.props.allAreas[index].nTaken;
+
+      await this.props.updateTappedArea({
+        ...this.props.tappedArea,
+        nTaken: oldNTaken + 1
+
+      })
+
       firebase.database().ref('Cities/' + this.props.currentCity + "/Areas/" + index).update({
                 
         nTaken: oldNTaken + 1
@@ -824,6 +831,8 @@ function mapDispatchToProps(dispatch) {
   return {
     updateReservationsArray: (param) => dispatch({ type: "UPDATE_RESERVATIONS_ARRAY", param: param }),
     updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
+    updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
+
   }
 }
 
