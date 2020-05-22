@@ -9,7 +9,7 @@ import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 import { Checkbox } from 'galio-framework';
 import Modal from "react-native-modal";
-import {Header, Left, Right, Body, Title} from 'native-base'
+import {Header, Left, Right, Body, Title, Footer, FooterTab} from 'native-base'
 import * as firebase from 'firebase';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
@@ -186,7 +186,22 @@ class Reports extends Component {
           </Animatable.View>
 
         </Block>
-
+        <Footer style = {{paddingHorizontal: 40}}>
+          <FooterTab>
+            <Button>
+              <Icon name="map" />
+            </Button>
+            <Button>
+              <Icon name="parking" />
+            </Button>
+            <Button active>
+              <Icon active name="heart" />
+            </Button>
+            <Button>
+              <Icon name="person" />
+            </Button>
+          </FooterTab>
+        </Footer>
           
       </View>
     );

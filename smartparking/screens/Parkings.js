@@ -36,9 +36,9 @@ class Parkings extends Component {
   render() {
     return (
 
-      <Container style={{ flex: 1, backgroundColor:"rgba(3, 166, 150,0.02)" }}>
+      <Container style={{ flex: 1, backgroundColor:this.props.userData.darkMode ? '#303030' : "rgba(3, 166, 150,0.02)" }}>
         <Animated.ScrollView
-        
+          style = {{backgroundColor:this.props.userData.darkMode ? '#303030' : "rgba(3, 166, 150,0.02)"}}
           contentContainerStyle={this.props.userData.darkMode ? styles.darkCards : styles.cards}
           showsVerticalScrollIndicator={false}
           bounces={false}
@@ -49,7 +49,7 @@ class Parkings extends Component {
             }
           ])}>
           {this.props.areas.map((area, index) => (
-            <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{ flex: 1, margin: 10 }}>
+            <Animatable.View animation="slideInUp" duration={600} delay={100 + index * 300} key={index} style={{ flex: 1, margin: 10, backgroundColor:this.props.userData.darkMode ? '#303030' : "rgba(3, 166, 150,0.02)" }}>
               <TouchableWithoutFeedback onPress={() => {
                 this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
                 this.props.updateTappedArea(area);
@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
   darkCards: {
-    backgroundColor: "#202020",
+    backgroundColor: "#303030",
     alignItems: 'center',
     justifyContent: 'flex-start',
   },
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
   darkCard: {
     backgroundColor: "#404040",
     width: width - theme.sizes.base * 2,
-    elevation: theme.sizes.base ,
+    elevation: 2 ,
     borderRadius: theme.sizes.base,
   },
   

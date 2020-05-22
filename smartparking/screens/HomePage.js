@@ -28,6 +28,7 @@ import * as Animatable from 'react-native-animatable';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { showMessage } from "react-native-flash-message";
 import { Ionicons } from 'react-native-vector-icons'
+import {Footer, FooterTab} from 'native-base'
 
 const HEIGHT = Dimensions.get('window').height;
 const WIDTH = Dimensions.get('window').width;
@@ -477,7 +478,7 @@ class Map extends React.Component {
           <Marker.Animated
             ref={marker => { this.marker = marker; }}
             coordinate={this.state.coordinate}>
-            <Icon name="circle-slice-8" size={32} color="#rgba(3, 166, 150,0.6)" />
+            <Icon name="circle-slice-8" size={32} color="rgba(3, 166, 150,0.6)" />
 
           </Marker.Animated>
 
@@ -683,11 +684,9 @@ class Map extends React.Component {
                         <Icon name="car-electric" size={30} color="#FED000" style={{ alignSelf: "center", paddingRight: 20 }} />
                       }
                     </View>
-                    <View style={{ flexDirection: "column", alignSelf:"flex-end" }}>
-                    <Button style = {this.props.userData.darkMode ? styles.darkReport : styles.report} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }}>
-                      <Text h3 style = {{color:"#C02501", fontFamily: "Montserrat"}}>REPORT</Text>
-                      <Icon name="alert-circle-outline" color="#C02501" size={36}  />
-                    </Button>
+                    <View style={{ flexDirection: "row", alignSelf:"flex-end" }}>
+                      <Text title style = {{color:"#C02501", fontFamily: "Montserrat"}} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }}>REPORT</Text>
+                      <Icon name="alert-circle-outline" color="#C02501" size={26} style = {{alignSelf:"center"}} onPress={() => { this.props.updateModalVisible(false); this.props.navigation.navigate("Reports"); }} />
                       </View>
                   </View>
                 </View>
@@ -701,7 +700,7 @@ class Map extends React.Component {
                   <View style={{ flexDirection: "column", justifyContent:"center" }}>
                   <View style={{ flexDirection: "row", justifyContent:"space-between" }}>
                     <Button style={this.props.userData.darkMode ? styles.darkModalContent : styles.modalContent} onPress={this._showParkingRoute}>
-                    <Icon name="directions" color="#0000FF" size={34} />
+                    <Icon name="directions" color={this.props.userData.darkMode ? '#fff' : "#0000FF"} size={34} />
                     </Button>
                     <Button style={this.props.userData.darkMode ? styles.darkModalContent : styles.modalContent} onPress={() => Linking.openURL('https://www.google.com/maps/dir/?api=1&destination=' + this.props.tappedArea.latitude + ',' + this.props.tappedArea.longitude)}>
                     <Image source = {require('../assets/icons/gmaps.png')} style = {{width: 30, height: 30}}/>
@@ -719,7 +718,7 @@ class Map extends React.Component {
         </Block>
 
         <Animatable.View animation="bounceIn" duration={800} delay={1000} style={{
-          position: 'absolute', bottom: 30, elevation: 3, alignSelf: "center",
+          position: 'absolute', bottom: '13%', elevation: 3, alignSelf: "center",
         }}>
 
           {!this.props.userData.darkMode &&
@@ -733,6 +732,16 @@ class Map extends React.Component {
           </Button>
           }
         </Animatable.View>
+        <Footer style={{ paddingHorizontal: 40, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
+            <FooterTab style={{ backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", alignItems: "center" }}>
+              {!this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#000" onPress={() => navigation.navigate("Home")} style = {{alignSelf:'center'}}/> }
+              {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#FF9800" onPress={() => navigation.navigate("Home")}/>}
+              {this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} />}
+              {!this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} />}
+              {this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("Profile")} />}
+              {!this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("Profile")} />}
+            </FooterTab>
+          </Footer>
       </View>
 
     );
