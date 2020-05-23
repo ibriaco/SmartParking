@@ -36,6 +36,7 @@ class Details extends Component {
       currentAmount: 0,
       finalAmount: 0,
       endDate: 0,
+      finalPlate: "",
 
       showPicker: false,
       showModal: false,
@@ -66,6 +67,7 @@ class Details extends Component {
       var index = this.props.allAreas.indexOf(this.props.tappedArea);
       console.log("valore di index: " + index);
       
+
       var oldNTaken = this.props.allAreas[index].nTaken;
 
       await this.props.updateTappedArea({
@@ -241,13 +243,15 @@ class Details extends Component {
 
   handleNotifications = async() =>{
 
+    if(this.props.userData.notifications) {
+      
     let result = await Permissions.askAsync(Permissions.NOTIFICATIONS);
     if (Constants.isDevice && result.status === "granted") {
       console.log("Notification permissions granted.")
 
       const localNotification = {
         title: 'Hurry up!',
-        body: 'Your parking is going to expire in 15 minutes!', // (string) — body text of the notification.
+        body: 'Your parking is going to expire in 5 minutes!', // (string) — body text of the notification.
         ios: { // (optional) (object) — notification configuration specific to iOS.
           sound: true // (optional) (boolean) — if true, play a sound. Default: false.
         },
@@ -263,15 +267,16 @@ class Details extends Component {
         }
       };
 
-      const t = this.state.endDate
+      const t = this.state.endDate - 300000;
       const schedulingOptions = {
         time: t, // (date or number) — A Date object representing when to fire the notification or a number in Unix epoch time. Example: (new Date()).getTime() + 1000 is one second from now.
       };
 
       Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions);
+      console.log("Notification scheduled for " + t);
     }
 
-    
+  }
 
 }
 
@@ -306,9 +311,12 @@ class Details extends Component {
             {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}
           </Text>
           <View style = {{flexDirection:"row"}}>
-            <Text h2 white>Plate Number:    </Text>
+            <Text h2 style={{ fontFamily: 'Montserrat', color:this.props.userData.darkMode ? "#fff" : "#000" }}>Plate Number:    </Text>
             <TextInput
-              style = {{borderBottomColor: "#d3d3d3", borderBottomWidth: 1, width: 120, color: this.props.userData.darkMode ? "#fff" : "#000"}}
+              autoCapitalize="characters"
+              defaultValue={this.props.userData.vehiclePlate}
+              style = {{borderBottomColor: "#d3d3d3", borderBottomWidth: 1, width: 120, color: this.props.userData.darkMode ? "#fff" : "#000", fontFamily: 'Montserrat', fontSize: 18}}
+              onChangeText={value => this.setState({finalPlate: value})}
             />
           </View>
           <Button style={{ backgroundColor: this.props.userData.darkMode ? "#fff" : "#000", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
@@ -368,6 +376,7 @@ class Details extends Component {
 
           {this.props.tappedArea.price == 0 &&
             <Button style={{ backgroundColor: "gray" }} onPress={() => {
+              this.handleNotifications()
 
               //UPDATE NTAKEN FOR THE TAPPED AREA 
               this.updateNTaken();
@@ -500,6 +509,9 @@ class Details extends Component {
               
               this.props.updateUserData(temp);
 
+              this.props.navigation.navigate("Home")
+
+
             }}>
               <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
                 Continue
@@ -509,6 +521,8 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.state.finalAmount > 0) &&
             <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.2, elevation:3, alignSelf: "center" }} onPress={() => {
+              this.handleNotifications()
+
               this.updateNTaken()
 
               this.props.navigation.navigate("Purchase");
@@ -589,7 +603,8 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.state.finalAmount > 0) &&
             <Button style={{ backgroundColor: "#3b7bbf", width: '80%', alignSelf: "center" }} onPress={() => {
-              
+              this.handleNotifications()
+
               this.updateNTaken();
 
               this.buyBook();

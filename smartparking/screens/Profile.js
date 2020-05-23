@@ -17,8 +17,12 @@ class Profile extends Component {
     super(props);
 
     this.state = {
-      editing: null,
-      profile: {},
+      isEmailEditable: false,
+      isPlateEditable: false,
+      isLicenseEditable: false,
+      newEmail: "",
+      newLicense: "",
+      newPlate: ""
     };
   };
 
@@ -88,9 +92,12 @@ class Profile extends Component {
               <Text gray2 style={{ fontFamily: 'Montserrat' }}>
                 Email Address
                 </Text>
-              {this.renderEdit("email")}
+                <TextInput
+                  defaultValue={this.props.userData.email}
+                  editable={false}
+                  style={{ borderBottomColor: "#d3d3d3", borderBottomWidth: 0, height: 30, color: this.props.userData.darkMode ? "#fff" : "#000", fontFamily: 'Montserrat', }}
+                />
             </Block>
-            <Icon name = {editing === "email" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("email")}/>
           </Block>
 
 
@@ -99,18 +106,60 @@ class Profile extends Component {
               <Text gray2 style={{ fontFamily: 'Montserrat' }}>
                 Vehicle Plate
                 </Text>
-              {this.renderEdit("plate")}
+                <TextInput
+                  defaultValue={this.props.userData.vehiclePlate}
+                  editable={this.state.isPlateEditable}
+                  onChangeText={text => this.setState({newPlate: text})}
+                  style={{ borderBottomColor: "#d3d3d3", borderBottomWidth: 0, height: 30, color: this.props.userData.darkMode ? "#fff" : "#000", fontFamily: 'Montserrat', }}
+                />
             </Block>
-            <Icon name = {editing === "plate" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("plate")}/>
+            <Icon name = {this.state.isPlateEditable ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => {
+              //i'm clicking on the floppy icon
+              if(this.state.isPlateEditable)  {
+
+                this.props.updateUserData({
+                  ...this.props.userData,
+                  vehiclePlate: this.state.newPlate
+                });
+
+                firebase.database().ref('Users/' + this.props.userData.uid).update({
+              
+                  vehiclePlate: this.state.newPlate
+          
+                });
+              }
+              this.setState({isPlateEditable: !this.state.isPlateEditable})}
+              }/>
           </Block>
           <Block row space="between" style={styles.inputRow}>
             <Block>
               <Text gray2 style={{ fontFamily: 'Montserrat' }}>
                 Driving License
                 </Text>
-              {this.renderEdit("license")}
+                <TextInput
+                  defaultValue={this.props.userData.license}
+                  editable={this.state.isLicenseEditable}
+                  onChangeText={text => this.setState({newLicense: text})}
+                  style={{ borderBottomColor: "#d3d3d3", borderBottomWidth: 0, height: 30, color: this.props.userData.darkMode ? "#fff" : "#000", fontFamily: 'Montserrat', }}
+                />
             </Block>
-            <Icon name = {editing === "license" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("license")}/>
+            <Icon name = {this.state.isLicenseEditable ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => {
+              //i'm clicking on the floppy icon
+              if(this.state.isLicenseEditable)  {
+
+                this.props.updateUserData({
+                  ...this.props.userData,
+                  license: this.state.newLicense
+                });
+
+                firebase.database().ref('Users/' + this.props.userData.uid).update({
+              
+                  license: this.state.newLicense
+          
+                });
+              }
+              this.setState({isLicenseEditable: !this.state.isLicenseEditable})}
+              }/>
           </Block>
           <View style={{ flex: 0.1, marginTop: 10, alignSelf: "flex-start", justifyContent: "center", }}>
             <Text h1 style={{ fontFamily: 'Helvetica-Bold', color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>Settings</Text>
