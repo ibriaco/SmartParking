@@ -56,14 +56,18 @@
 
 %%% The "real" document content comes below...
 
-\title{Design Document}
+\title{Design and Implementation of Mobile Applications}
 \author{Gregorio Galletti - Ibrahim El Shemy}
 \date{A.A. 2019/2020 - Prof. Luciano Baresi} % Activate to display a given date or no date (if empty),
          % otherwise the current date is printed 
 
 
 \begin{document}
+\pagenumbering{gobble}% Arabic page numbers (and reset to 1)
+
 \begin{figure}[H]
+\vspace{60mm} 
+
 \centering
 \includegraphics[scale=0.3]{logoP_green.png}
 \end{figure}
@@ -71,7 +75,13 @@
 \centering
 \includegraphics[width=\textwidth,height=\textheight,keepaspectratio]{logoText_green.png}
 \end{figure}
+\vspace{60mm} 
+\begin{center}
+\huge \textbf{Design Document}
+\end{center}
+
 \maketitle
+\pagenumbering{arabic}% Arabic page numbers (and reset to 1)
 
 \tableofcontents
 \newpage
@@ -141,21 +151,30 @@ SmartParking is a crowd-sourced application where users can view all the street 
   \item {}[D5]: It is possible to retrieve the current time from the users' devices.
 \end{itemize}
 
-\subsection{Goals}
+\subsection{Functional Requirements}
 The system provides to users a simple and user-friendly interface to:
 \begin{itemize}
-  \item {}[G1]: Register and Login/Logout from the application.
-  \item {}[G2]: Localize themselves on the map and listen to location changes.
-  \item {}[G3]: Find and choose parkings from the map or from the list.
-  \item {}[G4]: Pay or extend their stop.
-  \item {}[G5]: View their parking history or their active parking.
-  \item {}[G6]: Report missing/malformed/outdated information on parkings.
-  \item {}[G7]: Earn points from reports and stops and convert them in Bonus.
-  
+  \item {}[R1]: Register and Login/Logout from the application.
+  \item {}[R2]: Localize themselves on the map and listen to location changes.
+  \item {}[R3]: View parkings from the map or from the list.
+  \item {}[R4]: Filter parkings with his/her preferences.
+  \item {}[R5]: Pay or extend their stop.
+  \item {}[R6]: View their parking history or their active parking.
+  \item {}[R7]: Report missing/malformed/outdated information on parkings.
+  \item {}[R8]: Earn points from reports and stops and convert them in Bonus.
+  \item {}[R9]: Receive notifications on their stop.
+  \item {}[R10]: Personalize the visualization of the application.  
 \end{itemize}
 
+
+
+\subsection{Non-Functional Requirements}
+
+
 \section{Use Cases Analysis}
-\paragraph{UC1}
+In this section we will provide a list of the most relevant Use cases of the system, for a total of 6 of them:
+
+\paragraph{Use Case 1}
 
 \begin{center}
 	\begin{table}[H]
@@ -166,7 +185,7 @@ The system provides to users a simple and user-friendly interface to:
 	 \hline
 	 \textbf{Actor} &  Visitor  \\
 	 \hline
-	 \textbf{Goals} &  [G1]  \\
+	 \textbf{Requirement} &  [R1]  \\
 	 \hline
 	 \textbf{Entry Condition} &  The Visitor has installed the Mobile Application on his/her device  \\
 	 \hline
@@ -207,7 +226,7 @@ The system provides to users a simple and user-friendly interface to:
 	\end{table}
 \end{center}
 
-\paragraph{UC2}
+\paragraph{Use Case 2}
 \begin{center}
 	\begin{table}[H]
 	\noindent\resizebox{\textwidth}{!}{%
@@ -217,7 +236,7 @@ The system provides to users a simple and user-friendly interface to:
 	 \hline
 	 \textbf{Actor} &  User  \\
 	 \hline
-	 \textbf{Goals} &  [G1]  \\
+	 \textbf{Requirement} &  [R1]  \\
 	 \hline
 	 \textbf{Entry Condition} &  The User is on the Login Screen of the Mobile Application \\
 	 \hline
@@ -254,7 +273,7 @@ The system provides to users a simple and user-friendly interface to:
 	\end{table}
 \end{center}
 
-\paragraph{UC3}
+\paragraph{Use Case 3}
 \begin{center}
 	\begin{table}[H]
 	\noindent\resizebox{\textwidth}{!}{%
@@ -264,7 +283,7 @@ The system provides to users a simple and user-friendly interface to:
 	 \hline
 	 \textbf{Actor} &  User  \\
 	 \hline
-	 \textbf{Goals} &  [G1]  \\
+	 \textbf{Requirement} &  [R1]  \\
 	 \hline
 	 \textbf{Entry Condition} &  The User is on the Login Screen of the Mobile Application \\
 	 \hline
@@ -297,6 +316,153 @@ The system provides to users a simple and user-friendly interface to:
 	}
 	\end{table}
 \end{center}
+
+\paragraph{Use Case 4}
+\begin{center}
+	\begin{table}[H]
+	\noindent\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|c|}
+	 \hline
+	 \textbf{Name} &  Filter the Parkings   \\
+	 \hline
+	 \textbf{Actor} &  User  \\
+	 \hline
+	 \textbf{Requirement} &  [R4]  \\
+	 \hline
+	 \textbf{Entry Condition} &  The User is on the Home Screen  \\
+	 \hline
+	 \textbf{Events Flow} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	  
+	 \begin{enumerate}
+	 \item The User taps on the Filter icon on the Searchbar and goes to the Filter Screen
+	 \item The User selects the options he wants
+	 \item The User taps on the "Apply" button
+	 \item The system checks for the resulting parkings 
+	 \item The system sends the User back to Home Screen 
+
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+				 
+	   \\
+	 \hline
+	 \textbf{Exit Conditions} &	 The User has successfully filtered the parkings  \\
+	 \hline
+	 \textbf{Exceptions} & \begin{minipage}{5in}
+	 \vskip 4pt	  
+	 \begin{enumerate}
+	 \item No parkings satisfy the filter parameters
+	 \item The User tapped on the back button on the Filter Screen
+
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	\\
+	 \hline
+	\end{tabular}
+	}
+	\end{table}
+\end{center}
+
+\paragraph{Use Case 5}
+\begin{center}
+	\begin{table}[H]
+	\noindent\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|c|}
+	 \hline
+	 \textbf{Name} &  Pay for a Parking   \\
+	 \hline
+	 \textbf{Actor} &  User  \\
+	 \hline
+	 \textbf{Requirement} &  [R5]  \\
+	 \hline
+	 \textbf{Entry Condition} &  The User is on the Home Screen after Login  \\
+	 \hline
+	 \textbf{Events Flow} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	  
+	 \begin{enumerate}
+	 \item The User taps on the Parking marker
+	 \item The User taps on the "Pay Parking" button on the modal and goes to the Details Screen
+	 \item The User selects the end time of the stop
+	 \item The User taps on the "Pay with Credit Card"/"Pay with Paypal" button
+	 \item The system redirects the user to the corresponding payment page
+	 \item The User inserts his payment data and taps on the "Pay" button
+	 \item The system checks for the result of the payment 
+	 \item The system sends the User back to Home Screen 
+
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+				 
+	   \\
+	 \hline
+	 \textbf{Exit Conditions} &	 The User has successfully paid a stop  \\
+	 \hline
+	 \textbf{Exceptions} & \begin{minipage}{5in}
+	 \vskip 4pt	  
+	 \begin{enumerate}
+	 \item Some payment fields are not filled
+	 \item Some payment fields are wrong
+	 \item The payment failed
+	 \item The User canceled the payment 
+
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	\\
+	 \hline
+	\end{tabular}
+	}
+	\end{table}
+\end{center}
+
+\paragraph{Use Case 6}
+\begin{center}
+	\begin{table}[H]
+	\noindent\resizebox{\textwidth}{!}{%
+	\begin{tabular}{|l|c|}
+	 \hline
+	 \textbf{Name} &  Send Report  \\
+	 \hline
+	 \textbf{Actor} &  User  \\
+	 \hline
+	 \textbf{Requirement} &  [R7]  \\
+	 \hline
+	 \textbf{Entry Condition} &  The User taps on a Marker on the Home Screen  \\
+	 \hline
+	 \textbf{Events Flow} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	  
+	 \begin{enumerate}
+	 \item The User taps on the "Report" button and goes to the Report Screen
+	 \item The User taps on the Report he want to make
+	 \item The User taps on the "Send" button
+	 \item The User shows the User how many points he/she earned and sends the User back to Home Screen 
+	 \item The system receives and stores all the data of the Report 
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+				 
+	   \\
+	 \hline
+	 \textbf{Exit Conditions} &	 The User has successfully sent a report  \\
+	 \hline
+	 \textbf{Exceptions} & 
+	 \begin{minipage}{5in}
+	 \vskip 4pt	 
+	 \begin{enumerate}
+	 \item The User tapped on the back button on the Report Screen
+	 	 
+	 \end{enumerate}
+	 \vskip 4pt
+	 \end{minipage}	
+	   \\
+	 \hline
+	\end{tabular}
+	}
+	\end{table}
+\end{center}
+
 \section{Architectural Design}
 Our application is composed by two main components: a Front End, developed with the React Native framework, and a Back End that relies on Firebase, and in particular on Firebase Realtime Database.\\
 These two components are highly connected: in fact, the mobile application has the role to show to the user all the data stored in the Database, and also to respond to the user's behaviour.\\
@@ -397,5 +563,23 @@ This phase was relatively short, because
 
 \section{Testing}
 Nothing.
+
+\section{Software System Attributes}
+
+\subsection{Reliability}
+The system guarantees a 24/7 service. Even if some Back end data has to change the system can be updated without downtimes, because every change in the Database will be immediately received and correctly updated from the Mobile Application.
+
+\subsection{Availability}
+The system is not used for critical services so the occurrence of faults is tolerated. However, given that the Mobile Application relies on safe and highly tested libraries and Third Party components and APIs, we can estimate the system availability to be at least at 99\%. 
+
+\subsection{Security}
+The only Security aspect that the system must handle is the credentials transmission and storage: Firebase does that, and obviously no password data is stored in the Database. Also for in-app payment, no sensible data is stored and Stripe/Paypal APIs provide a secure transmission of data.
+
+\subsection{Compatibility}
+The system will be hopefully used by a lot of people, so the Mobile Application must be compatible to as many devices as possible. Moreover, Hardware Limitations are not so tight because nowadays nearly every smartphone should satisfy them, making Compatibility easier to reach. In addition, nearly every smart device can run the application: every iOS or Android tablet and every iOS or Android smartphone.
+
+\subsection{Scalability}
+The architecture is simply scalable as the number of users grows during the time. Enlarging the structure of the system is be an easy task: Firebase helps us a lot in this case, because the number of possible users is huge and the parking Areas and Cities can be expanded in a really easy way, by simply adding them one after the other in the Database (also thanks to the NoSQL structure).
+
 
 \end{document}
