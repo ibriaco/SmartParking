@@ -425,7 +425,7 @@ class Filter extends Component {
                 </Block>
 
 
-                <Animatable.View ref={p => this.priceView = p}>
+                <Animatable.View ref={p => this.priceView = p} style = {{marginHorizontal: 30}}>
 
 
                   {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
@@ -453,7 +453,7 @@ class Filter extends Component {
 
 
 
-              <Animatable.View animation="slideInUp" duration={600} delay={200}>
+              <Animatable.View animation="slideInUp" duration={600} delay={200} style = {{marginHorizontal: 30}}>
 
 
                 {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
@@ -478,7 +478,7 @@ class Filter extends Component {
               </Animatable.View>
 
 
-              <Animatable.View animation="slideInUp" duration={600} delay={300}>
+              <Animatable.View animation="slideInUp" duration={600} delay={300} style = {{marginHorizontal: 30}}>
 
 
                 {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
@@ -559,25 +559,28 @@ class Filter extends Component {
 
 
 
-            <Block bottom style={{ marginBottom: 10 }}>
-              <Animatable.View animation="bounceIn" duration={600} delay={1200}>
+            <Block bottom style={{ marginBottom: 10, justifyContent:"center" }}>
+              <Animatable.View animation="bounceIn" duration={600} delay={1200} style = {{flexDirection:"row", alignSelf:"center"}}>
 
                 <Button style={styles.button} onPress={() => this.handleApply()}>
-                  <Text h3 style={{ fontFamily: "Montserrat-Bold" }} white center>
-                    Apply
-                </Text>
+                  <Icon name ="check-outline" size = {32} color="white" style = {{alignSelf:"center"}}/>
+                </Button>
+                <Button style={styles.reset} onPress={this._resetFields}>
+                  <Icon name = "sync" size = {32} color="white" style = {{alignSelf:"center"}}/>
                 </Button>
               </Animatable.View>
 
             </Block>
 
-
-            <View >
+{/**
+ *  <View >
               <Button style={styles.add} onPress={this._resetFields}>
                 <Icon name="sync" size={42} color="#03A696" style={{ alignSelf: "center", fontWeight: "bold", }} />
               </Button>
 
             </View>
+ */}
+           
           </Block>
           
         </Animatable.View>
@@ -662,11 +665,14 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#03A696',
     height: 50,
+    width: '30%',
+    alignSelf:"center",
     borderRadius: 10,
     marginHorizontal: 45,
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
     elevation: 6,
+    justifyContent:"center",
     marginBottom: 30,
   },
   filterButton: {
@@ -703,7 +709,18 @@ const styles = StyleSheet.create({
     elevation: 6,
     bottom: 60,
     position: "absolute"
-
-
+  },
+  reset: {
+    backgroundColor: 'red',
+    height: 50,
+    width: '30%',
+    alignSelf:"center",
+    borderRadius: 10,
+    marginHorizontal: 45,
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 6,
+    justifyContent:"center",
+    marginBottom: 30,
   }
 });

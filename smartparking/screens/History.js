@@ -185,12 +185,16 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-    padding: 20,
+    paddingTop: 50,
+    paddingBottom: 20,
+    marginBottom: -30,
     backgroundColor: '#fff',
   },
   darkContent: {
     alignItems: "center",
-    padding: 20,
+    paddingTop: 50,
+    paddingBottom: 20,
+    marginBottom: -30,
     backgroundColor: '#303030',
   },
 });

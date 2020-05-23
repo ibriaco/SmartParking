@@ -300,7 +300,7 @@ class Map extends React.Component {
       longitude: details.geometry.location.lng
     });
 
-
+    
     this.setState({
       destinationCoordinates: {
         latitude: details.geometry.location.lat,
@@ -312,7 +312,9 @@ class Map extends React.Component {
 
     //qui serve il calcolo della città reale, ma le api sono fatte con il culo
     this.props.updateCity(geocode[0].city);
-
+    console.log("STO CERCANDO QUESTA CITTA': " + geocode[0].city);
+    console.log("GEOCODE: " + geocode[0]);
+    console.log(details);
     this.readAndDrawAreas();
 
 
@@ -439,7 +441,7 @@ class Map extends React.Component {
             <MapView.Marker
               coordinate={{ latitude: this.state.destinationCoordinates.latitude, longitude: this.state.destinationCoordinates.longitude }}>
               <Animatable.View animation="bounceIn" duration={700} delay={2000} >
-                <FontAwesome5 name="map-marker-alt" color="#FF9800" size={30} />
+                <Icon name="map-marker" color="#FF9800" size={40} style = {{padding: 20}}/>
               </Animatable.View>
             </MapView.Marker>
           )}
@@ -506,7 +508,7 @@ class Map extends React.Component {
             query={{
               // available options: https://developers.google.com/places/web-service/autocomplete
               key: GOOGLE_MAPS_APIKEY,
-              language: 'en', // language of the results
+              language: 'it', // language of the results
             }}
 
             styles={this.props.userData.darkMode ? {
@@ -669,8 +671,9 @@ class Map extends React.Component {
                     <Text h3 secondary center style = {{fontFamily: "Montserrat-Bold"}}> available spots</Text> 
                   </View>
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"center"}}>
-                    <Icon name ="clock-outline" size = {26} color="rgba(3, 166, 150,0.9)"/>
-                    <Text secondary h3 style={{ fontFamily: "Montserrat-Bold" }}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
+                    {!this.props.userData.darkMode && <Icon name ="clock-outline" size = {26} color="rgba(3, 166, 150,0.9)"/>}
+                    {this.props.userData.darkMode && <Icon name ="clock-outline" size = {26} color="#fff"/>}
+                    <Text h3 style={{ fontFamily: "Montserrat-Bold", color: this.props.userData.darkMode ? "#fff" : "rgba(3, 166, 150, 0.9"}}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -735,11 +738,11 @@ class Map extends React.Component {
         <Footer style={{ paddingHorizontal: 60, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
             <FooterTab style={{ backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", alignItems: "center" }}>
               {!this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#000" onPress={() => navigation.navigate("Home")} style = {{alignSelf:'center'}}/> }
-              {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#FF9800" onPress={() => navigation.navigate("Home")}/>}
-              {this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} />}
-              {!this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} />}
-              {this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("Profile")} />}
-              {!this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("Profile")} />}
+              {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#FF9800" onPress={() => navigation.navigate("Home")} style = {{alignSelf:'center'}}/>}
+              {this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} style = {{alignSelf:'center'}}/>}
+              {!this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} style = {{alignSelf:'center'}}/>}
+              {this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("Profile")} style = {{alignSelf:'center'}}/>}
+              {!this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("Profile")} style = {{alignSelf:'center'}}/>}
             </FooterTab>
           </Footer>
       </View>
@@ -761,7 +764,7 @@ const styles = StyleSheet.create({
     flex: 0.52, 
     backgroundColor: "#f8f8ff", 
     borderRadius: 10, 
-    justifyContent: "space-between", 
+    justifyContent: "center", 
     width: '100%', 
     marginVertical: -40, 
     alignSelf: "center"
@@ -770,7 +773,7 @@ const styles = StyleSheet.create({
     flex: 0.52, 
     backgroundColor: "#383838", 
     borderRadius: 10, 
-    justifyContent: "space-between", 
+    justifyContent: "center", 
     width: '100%', 
     marginVertical: -40, 
     alignSelf: "center"

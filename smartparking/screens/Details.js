@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-import { View, StyleSheet, ScrollView, Dimensions, ActivityIndicator, TouchableWithoutFeedback, StatusBar } from "react-native";
+import { View, StyleSheet, TextInput, Dimensions, ActivityIndicator, TouchableWithoutFeedback, StatusBar } from "react-native";
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
@@ -305,7 +305,12 @@ class Details extends Component {
           <Text h2 secondary style={{ fontFamily: 'Montserrat' }}>
             {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}
           </Text>
-
+          <View style = {{flexDirection:"row"}}>
+            <Text h2 white>Plate Number:    </Text>
+            <TextInput
+              style = {{borderBottomColor: "#d3d3d3", borderBottomWidth: 1, width: 120, color: this.props.userData.darkMode ? "#fff" : "#000"}}
+            />
+          </View>
           <Button style={{ backgroundColor: this.props.userData.darkMode ? "#fff" : "#000", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
             <Text h3 center style={{ fontFamily: 'Montserrat', color: this.props.userData.darkMode ? "#000" : "#fff" }}>
               Select end time

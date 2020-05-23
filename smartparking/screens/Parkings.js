@@ -75,8 +75,8 @@ class Parkings extends Component {
                   <View style={{ flexDirection: "row", paddingVertical: 10, justifyContent: "center", alignItems:"baseline" }}>
                     <FontAwesome5 name="parking" size={30} color="rgba(3, 166, 150,1)">
                     </FontAwesome5>
-                    <Text h1 secondary center style={{ fontFamily: "Montserrat-Bold" }}>  {area.nTot - area.nTaken}</Text>
-                    <Text h2 secondary center secondary style={{ fontFamily: "Montserrat-Bold" }}> available spots</Text>
+                    <Text h2 secondary center style={{ fontFamily: "Montserrat-Bold" }}>  {area.nTot - area.nTaken}</Text>
+                    <Text h3 secondary center secondary style={{ fontFamily: "Montserrat-Bold" }}> available spots</Text>
                   </View>
 
                   <View style={{ flexDirection: "row", justifyContent: "center" }}>
