@@ -21,18 +21,18 @@ class ParkingsContainer extends Component {
     const { navigation } = this.props;
     
     return (
-      <Container style={{ paddingTop: HEADER_HEIGHT, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}>
-          <View style = {{flex: 0.1, alignContent:"center", flexDirection:"row", alignItems:"center", marginHorizontal:30, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}>
+      <Container style={{ paddingTop: HEADER_HEIGHT, backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}}>
+          <View style = {{flex: 0.1, alignContent:"center", flexDirection:"row", alignItems:"center", marginHorizontal:30, backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}}>
             <Text style = {{fontSize: 32, fontFamily: "Helvetica-Bold", color:this.props.userData.darkMode ? "#FF9800" : "#000"}} >Parkings</Text>
           </View>
         <Tabs activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} style = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} tabBarUnderlineStyle={{backgroundColor:"#03A696", height: 3}} noShadow tabContainerStyle={{elevation:0, }}>
-          <Tab heading="Available" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} textStyle={{color:"#C7CCD5", fontSize:16, fontFamily: "Montserrat", }} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16 , fontFamily:"Montserrat-Bold"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", borderWidth: 0}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}  >
+          <Tab heading="Available" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} textStyle={{color:"#C7CCD5", fontSize:16, fontFamily: "Montserrat", }} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16 , fontFamily:"Montserrat-Bold"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff", borderWidth: 0}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}}  >
             <Parkings navigation={this.props.navigation}/>
           </Tab>
-          <Tab heading="Active" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} textStyle={{color:"#C7CCD5", fontSize:16, fontFamily: "Montserrat", }} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16 , fontFamily:"Montserrat-Bold"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", borderWidth: 0}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}  >
+          <Tab heading="Active" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} textStyle={{color:"#C7CCD5", fontSize:16, fontFamily: "Montserrat", }} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16 , fontFamily:"Montserrat-Bold"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff", borderWidth: 0}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}}  >
             <ActiveParkings navigation={this.props.navigation}/>
           </Tab>
-          <Tab heading="History" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}textStyle={{color:"#C7CCD5", fontSize: 16, fontFamily: "Montserrat"}} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16, fontFamily:"Montserrat-Bold"}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}>
+          <Tab heading="History" style={{backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff"}}textStyle={{color:"#C7CCD5", fontSize: 16, fontFamily: "Montserrat"}} activeTextStyle={{color:this.props.userData.darkMode ? "#FF9800" : "#000", fontSize:16, fontFamily:"Montserrat-Bold"}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}} tabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}} activeTabStyle = {{backgroundColor: this.props.userData.darkMode ? "#202020" : "#fff"}}>
           <History/>
           </Tab>
         </Tabs>

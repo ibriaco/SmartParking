@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
   },
   darkContainer: {
     flex: 1, 
-    backgroundColor:"#202020"
+    backgroundColor:"#303030"
   },
   cards: {
     width,
@@ -191,7 +191,7 @@ const styles = StyleSheet.create({
   darkContent: {
     alignItems: "center",
     padding: 20,
-    backgroundColor: '#202020',
+    backgroundColor: '#303030',
   },
 });
 

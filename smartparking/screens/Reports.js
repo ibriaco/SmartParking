@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image, Dimensions, Platform, StatusBar, TouchableOpacity, TouchableWithoutFeedback } from 'react-native'
 import { FontAwesome5 } from 'react-native-vector-icons';
 import { connect } from 'react-redux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { theme, mocks } from "../constants";
 import Animated from 'react-native-reanimated';
 import { Button, Block, Text, Switch, Divider } from "../components";
@@ -104,12 +104,13 @@ class Reports extends Component {
   render() {
     return (
 
-      <View style={{ flex: 1, flexDirection: "column", justifyContent: "space-between" }}>
-        <Header style = {{backgroundColor:"#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
+      <View style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
+        <Header style = {{backgroundColor: this.props.userData.darkMode ? "#0303030" : "#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
           <Left>
-            <Button style = {{flexDirection:"column"}}>
-              <Icon name="arrow-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
-            </Button>
+              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start", color: this.props.userData.darkMode ? "#fff" : "#000"}} onPress = {() => {
+                this.props.updateModalVisible(true)
+                this.props.navigation.navigate("Home")
+              }}/>
           </Left>
           <Body>
           </Body>
@@ -117,33 +118,20 @@ class Reports extends Component {
             <Button/>
           </Right>
         </Header>
-        <Animated.View style={{
-          justifyContent: 'center', paddingTop: 25, paddingLeft: 20, position: 'absolute', left: 0, right: 0, top: 0, height: HEADER_HEIGHT, backgroundColor: 'white', zIndex: 1000, elevation: 1000, transform: [{ translateY: this.headerY }], shadowOpacity: 0.3,
+        <View style={styles.header}>
+          <Text style={{ fontSize: 32, fontFamily:"Helvetica-Bold", color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>Make a Report</Text>
+        </View>
+        <View style={{paddingHorizontal: theme.sizes.base * 2, marginTop: 30 }}>
+          <Text h3 style={{ fontFamily: 'Montserrat', color:this.props.userData.darkMode ? "#fff" : "#000" }}>
+            Let us know if there is something wrong
+          </Text>
 
-          elevation: 6,
-        }}>
-          <Text bold style={{ fontSize: 32 }}>
-            Reports
-        </Text>
-          <Text h3 gray2>Make us know if there's something wrong</Text>
-
-        </Animated.View>
-
-        <Animated.ScrollView
-          contentContainerStyle={styles.cards}
-          showsVerticalScrollIndicator={false}
-          style={{ paddingTop: HEADER_HEIGHT }}
-          bounces={false}
-          scrollEventThrottle={16}
-          onScroll={Animated.event([
-            {
-              nativeEvent: { contentOffset: { y: this.scrollY } }
-            }
-          ])}>
+          <Text h1 gray2></Text>
+          <Text h1 gray2></Text>
             <Animatable.View animation="zoomIn" duration={600} delay={100}>
 
             <RadioForm
-              labelStyle={{ fontSize: 20, fontFamily: "Montserrat" }} 
+              labelStyle={{ fontSize: 20, fontFamily: "Montserrat", color: this.props.userData.darkMode ? '#fff' : '#000' }} 
               radio_props={radio_props}
               initial={0}
               buttonColor='#03A696'
@@ -157,11 +145,21 @@ class Reports extends Component {
           <Text h1 gray2></Text>
           <Text h1 gray2></Text>
 
+          <Animatable.View animation="bounceIn" duration={600} delay={100}>
+              <Button style={styles.button} onPress={() => this.handleSend()}>
+                <Text h1 bold white center>
+                  Send
+              </Text>
+              </Button>
 
-{this.state.reportSent &&
+          </Animatable.View>
+          <Text h1 gray2></Text>
+          <Text h1 gray2></Text>
+
+          {this.state.reportSent &&
             <Animatable.View animation="slideInRight" duration={600} delay={100}>
 
-            <Text h3 black style={{fontFamily: "Montserrat-Bold"}}>Thank you for your report!</Text>
+            <Text h3 style={{fontFamily: "Montserrat", color: this.props.userData.darkMode ? '#fff' : '#000'}}>Thank you for your report!</Text>
             </Animatable.View>
   }
 {this.state.reportSent &&
@@ -171,22 +169,7 @@ class Reports extends Component {
   </Animatable.View>
   }
 
-
-
-        </Animated.ScrollView>
-        <Block center bottom style={{ marginBottom: 30 }}>
-
-          <Animatable.View animation="bounceIn" duration={600} delay={100}>
-              <Button style={styles.button} onPress={() => this.handleSend()}>
-                <Text h1 bold white center>
-                  Send
-              </Text>
-              </Button>
-
-          </Animatable.View>
-
-        </Block>
-          
+          </View>
       </View>
     );
   }
@@ -194,12 +177,19 @@ class Reports extends Component {
 
 
 const styles = StyleSheet.create({
-  header: {
-    paddingHorizontal: theme.sizes.base * 2,
-    paddingVertical: theme.sizes.base * 4
-  },
   container: {
-    paddingHorizontal: theme.sizes.base * 2
+    flex: 1,
+    backgroundColor: '#fff',
+  },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: '#202020',
+  },
+  header: {
+    paddingHorizontal: theme.sizes.base * 2, 
+    alignContent: "center", 
+    flexDirection: "row", 
+    alignItems: "center",
   },
   cards: {
     backgroundColor: "white",
@@ -251,6 +241,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
     updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
     updateShowRoute: (param) => dispatch({ type: "UPDATE_SHOW_ROUTE", param: param }),
     updateArea: (param) => dispatch({ type: "UPDATE_AREA", param: param }),

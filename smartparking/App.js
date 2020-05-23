@@ -19,14 +19,8 @@ if (!global.btoa) {  global.btoa = encode }
 if (!global.atob) { global.atob = decode } 
 
 const initialState = {
-  allAreas: {
-    latitude: 0,
-    longitude: 0
-  },
-  areas: {
-    latitude: 0,
-    longitude: 0
-  },
+  allAreas: [],
+  areas: [],
   tappedArea: {
     latitude: 0,
     longitude: 0

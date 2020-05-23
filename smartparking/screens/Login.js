@@ -181,7 +181,7 @@ class Login extends Component {
       style={styles.login}
       >
       <View style={styles.container2}>
-            <Animatable.Image animation="bounceInRight" duration={1500} source={require('../assets/logo/logoText_green.png')} style={styles.image}/>
+            <Animatable.Image animation="fadeIn" duration={1500} source={require('../assets/logo/logoText_green.png')} style={styles.image}/>
       </View>
 
         <Block padding={[0, theme.sizes.base * 2]}>

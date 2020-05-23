@@ -75,7 +75,7 @@ class Profile extends Component {
             <Text h3 secondary style={{ fontFamily: 'Montserrat' }}>Hello {this.props.userData.name}!</Text>
             </View>
             <View>
-              <Text h2 style ={{color:"#FFAB5B", fontFamily: 'Montserrat',}} >{this.props.userData.points} points</Text>
+              <Text h2 style ={{color:"#FF9800", fontFamily: 'Montserrat',}} >{this.props.userData.points} points</Text>
             </View>
 
         </View>

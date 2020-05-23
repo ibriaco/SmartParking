@@ -346,7 +346,7 @@ class Filter extends Component {
       <ScrollView scrollEnabled={true} style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
       <Header style = {{backgroundColor: this.props.userData.darkMode ? "#0303030" : "#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
           <Left>
-              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
+              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start", color: this.props.userData.darkMode ? "#fff" : "#000"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
           </Left>
           <Body>
           </Body>

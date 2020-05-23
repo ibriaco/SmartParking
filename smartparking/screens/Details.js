@@ -5,15 +5,12 @@ import { Divider, Button, Block, Text, Switch } from "../components";
 import { theme, mocks } from "../constants";
 import * as Animatable from 'react-native-animatable';
 import { connect } from 'react-redux';
-import { Input, Icon } from "galio-framework"
-import * as Progress from 'react-native-progress';
-import Modal from "react-native-modal";
 import * as firebase from 'firebase';
-import PayPal from 'react-native-paypal-wrapper';
 import axios from 'axios'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import qs from 'qs';
 import { WebView } from 'react-native-webview';
-import { Container, Header, Content, Tab, Tabs } from 'native-base';
+import { Container, Header, Content, Tab, Tabs, Left, Right, Body } from 'native-base';
 
 import { Notifications } from "expo";
 import * as Permissions from 'expo-permissions';
@@ -280,12 +277,25 @@ class Details extends Component {
 
   render() {
     return (
-      <Container style={{ marginTop: HEADER_HEIGHT, marginHorizontal: 20, }}>
-        <View style={{ falignContent: "center", flexDirection: "row", alignItems: "center", }}>
-          <Text style={{ fontSize: 32 }} bold>Parking details</Text>
+      <View style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
+        <Header style = {{backgroundColor: this.props.userData.darkMode ? "#0303030" : "#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
+          <Left>
+              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start", color: this.props.userData.darkMode ? "#fff" : "#000"}} onPress = {() => {
+                this.props.updateModalVisible(true)
+                this.props.navigation.navigate("Home")
+                }}/>
+          </Left>
+          <Body>
+          </Body>
+          <Right>
+            <Button/>
+          </Right>
+        </Header>
+        <View style={styles.header}>
+          <Text style={{ fontSize: 32, fontFamily:"Helvetica-Bold", color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>Parking details</Text>
         </View>
-        <View style={{ marginTop: 30 }}>
-          <Text h3 black style={{ fontFamily: 'Montserrat' }}>
+        <View style={{paddingHorizontal: theme.sizes.base * 2, marginTop: 30 }}>
+          <Text h3 style={{ fontFamily: 'Montserrat', color:this.props.userData.darkMode ? "#fff" : "#000" }}>
             Choose the options for your stop at
           </Text>
 
@@ -296,14 +306,14 @@ class Details extends Component {
             {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}
           </Text>
 
-          <Button style={{ backgroundColor: "black", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
-            <Text h3 white center style={{ fontFamily: 'Montserrat' }}>
+          <Button style={{ backgroundColor: this.props.userData.darkMode ? "#fff" : "#000", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
+            <Text h3 center style={{ fontFamily: 'Montserrat', color: this.props.userData.darkMode ? "#000" : "#fff" }}>
               Select end time
           </Text>
           </Button>
 
           {this.state.isTimeSelected &&
-            <Text h3 black center style={{ fontFamily: 'Montserrat' }}>
+            <Text h3 center style={{ fontFamily: 'Montserrat', color: this.props.userData.darkMode ? "#fff" : "#000" }}>
               From now to: {new Date(this.state.endDate).toLocaleTimeString()}
             </Text>
           }
@@ -336,7 +346,7 @@ class Details extends Component {
 
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
-            <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
+            <Text h3 center style={{ fontFamily: 'Montserrat-Bold', color: this.props.userData.darkMode ? "#fff" : "#000" }}>
               Bonus: {this.props.userData.bonus.toFixed(2)} €
             </Text>
           }
@@ -665,15 +675,15 @@ console.log(newBonus)
 
           {this.state.isTimeSelected && 
             <View>
-              <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
+              <Text h3 center style={{ fontFamily: 'Montserrat-Bold' , color: this.props.userData.darkMode ? "#fff" : "#000"}}>
                 With this payment you will get
     </Text>
 
-              <Text h1 black center style={{ fontFamily: 'Montserrat-Bold' }}>
+              <Text h1  center style={{ fontFamily: 'Montserrat-Bold' , color: this.props.userData.darkMode ? "#fff" : "#000"}}>
                 {this.state.currentPoints}
               </Text>
 
-              <Text h3 black center style={{ fontFamily: 'Montserrat-Bold' }}>
+              <Text h3  center style={{ fontFamily: 'Montserrat-Bold' , color: this.props.userData.darkMode ? "#fff" : "#000"}}>
                 bonus points!
     </Text>
 
@@ -810,7 +820,7 @@ console.log(newBonus)
           </View>
         ) : null}
 
-      </Container>
+      </View>
     );
   };
 }
@@ -829,6 +839,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    updateModalVisible: (param) => dispatch({ type: "UPDATE_MODAL_VISIBLE", param: param }),
     updateReservationsArray: (param) => dispatch({ type: "UPDATE_RESERVATIONS_ARRAY", param: param }),
     updateUserData: (param) => dispatch({ type: "UPDATE_USER_DATA", param: param }),
     updateTappedArea: (param) => dispatch({ type: "UPDATE_TAPPED_AREA", param: param }),
@@ -841,11 +852,17 @@ export default connect(mapStateToProps, mapDispatchToProps)(Details);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     backgroundColor: '#fff',
   },
+  darkContainer: {
+    flex: 1,
+    backgroundColor: '#202020',
+  },
   header: {
-    paddingHorizontal: theme.sizes.base * 2
+    paddingHorizontal: theme.sizes.base * 2, 
+    alignContent: "center", 
+    flexDirection: "row", 
+    alignItems: "center",
   },
   avatar: {
     height: theme.sizes.base * 2.2,
