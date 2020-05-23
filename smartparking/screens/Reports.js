@@ -9,7 +9,7 @@ import { Button, Block, Text, Switch, Divider } from "../components";
 import * as Animatable from 'react-native-animatable';
 import { Checkbox } from 'galio-framework';
 import Modal from "react-native-modal";
-import {Header, Left, Right, Body, Title} from 'native-base'
+import {Header, Left, Right, Body, Title, Footer, FooterTab} from 'native-base'
 import * as firebase from 'firebase';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
@@ -186,7 +186,6 @@ class Reports extends Component {
           </Animatable.View>
 
         </Block>
-
           
       </View>
     );
@@ -228,7 +227,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#03A696',
     height: 60,
-    width:'80%',
+    width:300,
     borderRadius: 20,
     marginHorizontal: 25,
     shadowOpacity: 0.3,

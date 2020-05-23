@@ -122,12 +122,9 @@ const screens = createStackNavigator(
     },
     Profile: {
       screen: Profile,
-      headerStyle: {
-        height: theme.sizes.base * 6,
-        backgroundColor: theme.colors.white, // or 'white
-        borderBottomColor: "transparent",
-        elevation: 0 // for android
-      },
+      navigationOptions: {
+        header: null
+      }
     },
     Filter: {
       screen: Filter,
@@ -161,54 +158,10 @@ const screens = createStackNavigator(
     },
     
     Home: {
-      screen: createBottomTabNavigator({
-        Home: {
-          screen: HomePage,
-
-          navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="map" size={28} color={focused ? "#000" : "#CDCCCE"} />
-          }
-        },
-        
-        ParkingsContainer: {
-          screen: ParkingsContainer,
-          navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="parking" size={28} color={focused ? "#000" : "#CDCCCE"} />
-          }
-        },
-
-        Filter: {
-          screen: Filter,
-          navigationOptions: {
-            tabBarIcon: ({ focused }) => <FontAwesome5 name="sliders-h" size={28} color={focused ? "#000" : "#CDCCCE"} />
-          }
-        },
-
-        
-        Profile: {
-            screen: Profile,
-            navigationOptions: {
-              tabBarIcon: ({ focused }) => <FontAwesome5 name="user" size={28} color={focused ? "#000" : "#CDCCCE"}/>,
-              backgroundColor: "#03A696",
-              height: theme.sizes.base * 6,
-            }
-          },
-        
-
-      },
-        {
-          tabBarOptions: {
-            showLabel: false,
-            elevation: 0,
-            style: {
-              backgroundColor: '#303030',
-            },
-          }
-        }
-      ),
+      screen: HomePage,
       navigationOptions: {
         header: null
-      },
+      }
 
     },
 
@@ -238,13 +191,5 @@ const screens = createStackNavigator(
     }
   }
 );
-
-
-
-const AppSwitchNavigator = createSwitchNavigator({
-  Splash: { screen: screens },
-  Dashboard: { screen: HomePage }
-});
-
 
 export default createAppContainer(screens);

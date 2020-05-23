@@ -8,6 +8,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase'
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Container, Header, Content, Tab, Tabs, Footer, FooterTab } from 'native-base';
+import { FontAwesome5 } from 'react-native-vector-icons';
 
 
 class Profile extends Component {
@@ -67,18 +69,18 @@ class Profile extends Component {
       <Block style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
         <View style={styles.header}>
             <View>
-            <Text style={{ fontSize: 32, fontFamily: 'Helvetica-Bold' }}>
+            <Text style={{ fontSize: 32, fontFamily: 'Helvetica-Bold', color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>
               Profile
             </Text>
             <Text h3 secondary style={{ fontFamily: 'Montserrat' }}>Hello {this.props.userData.name}!</Text>
             </View>
             <View>
-              <Text h2 style ={{color:"#FFAB5B", fontFamily: 'Montserrat'}}>{this.props.userData.points} points</Text>
+              <Text h2 style ={{color:"#FFAB5B", fontFamily: 'Montserrat',}} >{this.props.userData.points} points</Text>
             </View>
 
         </View>
         <View style={{paddingHorizontal: theme.sizes.base * 2, flex: 0.2, marginTop: 10, alignContent: "center", justifyContent: "space-between", flexDirection:"row" }}>
-          <Text h1 bold style={{ fontFamily: 'Helvetica-Bold' }}>Account</Text>
+          <Text h1 bold style={{ fontFamily: 'Helvetica-Bold', color: this.props.userData.darkMode ? "#FF9800" : "#000" }}>Account</Text>
         </View>
         <View style={{ flex: 1, paddingHorizontal: theme.sizes.base * 2, alignItems: "center" }}>
           <Block row space="between" style={styles.inputRow}>
@@ -111,7 +113,7 @@ class Profile extends Component {
             <Icon name = {editing === "license" ? "floppy" : "pencil-outline"} color="#03A696" size = {24} style = {{alignSelf:"flex-start"}} onPress={() => this.toggleEdit("license")}/>
           </Block>
           <View style={{ flex: 0.1, marginTop: 10, alignSelf: "flex-start", justifyContent: "center", }}>
-            <Text h1 style={{ fontFamily: 'Helvetica-Bold' }}>Settings</Text>
+            <Text h1 style={{ fontFamily: 'Helvetica-Bold', color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>Settings</Text>
           </View>
           <Block style={styles.toggles}>
             <Block
@@ -166,10 +168,18 @@ class Profile extends Component {
         </View>
         <View style={{ flex: 0.2, marginTop: 10, justifyContent: "space-between", alignItems:"center", flexDirection: "row", paddingHorizontal: theme.sizes.base * 2, }}>
             <Text secondary h1 style={{ fontFamily: 'Montserrat' }}>Logout</Text>
-              <Button style = {styles.modalContent} onPress = {()=>this.signOutUser()}>
-              <Icon name="exit-to-app" size = {32} color="#C02501"/>
-              </Button>
+              <Icon name="exit-to-app" size = {32} color="#C02501" onPress = {()=>this.signOutUser()}/>
           </View>
+          <Footer style={{ paddingHorizontal: 60, backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff" }}>
+            <FooterTab style={{ backgroundColor: this.props.userData.darkMode ? "#303030" : "#fff", alignItems: "center" }}>
+              {!this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#CDCCCE" onPress={() => navigation.navigate("Home")}/>}
+              {this.props.userData.darkMode && <FontAwesome5 name="map" size={28} color="#CDCCCE" onPress={() => navigation.navigate("Home")}/>}
+              {this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} />}
+              {!this.props.userData.darkMode && <FontAwesome5 name="parking" size={28} color={"#CDCCCE"} onPress={() => navigation.navigate("ParkingsContainer")} />}
+              {this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#FF9800"} onPress={() => navigation.navigate("Profile")} />}
+              {!this.props.userData.darkMode && <FontAwesome5 name="user" size={28} color={"#000"} onPress={() => navigation.navigate("Profile")} />}
+            </FooterTab>
+          </Footer>
 
       </Block>
     );

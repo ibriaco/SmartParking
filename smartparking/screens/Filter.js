@@ -8,12 +8,11 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { connect } from 'react-redux';
 import * as firebase from 'firebase';
 import { Picker, DatePicker } from 'react-native-wheel-pick';
-import {Container} from 'native-base'
 import * as Animatable from 'react-native-animatable';
-import {showMessage} from "react-native-flash-message";
-import {Header, Left, Right, Body, Title} from 'native-base'
+import { showMessage } from "react-native-flash-message";
+import { Container, Header, Content, Tab, Tabs, Footer, FooterTab, Left, Right, Body } from 'native-base';
 import Collapsible from 'react-native-collapsible';
-
+import { FontAwesome5 } from 'react-native-vector-icons';
 
 const GOOGLE_MAPS_APIKEY = 'AIzaSyAQYSx-AfOH9myf-veyUCa38l7MTQ77NH8';
 
@@ -33,6 +32,7 @@ const DEFAULT_E = false;
 
 
 class Filter extends Component {
+
   constructor(props) {
     super(props);
 
@@ -43,30 +43,30 @@ class Filter extends Component {
     this._resetFields = this._resetFields.bind(this);
 
 
-  this.state = {
-    maxPrice: DEFAULT_PRICE,
-    maxDistance: DEFAULT_DISTANCE,
-    maxTime: DEFAULT_TIME,
+    this.state = {
+      maxPrice: DEFAULT_PRICE,
+      maxDistance: DEFAULT_DISTANCE,
+      maxTime: DEFAULT_TIME,
 
-    lowAvailability: DEFAULT_LOW,
-    mediumAvailability: DEFAULT_MEDIUM,
-    highAvailability: DEFAULT_HIGH,
-    
-    allType: DEFAULT_ALL,
-    freeType: DEFAULT_FREE,
-    payType: DEFAULT_PAY,
+      lowAvailability: DEFAULT_LOW,
+      mediumAvailability: DEFAULT_MEDIUM,
+      highAvailability: DEFAULT_HIGH,
 
-    hSpot: DEFAULT_H,
-    pSpot: DEFAULT_P,
-    eSpot: DEFAULT_E
-  };
+      allType: DEFAULT_ALL,
+      freeType: DEFAULT_FREE,
+      payType: DEFAULT_PAY,
+
+      hSpot: DEFAULT_H,
+      pSpot: DEFAULT_P,
+      eSpot: DEFAULT_E
+    };
   }
   componentDidMount() {
     this.setState({ profile: this.props.profile });
   }
 
 
-  _resetFields(){
+  _resetFields() {
     this.props.updateCircleRadius(0);
 
     this.setState({
@@ -75,15 +75,15 @@ class Filter extends Component {
       maxPrice: DEFAULT_PRICE,
       maxDistance: DEFAULT_DISTANCE,
       maxTime: DEFAULT_TIME,
-  
+
       lowAvailability: DEFAULT_LOW,
       mediumAvailability: DEFAULT_MEDIUM,
       highAvailability: DEFAULT_HIGH,
-      
+
       allType: DEFAULT_ALL,
       freeType: DEFAULT_FREE,
       payType: DEFAULT_PAY,
-  
+
       hSpot: DEFAULT_H,
       pSpot: DEFAULT_P,
       eSpot: DEFAULT_E
@@ -95,9 +95,9 @@ class Filter extends Component {
     }, 190)
   }
 
-  _handleLowButton(){
+  _handleLowButton() {
     //if it wasn't selected, and now is selected:
-    if(!this.state.lowAvailability){
+    if (!this.state.lowAvailability) {
       this.setState({
         lowAvailability: true,
         mediumAvailability: false,
@@ -106,17 +106,17 @@ class Filter extends Component {
     }
 
     //if it was selected, and now is deselected:
-    if(this.state.lowAvailability){
+    if (this.state.lowAvailability) {
       this.setState({
         lowAvailability: false,
       })
     }
-    
+
   }
 
-  _handleMediumButton(){
+  _handleMediumButton() {
     //if it wasn't selected, and now is selected:
-    if(!this.state.mediumAvailability){
+    if (!this.state.mediumAvailability) {
       this.setState({
         mediumAvailability: true,
         lowAvailability: false,
@@ -125,17 +125,17 @@ class Filter extends Component {
     }
 
     //if it was selected, and now is deselected:
-    if(this.state.mediumAvailability){
+    if (this.state.mediumAvailability) {
       this.setState({
         mediumAvailability: false,
       })
     }
-    
+
   }
 
-  _handleHighButton(){
+  _handleHighButton() {
     //if it wasn't selected, and now is selected:
-    if(!this.state.highAvailability){
+    if (!this.state.highAvailability) {
       this.setState({
         highAvailability: true,
         mediumAvailability: false,
@@ -144,38 +144,38 @@ class Filter extends Component {
     }
 
     //if it was selected, and now is deselected:
-    if(this.state.highAvailability){
+    if (this.state.highAvailability) {
       this.setState({
         highAvailability: false,
       })
     }
-    
+
   }
 
 
-  _handlePayTypeButton(){
-    
-  //if PAY wasn't selected, and now is selected:
-    
-  if(!this.state.payType){
-    this.priceView.flipInX(600);
+  _handlePayTypeButton() {
+
+    //if PAY wasn't selected, and now is selected:
+
+    if (!this.state.payType) {
+      this.priceView.flipInX(600);
       this.setState({
         payType: true
-    });
-  }
-  //if PAY was selected, and now is not selected:
-  else{
-    this.priceView.flipOutX(600);
+      });
+    }
+    //if PAY was selected, and now is not selected:
+    else {
+      this.priceView.flipOutX(600);
 
       this.setState({
         payType: false,
-    });
-    } 
+      });
+    }
 
-  
+
   }
 
-  
+
   async handleApply() {
 
     //filter areas with the inserted parameters
@@ -195,41 +195,41 @@ class Filter extends Component {
     //POSSIBLE COMBINATIONS, from the most generic to the most specific
 
     //TYPE
-    if(this.state.allType){
+    if (this.state.allType) {
       tempAreas = this.props.allAreas;
 
       //PRICE
-      if(this.state.maxPrice != 0){
+      if (this.state.maxPrice != 0) {
 
         tempAreas = tempAreas.filter(function (area) {
           return area.price < price;
         });
       }
     }
-    else if(this.state.payType){
+    else if (this.state.payType) {
 
       tempAreas = this.props.allAreas.filter(function (area) {
         return area.price > 0;
-      }); 
+      });
 
       //PRICE
-      if(this.state.maxPrice != 0){
+      if (this.state.maxPrice != 0) {
 
         tempAreas = tempAreas.filter(function (area) {
           return area.price < price;
         });
       }
     }
-    else if(this.state.freeType){
+    else if (this.state.freeType) {
 
       tempAreas = this.props.allAreas.filter(function (area) {
         return area.price == 0;
       });
     }
-  
+
     //DISTANCE
 
-    if(this.state.maxDistance != 0){
+    if (this.state.maxDistance != 0) {
 
       this.props.updateCircleRadius(distance);
 
@@ -237,13 +237,13 @@ class Filter extends Component {
         var s = area.distance.substr(0, area.distance.length - 3)
         return parseFloat(s) < distance;
       });
-    }else{
+    } else {
       this.props.updateCircleRadius(distance);
     }
 
     //TIME
 
-    if(this.state.maxTime != 0){
+    if (this.state.maxTime != 0) {
 
       tempAreas = tempAreas.filter(function (area) {
         return area.time < time;
@@ -263,7 +263,7 @@ class Filter extends Component {
     //HIGH = A > 66
 
     //MEDIUM
-    if(this.state.mediumAvailability){
+    if (this.state.mediumAvailability) {
 
       tempAreas = tempAreas.filter(function (area) {
         return (1 - (area.nTaken / area.nTot)) * 100 > 33;
@@ -271,30 +271,30 @@ class Filter extends Component {
     }
 
     //HIGH
-    if(this.state.highAvailability){
+    if (this.state.highAvailability) {
       tempAreas = tempAreas.filter(function (area) {
         return (1 - (area.nTaken / area.nTot)) * 100 > 66;
       });
     }
-    
-    
+
+
     //H
-    if(this.state.hSpot){
+    if (this.state.hSpot) {
 
       tempAreas = tempAreas.filter(function (area) {
         return (area.nHandicap != 0);
       });
-     
+
     }
-    
-    if(this.state.pSpot){
+
+    if (this.state.pSpot) {
 
       tempAreas = tempAreas.filter(function (area) {
         return (area.nPregnant != 0);
       });
     }
 
-    if(this.state.eSpot){
+    if (this.state.eSpot) {
 
       tempAreas = tempAreas.filter(function (area) {
         return (area.nElectric != 0);
@@ -304,7 +304,7 @@ class Filter extends Component {
 
 
     //FINAL CONTROL: TO APPLY OR NOT TO APPLY
-    if(tempAreas.length == 0) {
+    if (tempAreas.length == 0) {
 
       showMessage({
         message: "Filters not applied!",
@@ -314,12 +314,12 @@ class Filter extends Component {
       });
 
     }
-    else{
+    else {
 
       this.props.updateShowRoute(false);
 
       this.props.updateArea(tempAreas);
-      
+
       showMessage({
         message: "Filters applied!",
         description: "We found " + tempAreas.length + " perfect parkings :)",
@@ -330,7 +330,7 @@ class Filter extends Component {
       this.props.navigation.navigate("Home");
 
     }
-    
+
   }
 
   handleClose() {
@@ -340,129 +340,140 @@ class Filter extends Component {
 
   render() {
     const { profile, editing } = this.state;
-
+    const { navigation } = this.props;
     return (
-    <ScrollView style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
-    <Animatable.View  ref={v => this.bigView = v}> 
-    <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
-        
-        <View style = {{flexDirection: "row", justifyContent:"space-between"}}>
-          <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold", marginTop: 55 }}>
-          Filters
+      <View style = {{flex:1}}>
+      <ScrollView scrollEnabled={true} style={this.props.userData.darkMode ? styles.darkContainer : styles.container}>
+      <Header style = {{backgroundColor: this.props.userData.darkMode ? "#0303030" : "#fff", borderBottomColor:"transparent", paddingLeft:theme.sizes.base*1.8}} androidStatusBarColor="#000" noShadow>
+          <Left>
+              <Icon name="chevron-left" size = {30} style = {{alignSelf:"flex-start"}} onPress = {()=>this.props.navigation.navigate("Home")}/>
+          </Left>
+          <Body>
+          </Body>
+          <Right>
+            <Button/>
+          </Right>
+        </Header>
+        <Animatable.View ref={v => this.bigView = v}>
+          <Block padding={[0, theme.sizes.base * 2]} style={{ justifyContent: "space-between", }}>
+
+            <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+              <Text style={{ fontSize: 32, fontFamily: "Helvetica-Bold", color:this.props.userData.darkMode ? "#FF9800" : "#000" }}>
+                Filters
         </Text>
-        </View>
-        
-
-        <View style={styles.sliders}>
-        <Animatable.View animation="slideInUp" duration={600} delay={100}>
-
-              {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Type</Text>}
-              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Type</Text>}
+            </View>
 
 
-              <Block row center style={{ justifyContent: "space-around" }}>
+            <View style={styles.sliders}>
+              <Animatable.View animation="slideInUp" duration={600} delay={100}>
 
-              <Button style={this.state.payType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
-                if(this.state.disabled)
-                  this.priceView.slideInRight(600);
-
-                this.setState({
-                  payType: true,
-                  allType: false,
-                  freeType: false,
-                  disabled: false
-                })
-              }}>
-                  {this.state.payType &&<Icon name ="cash" size = {26} color="#03A696" style = {{alignSelf:"center"}}/>}
-                  {!this.state.payType &&<Icon name ="cash" size = {26} style = {{alignSelf:"center"}}/>}
-              </Button>
-
-              <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
-
-                if(!this.state.disabled)
-                this.priceView.slideOutRight(600);
-
-                this.setState({
-                  freeType: true,
-                  payType: false,
-                  allType: false,
-                  maxPrice: DEFAULT_PRICE,
-                  disabled: true
-                })
-              }}>
-                  {this.state.freeType && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>FREE</Text>}
-                  {!this.state.freeType && <Text center style={{fontFamily: "Montserrat-Bold"}} black>FREE</Text>}
-              </Button>
-
-              <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => {
-                
-                if(this.state.disabled)
-                this.priceView.slideInRight(600);
-
-                this.setState({
-                  allType: true,
-                  payType: false,
-                  freeType: false,     
-                  disabled: false
-                })
-              }}>
-                  {this.state.allType && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>All</Text>}
-                  {!this.state.allType && <Text center style={{fontFamily: "Montserrat-Bold"}} black>All</Text>}
-              </Button>
-
-              
-              </Block>
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Type</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Type</Text>}
 
 
-            <Animatable.View ref={p => this.priceView = p}>
+                <Block row center style={{ justifyContent: "space-around" }}>
+
+                  <Button style={this.state.payType ? styles.filterButtonTriggered : styles.filterButton} onPress={() => {
+                    if (this.state.disabled)
+                      this.priceView.slideInRight(600);
+
+                    this.setState({
+                      payType: true,
+                      allType: false,
+                      freeType: false,
+                      disabled: false
+                    })
+                  }}>
+                    {this.state.payType && <Icon name="cash" size={26} color="#03A696" style={{ alignSelf: "center" }} />}
+                    {!this.state.payType && <Icon name="cash" size={26} style={{ alignSelf: "center" }} />}
+                  </Button>
+
+                  <Button style={this.state.freeType ? styles.filterButtonTriggered : styles.filterButton} onPress={() => {
+
+                    if (!this.state.disabled)
+                      this.priceView.slideOutRight(600);
+
+                    this.setState({
+                      freeType: true,
+                      payType: false,
+                      allType: false,
+                      maxPrice: DEFAULT_PRICE,
+                      disabled: true
+                    })
+                  }}>
+                    {this.state.freeType && <Text center style={{ fontFamily: "Montserrat-Bold" }} secondary>FREE</Text>}
+                    {!this.state.freeType && <Text center style={{ fontFamily: "Montserrat-Bold" }} black>FREE</Text>}
+                  </Button>
+
+                  <Button style={this.state.allType ? styles.filterButtonTriggered : styles.filterButton} onPress={() => {
+
+                    if (this.state.disabled)
+                      this.priceView.slideInRight(600);
+
+                    this.setState({
+                      allType: true,
+                      payType: false,
+                      freeType: false,
+                      disabled: false
+                    })
+                  }}>
+                    {this.state.allType && <Text center style={{ fontFamily: "Montserrat-Bold" }} secondary>All</Text>}
+                    {!this.state.allType && <Text center style={{ fontFamily: "Montserrat-Bold" }} black>All</Text>}
+                  </Button>
 
 
-            {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Price</Text>}
-              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Price</Text>}
+                </Block>
 
 
-            <Slider
-              disabled={this.state.disabled}
-              minimumValue={0.00}
-              maximumValue={5.00}
-              thumbStyle={styles.thumb}
-              trackStyle={{ height: 3, borderRadius: 3 }}
-              minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
-              maximumTrackTintColor="rgba(3, 166, 150, 0.05)"
-              value={this.state.maxPrice}
-              step={0.50}
-              onValueChange={value => this.setState({ maxPrice: value })}
-            />
-            {!this.props.userData.darkMode && <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxPrice} €</Text>}
-            {this.props.userData.darkMode && <Text h2 white style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxPrice} €</Text>}
+                <Animatable.View ref={p => this.priceView = p}>
+
+
+                  {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
+                  {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Price</Text>}
+
+
+                  <Slider
+                    disabled={this.state.disabled}
+                    minimumValue={0.00}
+                    maximumValue={5.00}
+                    thumbStyle={styles.thumb}
+                    trackStyle={{ height: 3, borderRadius: 3 }}
+                    minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
+                    maximumTrackTintColor="rgba(3, 166, 150, 0.05)"
+                    value={this.state.maxPrice}
+                    step={0.50}
+                    onValueChange={value => this.setState({ maxPrice: value })}
+                  />
+                  {!this.props.userData.darkMode && <Text h3 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxPrice} €</Text>}
+                  {this.props.userData.darkMode && <Text h3 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxPrice} €</Text>}
+
+                </Animatable.View>
 
               </Animatable.View>
 
-        </Animatable.View>
 
 
-
-<Animatable.View animation="slideInUp" duration={600} delay={200}>
-
-
-              {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Time</Text>}
-              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Time</Text>}
+              <Animatable.View animation="slideInUp" duration={600} delay={200}>
 
 
-            <Slider
-              minimumValue={0}
-              maximumValue={60}
-              thumbStyle={styles.thumb}
-              trackStyle={{ height: 3, borderRadius: 3 }}
-              minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
-              maximumTrackTintColor="rgba(3, 166, 150, 0.05)"
-              value={this.state.maxTime}
-              step={1}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Time</Text>}
 
-              onValueChange={value => this.setState({ maxTime: value })}
-            />
-            {!this.props.userData.darkMode && <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxTime} min</Text>}
-            {this.props.userData.darkMode && <Text h2 white style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxTime} min</Text>}
+
+                <Slider
+                  minimumValue={0}
+                  maximumValue={60}
+                  thumbStyle={styles.thumb}
+                  trackStyle={{ height: 3, borderRadius: 3 }}
+                  minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
+                  maximumTrackTintColor="rgba(3, 166, 150, 0.05)"
+                  value={this.state.maxTime}
+                  step={1}
+
+                  onValueChange={value => this.setState({ maxTime: value })}
+                />
+                {!this.props.userData.darkMode && <Text h3 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxTime} min</Text>}
+                {this.props.userData.darkMode && <Text h3 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxTime} min</Text>}
 
               </Animatable.View>
 
@@ -470,106 +481,108 @@ class Filter extends Component {
               <Animatable.View animation="slideInUp" duration={600} delay={300}>
 
 
-              {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Distance</Text>}
-              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Maximum Distance</Text>}
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Maximum Distance</Text>}
 
 
-              <Slider
-              minimumValue={0}
-              maximumValue={200}
-              thumbStyle={styles.thumb}
-              trackStyle={{ height: 3, borderRadius: 3 }}
-              minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
-              maximumTrackTintColor="rgba(3, 166, 150, 0.05)"
-              value={this.state.maxDistance}
-              step={1}
+                <Slider
+                  minimumValue={0}
+                  maximumValue={200}
+                  thumbStyle={styles.thumb}
+                  trackStyle={{ height: 3, borderRadius: 3 }}
+                  minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
+                  maximumTrackTintColor="rgba(3, 166, 150, 0.05)"
+                  value={this.state.maxDistance}
+                  step={1}
 
-              onValueChange={value => this.setState({ maxDistance: value })}
-            />
-              {!this.props.userData.darkMode && <Text h2 style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxDistance} km</Text>}
-              {this.props.userData.darkMode && <Text h2 white style={{fontFamily: "Montserrat-Bold"}} right>{this.state.maxDistance} km</Text>}
+                  onValueChange={value => this.setState({ maxDistance: value })}
+                />
+                {!this.props.userData.darkMode && <Text h3 style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxDistance} km</Text>}
+                {this.props.userData.darkMode && <Text h3 white style={{ fontFamily: "Montserrat-Bold" }} right>{this.state.maxDistance} km</Text>}
 
               </Animatable.View>
 
-            <Animatable.View animation="slideInUp" duration={600} delay={400}>
+              <Animatable.View animation="slideInUp" duration={600} delay={400}>
 
 
-            {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Minimum Availability</Text>}
-              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Minimum Availability</Text>}
-
-              
-              <Block row center style={{ justifyContent: "space-around" }}>
-                <Button style={this.state.lowAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleLowButton}>
-                  {this.state.lowAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>Low</Text>}
-                  {!this.state.lowAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} black>Low</Text>}
-                </Button>
-                <Button style={this.state.mediumAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleMediumButton}>
-                  {this.state.mediumAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>Medium</Text>}
-                  {!this.state.mediumAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} black>Medium</Text>}
-                </Button>
-                <Button style={this.state.highAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleHighButton}>
-                  {this.state.highAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} secondary>High</Text>}
-                  {!this.state.highAvailability && <Text center style={{fontFamily: "Montserrat-Bold"}} black>High</Text>}
-                </Button>
-              </Block>
-            </Animatable.View>
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Minimum Availability</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Minimum Availability</Text>}
 
 
-            <Animatable.View animation="slideInUp" duration={600} delay={500}>
-
-            {!this.props.userData.darkMode && <Text center h2 style={{fontFamily: "Montserrat-Bold"}}>Spot for</Text>}
-              {this.props.userData.darkMode && <Text center gray2 h2 style={{fontFamily: "Montserrat-Bold"}}>Spot for</Text>}
-
-
-              <Block row center style={{ justifyContent: "space-around" }}>
-
-                <Button style={this.state.hSpot ? styles.filterButtonTriggered : styles.filterButton} onPress={() => this.setState({hSpot: !this.state.hSpot})}>
-                  {this.state.hSpot && <Icon name ="wheelchair-accessibility" size = {26} color="#03A696" style = {{alignSelf:"center"}}/>}
-                  {!this.state.hSpot && <Icon name ="wheelchair-accessibility" size = {26} style = {{alignSelf:"center"}}/>}
-                </Button>
-
-                <Button style={this.state.pSpot ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => this.setState({pSpot: !this.state.pSpot})}>
-                  {this.state.pSpot &&<Icon name ="human-pregnant" size = {26} color="#03A696" style = {{alignSelf:"center"}}/>}
-                  {!this.state.pSpot &&<Icon name ="human-pregnant" size = {26} style = {{alignSelf:"center"}}/>}
-                </Button>
-
-                <Button style={this.state.eSpot ? styles.filterButtonTriggered : styles.filterButton}  onPress={() => this.setState({eSpot: !this.state.eSpot})}>
-                  {this.state.eSpot &&<Icon name ="battery-charging-outline" size = {26} color="#03A696" style = {{alignSelf:"center"}}/>}
-                  {!this.state.eSpot &&<Icon name ="battery-charging-outline" size = {26} style = {{alignSelf:"center"}}/>}
-                </Button>
-
-              </Block>
-            </Animatable.View>
+                <Block row center style={{ justifyContent: "space-around" }}>
+                  <Button style={this.state.lowAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleLowButton}>
+                    {this.state.lowAvailability && <Text center style={{ fontFamily: "Montserrat-Bold" }} secondary>Low</Text>}
+                    {!this.state.lowAvailability && <Text center style={{ fontFamily: "Montserrat-Bold" }} black>Low</Text>}
+                  </Button>
+                  <Button style={this.state.mediumAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleMediumButton}>
+                    {this.state.mediumAvailability && <Text center style={{ fontFamily: "Montserrat-Bold" }} secondary>Medium</Text>}
+                    {!this.state.mediumAvailability && <Text center style={{ fontFamily: "Montserrat-Bold" }} black>Medium</Text>}
+                  </Button>
+                  <Button style={this.state.highAvailability ? styles.filterButtonTriggered : styles.filterButton} onPress={this._handleHighButton}>
+                    {this.state.highAvailability && <Text center style={{ fontFamily: "Montserrat-Bold" }} secondary>High</Text>}
+                    {!this.state.highAvailability && <Text center style={{ fontFamily: "Montserrat-Bold" }} black>High</Text>}
+                  </Button>
+                </Block>
+              </Animatable.View>
 
 
-            
+              <Animatable.View animation="slideInUp" duration={600} delay={500}>
 
-        </View>
+                {!this.props.userData.darkMode && <Text center h3 style={{ fontFamily: "Montserrat-Bold" }}>Spot for</Text>}
+                {this.props.userData.darkMode && <Text center gray2 h3 style={{ fontFamily: "Montserrat-Bold" }}>Spot for</Text>}
+
+
+                <Block row center style={{ justifyContent: "space-around" }}>
+
+                  <Button style={this.state.hSpot ? styles.filterButtonTriggered : styles.filterButton} onPress={() => this.setState({ hSpot: !this.state.hSpot })}>
+                    {this.state.hSpot && <Icon name="wheelchair-accessibility" size={26} color="#03A696" style={{ alignSelf: "center" }} />}
+                    {!this.state.hSpot && <Icon name="wheelchair-accessibility" size={26} style={{ alignSelf: "center" }} />}
+                  </Button>
+
+                  <Button style={this.state.pSpot ? styles.filterButtonTriggered : styles.filterButton} onPress={() => this.setState({ pSpot: !this.state.pSpot })}>
+                    {this.state.pSpot && <Icon name="human-pregnant" size={26} color="#03A696" style={{ alignSelf: "center" }} />}
+                    {!this.state.pSpot && <Icon name="human-pregnant" size={26} style={{ alignSelf: "center" }} />}
+                  </Button>
+
+                  <Button style={this.state.eSpot ? styles.filterButtonTriggered : styles.filterButton} onPress={() => this.setState({ eSpot: !this.state.eSpot })}>
+                    {this.state.eSpot && <Icon name="battery-charging-outline" size={26} color="#03A696" style={{ alignSelf: "center" }} />}
+                    {!this.state.eSpot && <Icon name="battery-charging-outline" size={26} style={{ alignSelf: "center" }} />}
+                  </Button>
+
+                </Block>
+              </Animatable.View>
 
 
 
-        <Block bottom style={{ marginBottom: 30 }}>
-        <Animatable.View animation="bounceIn" duration={600} delay={1200}>
 
-          <Button style={styles.button} onPress={() => this.handleApply()}>
-            <Text h1 style={{fontFamily: "Montserrat-Bold"}} white center>
-              Apply
+            </View>
+
+
+
+            <Block bottom style={{ marginBottom: 10 }}>
+              <Animatable.View animation="bounceIn" duration={600} delay={1200}>
+
+                <Button style={styles.button} onPress={() => this.handleApply()}>
+                  <Text h3 style={{ fontFamily: "Montserrat-Bold" }} white center>
+                    Apply
                 </Text>
-          </Button>
-          </Animatable.View>
+                </Button>
+              </Animatable.View>
 
-        </Block>
+            </Block>
 
 
-        <View >
-      <Button style = {styles.add} onPress={this._resetFields}>
-        <Icon name="sync" size = {42} color="#03A696" style = {{alignSelf:"center", fontWeight:"bold", }}/>
-      </Button>
+            <View >
+              <Button style={styles.add} onPress={this._resetFields}>
+                <Icon name="sync" size={42} color="#03A696" style={{ alignSelf: "center", fontWeight: "bold", }} />
+              </Button>
 
+            </View>
+          </Block>
+          
+        </Animatable.View>
+      </ScrollView>
       </View>
-      </Block>
-</Animatable.View>
-</ScrollView>
     );
   }
 }
@@ -610,10 +623,12 @@ export default connect(mapStateToProps, mapDispatchToProps)(Filter);
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    flexDirection:"column",
   },
   darkContainer: {
     flex: 1,
-    backgroundColor: "#202020"
+    backgroundColor: "#202020",
+    flexDirection:"column"
   },
   header: {
     paddingHorizontal: theme.sizes.base * 2
@@ -634,20 +649,20 @@ const styles = StyleSheet.create({
     //paddingHorizontal: theme.sizes.base * 2
   },
   thumb: {
-    width: theme.sizes.base*1.2 ,
-    height: theme.sizes.base*1.2 ,
-    borderRadius: theme.sizes.base*1.2 ,
+    width: theme.sizes.base * 1.2,
+    height: theme.sizes.base * 1.2,
+    borderRadius: theme.sizes.base * 1.2,
     borderColor: "white",
     borderWidth: 3,
-    backgroundColor:"white",
+    backgroundColor: "white",
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
     elevation: 6,
   },
   button: {
     backgroundColor: '#03A696',
-    height: 60,
-    borderRadius: 12,
+    height: 50,
+    borderRadius: 10,
     marginHorizontal: 45,
     shadowOpacity: 0.3,
     shadowOffset: { width: 0, height: 2 },
@@ -682,9 +697,9 @@ const styles = StyleSheet.create({
     height: 60,
     borderRadius: 30,
     backgroundColor: "#fff",
-    alignSelf:"flex-end",
+    alignSelf: "flex-end",
     shadowOpacity: 0.3,
-    shadowOffset: {width: 0, height: 2},
+    shadowOffset: { width: 0, height: 2 },
     elevation: 6,
     bottom: 60,
     position: "absolute"
