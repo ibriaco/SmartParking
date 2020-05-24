@@ -185,14 +185,14 @@ const styles = StyleSheet.create({
   },
   content: {
     alignItems: "center",
-    paddingTop: 50,
+    marginTop: 50,
     paddingBottom: 20,
     marginBottom: -30,
     backgroundColor: '#fff',
   },
   darkContent: {
     alignItems: "center",
-    paddingTop: 50,
+    marginTop: 50,
     paddingBottom: 20,
     marginBottom: -30,
     backgroundColor: '#303030',
