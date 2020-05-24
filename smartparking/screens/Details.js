@@ -371,9 +371,6 @@ class Details extends Component {
             </Text>
           }
 
-          <Text h2 black center style={{ fontFamily: 'Montserrat-Bold' }}>
-          </Text>
-
           {this.props.tappedArea.price == 0 &&
             <Button style={{ backgroundColor: "gray" }} onPress={() => {
               this.handleNotifications()

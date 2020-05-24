@@ -118,7 +118,7 @@ class History extends Component {
           onChange={this._updateSections}
         />
         {this.props.reservationsArray.length == 0 && 
-         <Text center h3 gray2 style = {{fontFamily: "Montserrat-Bold", top: width/2}}>You have no parkings in your history!</Text>
+         <Text center h3 gray2 style = {{fontFamily: "Montserrat-Bold", marginTop: width/2+10}}>You have no parkings in your history!</Text>
         }
 
       </ScrollView>
