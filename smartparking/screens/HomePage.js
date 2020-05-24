@@ -441,7 +441,7 @@ class Map extends React.Component {
             <MapView.Marker
               coordinate={{ latitude: this.state.destinationCoordinates.latitude, longitude: this.state.destinationCoordinates.longitude }}>
               <Animatable.View animation="bounceIn" duration={700} delay={2000} >
-                <Icon name="map-marker" color="#FF9800" size={40} style = {{padding: 20}}/>
+                <Icon name="map-marker" color="#FF9800" size={40} style = {{padding: 30}}/>
               </Animatable.View>
             </MapView.Marker>
           )}
@@ -673,7 +673,7 @@ class Map extends React.Component {
                   <View style = {{flexDirection:"row", paddingVertical: 10, alignItems:"center"}}>
                     {!this.props.userData.darkMode && <Icon name ="clock-outline" size = {26} color="rgba(3, 166, 150,0.9)"/>}
                     {this.props.userData.darkMode && <Icon name ="clock-outline" size = {26} color="#fff"/>}
-                    <Text h3 style={{ fontFamily: "Montserrat-Bold", color: this.props.userData.darkMode ? "#fff" : "rgba(3, 166, 150, 0.9"}}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
+                    <Text h3 style={{ fontFamily: "Montserrat-Bold", color: this.props.userData.darkMode ? "#fff" : "rgba(3, 166, 150, 0.9)"}}>  {this.props.tappedArea.fromH + ":00" + " - " + this.props.tappedArea.toH + ":00"}</Text>
                   </View>
                   <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                     <View style={{ flexDirection: "row" }}>
@@ -761,7 +761,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   modalStyle: {
-    flex: 0.52, 
+    flex: 0.45, 
     backgroundColor: "#f8f8ff", 
     borderRadius: 10, 
     justifyContent: "center", 
@@ -770,7 +770,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   darkModalStyle: {
-    flex: 0.52, 
+    flex: 0.45, 
     backgroundColor: "#383838", 
     borderRadius: 10, 
     justifyContent: "center", 

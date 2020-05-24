@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#03A696',
     height: 60,
     width:300,
-    borderRadius: 14,
+    borderRadius: 12,
     marginHorizontal: 25,
     shadowOpacity: 0.3,
     shadowOffset: {width: 0, height: 2},
