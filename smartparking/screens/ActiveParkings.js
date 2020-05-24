@@ -57,7 +57,7 @@ class ParkingsNoImage extends Component {
         if(temp[i].endDate > nowInMs){
           this.props.updateActiveParking(temp[i]);
           return (true)
-        }          
+        }           
       }
       
       if(!this.state.collapsed)
@@ -147,9 +147,22 @@ class ParkingsNoImage extends Component {
 
             <Text style={styles.headerText}></Text>
 
-            <Button style={styles.end}>
-              <Text center white style={{fontFamily: "Montserrat-Bold"}} h2>Extend</Text>
+      {(this.props.activeParking && this.props.activeParking.parkingCity === this.props.currentCity) &&
+            <Button style={styles.end} onPress={() => {
+                var addr = this.props.activeParking.parkingAddress;
+                var area = this.props.areas.find(function findArea(element){
+                  return element.address === addr;
+                })
+                
+                this.props.mapRef.animateCamera({ center: { latitude: area.latitude, longitude: area.longitude }, zoom: 18 }, { duration: 1000 });
+                this.props.updateTappedArea(area);
+                this.props.updateShowRoute(false);
+                setTimeout(() => this.props.updateModalVisible(true), 1400);
+                this.props.navigation.navigate("Home");
+            }}>
+              <Text center white style={{fontFamily: "Montserrat-Bold"}} h2>View on Map</Text>
             </Button>
+  }
           </View>
         </Collapsible>
   
@@ -263,6 +276,7 @@ function mapStateToProps(state) {
   return {
     //state.areas gets data from the store
     //and we are mapping that data to the prop named areas
+    currentCity: state.currentCity,
     activeParking: state.activeParking,
     userData: state.userData,
     mapRef: state.mapRef,

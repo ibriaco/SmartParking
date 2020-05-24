@@ -26,7 +26,7 @@ import Paypal from "../screens/Paypal";
 
 import { theme } from "../constants";
 import { SearchBar, ThemeConsumer } from "react-native-elements";
-import { zoomOut, zoomIn, fromRight, fromLeft, fadeIn } from 'react-navigation-transitions';
+import { zoomOut, zoomIn, fromRight, fromLeft, fadeIn, fadeOut } from 'react-navigation-transitions';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
@@ -51,33 +51,8 @@ const handleCustomTransition = ({ scenes }) => {
   const prevScene = scenes[scenes.length - 2];
   const nextScene = scenes[scenes.length - 1];
 
-  // Custom transitions go there
-  if (prevScene
-    && prevScene.route.routeName === 'Home'
-    && nextScene.route.routeName === 'ParkingsContainer') {
-    return fromRight();
-  } else if (prevScene
-    && prevScene.route.routeName === 'ParkingsContainer'
-    && nextScene.route.routeName === 'Profile') {
-    return fromRight();
-  } else if (prevScene
-    && prevScene.route.routeName === 'Home'
-    && nextScene.route.routeName === 'Profile') {
-    return fromRight();
-  } else if (prevScene
-    && prevScene.route.routeName === 'Profile'
-    && nextScene.route.routeName === 'ParkingsContainer') {
-    return fromLeft();
-  } else if (prevScene
-    && prevScene.route.routeName === 'Profile'
-    && nextScene.route.routeName === 'Home') {
-    return fromLeft();
-  } else if (prevScene
-    && prevScene.route.routeName === 'ParkingsContainer'
-    && nextScene.route.routeName === 'Home') {
-    return fromLeft();
-  }
-  return zoomIn();
+  
+  return zoomOut();
 }
 
 const screens = createStackNavigator(

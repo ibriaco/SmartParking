@@ -36,7 +36,7 @@ class Details extends Component {
       currentAmount: 0,
       finalAmount: 0,
       endDate: 0,
-      finalPlate: "",
+      finalPlate: this.props.userData.vehiclePlate,
 
       showPicker: false,
       showModal: false,
@@ -64,9 +64,7 @@ class Details extends Component {
 
   async updateNTaken(){
     
-      var index = this.props.allAreas.indexOf(this.props.tappedArea);
-      console.log("valore di index: " + index);
-      
+      var index = this.props.allAreas.indexOf(this.props.tappedArea);      
 
       var oldNTaken = this.props.allAreas[index].nTaken;
 
@@ -95,10 +93,10 @@ class Details extends Component {
       "transactions": [{
         "amount": {
           "currency": "USD",
-          "total": "26",
+          "total": "1",
           "details": {
-            "shipping": "6",
-            "subtotal": "20",
+            "shipping": "0",
+            "subtotal": "1",
             "shipping_discount": "0",
             "insurance": "0",
             "handling_fee": "0",
@@ -110,10 +108,10 @@ class Details extends Component {
           "allowed_payment_method": "IMMEDIATE_PAY"
         }, "item_list": {
           "items": [{
-            "name": "Book",
-            "description": "Chasing After The Wind",
+            "name": "Parking",
+            "description": "Parking Payment",
             "quantity": "1",
-            "price": "20",
+            "price": "1",
             "tax": "0",
             "sku": "product34",
             "currency": "USD"
@@ -373,7 +371,6 @@ class Details extends Component {
 
           {this.props.tappedArea.price == 0 &&
             <Button style={{ backgroundColor: "gray" }} onPress={() => {
-              this.handleNotifications()
 
               //UPDATE NTAKEN FOR THE TAPPED AREA 
               this.updateNTaken();
@@ -386,7 +383,7 @@ class Details extends Component {
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
                 earnedPoints: 0,
-                plate: "AA 666 BB"
+                plate: this.state.finalPlate
               }
 
               firebase.database().ref('Users/' + this.props.userData.uid + "/reservations").push({
@@ -447,7 +444,7 @@ class Details extends Component {
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
                 earnedPoints: this.state.currentPoints,
-                plate: "AA 666 BB"
+                plate: this.state.finalPlate
 
               }
 
@@ -533,7 +530,7 @@ class Details extends Component {
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
                 earnedPoints: this.state.currentPoints,
-                plate: "AA 666 BB"
+                plate: this.state.finalPlate
 
               }
 
@@ -615,7 +612,7 @@ class Details extends Component {
                 parkingAddress: this.props.tappedArea.address,
                 parkingCity: this.props.currentCity,
                 earnedPoints: this.state.currentPoints,
-                plate: "AA 666 BB"
+                plate: this.state.finalPlate
 
               }
 
@@ -657,9 +654,6 @@ class Details extends Component {
                 newPoints = newPoints - 100;
               }              
 
-              console.log(newPoints)
-
-console.log(newBonus)
               
               //update firebase data
               firebase.database().ref('Users/' + this.props.userData.uid).update({                

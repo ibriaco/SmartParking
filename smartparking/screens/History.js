@@ -186,8 +186,8 @@ const styles = StyleSheet.create({
   content: {
     alignItems: "center",
     marginTop: 50,
-    paddingBottom: 20,
-    marginBottom: -30,
+    paddingBottom: 0,
+    marginBottom: 0,
     backgroundColor: '#fff',
   },
   darkContent: {

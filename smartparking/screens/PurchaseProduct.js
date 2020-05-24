@@ -19,7 +19,7 @@ class PurchaseProduct extends Component {
         return;
     }
     if( nativeEvent.url === STRIPE.CANCELED_URL) {
-      this.props.navigation.navigate("Home");
+      this.props.navigation.navigate("Details");
       return;
   }
   };

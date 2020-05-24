@@ -10,6 +10,8 @@ import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { FontAwesome5 } from 'react-native-vector-icons';
 
+console.disableYellowBox = true;
+
 
 const HEADER_HEIGHT = Platform.OS == 'ios' ? 45 : StatusBar.currentHeight;
 

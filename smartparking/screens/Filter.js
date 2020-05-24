@@ -216,7 +216,7 @@ class Filter extends Component {
       if (this.state.maxPrice != 0) {
 
         tempAreas = tempAreas.filter(function (area) {
-          return area.price < price;
+          return area.price <= price;
         });
       }
     }
@@ -235,7 +235,7 @@ class Filter extends Component {
 
       tempAreas = tempAreas.filter(function (area) {
         var s = area.distance.substr(0, area.distance.length - 3)
-        return parseFloat(s) < distance;
+        return parseFloat(s) <= distance;
       });
     } else {
       this.props.updateCircleRadius(distance);
@@ -246,7 +246,8 @@ class Filter extends Component {
     if (this.state.maxTime != 0) {
 
       tempAreas = tempAreas.filter(function (area) {
-        return area.time < time;
+        var t = area.time.substr(0, area.time.length - 5)
+        return parseFloat(t) <= time;
       });
     }
 
@@ -266,14 +267,14 @@ class Filter extends Component {
     if (this.state.mediumAvailability) {
 
       tempAreas = tempAreas.filter(function (area) {
-        return (1 - (area.nTaken / area.nTot)) * 100 > 33;
+        return (1 - (area.nTaken / area.nTot)) * 100 >= 33;
       });
     }
 
     //HIGH
     if (this.state.highAvailability) {
       tempAreas = tempAreas.filter(function (area) {
-        return (1 - (area.nTaken / area.nTot)) * 100 > 66;
+        return (1 - (area.nTaken / area.nTot)) * 100 >= 66;
       });
     }
 
