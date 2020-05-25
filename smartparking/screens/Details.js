@@ -335,26 +335,6 @@ class Details extends Component {
             </Text>
           }
 
-
-
-          {/**
-           * {this.props.tappedArea.price > 0 &&
-
-            <Input
-              label="Vehicle Plate"
-              placeholder="DX 999 SS"
-              //editable={false}
-              right
-              icon="car"
-              family="font-awesome"
-              iconSize={18}
-              iconColor="#a5a5a5"
-            />
-          }
-           */}
-
-
-
           {(this.state.isTimeSelected && this.props.tappedArea.price > 0) &&
 
             <Text h3 center style={{ fontFamily: 'Montserrat-Bold', color: this.props.userData.darkMode ? "#fff" : "#000" }}>
@@ -514,7 +494,7 @@ class Details extends Component {
           }
 
           {(this.state.isTimeSelected && this.state.finalAmount > 0) &&
-            <Button style={{ backgroundColor: "white", width: '80%', shadowOpacity: 0.2, elevation:3, alignSelf: "center" }} onPress={() => {
+            <Button style={{ backgroundColor: this.props.userData.darkMode ? '#fff': "rgba(3, 166, 150,0.02)", width: '80%', shadowOpacity: 0.2, alignSelf: "center" }} onPress={() => {
               this.handleNotifications()
 
               this.updateNTaken()

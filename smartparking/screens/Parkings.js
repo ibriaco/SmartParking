@@ -63,8 +63,10 @@ class Parkings extends Component {
                   shadowColor="black"
                   style={this.props.userData.darkMode ? styles.darkCard : styles.card}
                   title={area.distance + ", " + area.time}
+                  titleColor = {this.props.userData.darkMode ? '#fff' : '#000'}
                   avatar="https://i.imgur.com/dQGKmRZ.png"
                   caption={area.price != 0 ? area.price + " €/h" : "FREE"}
+                  captionColor = {this.props.userData.darkMode ? '#FF9800' : '#A5A5A5'}
                   location={area.address}
                   image={area.image.uri}
                   imageStyle={styles.rounded}

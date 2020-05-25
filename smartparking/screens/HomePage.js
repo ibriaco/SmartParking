@@ -761,7 +761,7 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject
   },
   modalStyle: {
-    flex: 0.5, 
+    flex: 0.47, 
     backgroundColor: "#f8f8ff", 
     borderRadius: 10, 
     justifyContent: "center", 
@@ -770,7 +770,7 @@ const styles = StyleSheet.create({
     alignSelf: "center"
   },
   darkModalStyle: {
-    flex: 0.5, 
+    flex: 0.47, 
     backgroundColor: "#383838", 
     borderRadius: 10, 
     justifyContent: "center", 
