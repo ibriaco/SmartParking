@@ -317,7 +317,7 @@ class Details extends Component {
               onChangeText={value => this.setState({finalPlate: value})}
             />
           </View>
-          <Button style={{ backgroundColor: this.props.userData.darkMode ? "#fff" : "#000", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
+          <Button style={{ backgroundColor: this.props.userData.darkMode ? "#fff" : "#03A696", width: '80%', alignSelf: "center", top: 10, marginBottom: 20 }} onPress={() => this.setState({ showPicker: true })}>
             <Text h3 center style={{ fontFamily: 'Montserrat', color: this.props.userData.darkMode ? "#000" : "#fff" }}>
               Select end time
           </Text>

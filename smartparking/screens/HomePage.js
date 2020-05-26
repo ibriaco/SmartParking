@@ -418,7 +418,7 @@ class Map extends React.Component {
           {this.props.circleRadius != 0 &&
             <MapView.Circle
               center={this.props.distanceFromUser ? this.state.currentCoordinates : this.state.destinationCoordinates}
-              radius={this.props.circleRadius * 1000}
+              radius={this.props.circleRadius * 500}
               fillColor="rgba(3, 166, 150,0.1)"
               strokeColor="rgba(3, 166, 150,0.2)"
             >
