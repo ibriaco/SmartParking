@@ -653,7 +653,7 @@ class Details extends Component {
 
 
               <Text h2 white center style={{ fontFamily: 'Montserrat' }}>
-                Pay with Paypal
+                Pay with PayPal
     </Text>
             </Button>
           }
