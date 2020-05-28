@@ -116,6 +116,7 @@ class History extends Component {
           renderContent={this._renderContent}
           renderSectionTitle={this._renderSectionTitle}
           onChange={this._updateSections}
+          containerStyle={{backgroundColor:"rgba(3, 166, 150,0.02)"}}
         />
         {this.props.reservationsArray.length == 0 && 
          <Text center h3 gray2 style = {{fontFamily: "Montserrat-Bold", marginTop: width/2+10}}>You have no parkings in your history!</Text>
@@ -182,19 +183,19 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 16,
     fontWeight: '500',
+    backgroundColor:"rgba(3, 166, 150,0.02)"
   },
   content: {
     alignItems: "center",
     marginTop: 50,
-    paddingBottom: 0,
-    marginBottom: 0,
-    backgroundColor: '#fff',
+    paddingBottom: -30,
+    backgroundColor: 'rgba(3, 166, 150,0.02)',
   },
   darkContent: {
     alignItems: "center",
     marginTop: 50,
-    paddingBottom: 20,
-    marginBottom: -30,
+    paddingBottom: -30,
+    //marginBottom: -30,
     backgroundColor: '#303030',
   },
 });
