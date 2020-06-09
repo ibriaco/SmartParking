@@ -322,8 +322,8 @@ class Register extends Component {
           }, 300);
           this.props.updateUserData({
             ...this.props.userData,
-            license: "",
-            vehiclePlate: ""
+            vehiclePlate: "SM 000 PK",
+            license: "SMRTPKNG2020"
           });
           }
           }>

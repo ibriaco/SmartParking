@@ -93,7 +93,9 @@ class Login extends Component {
                   points: 0,
                   bonus: 0,
                   darkMode: false,
-                  notifications: false
+                  notifications: false,
+                  vehiclePlate: "SM 000 PK",
+                  license: "SMRTPKNG2020"
                 });
   
                 firebase.database().ref('Users/' + tempUser.uid).set(
@@ -150,7 +152,9 @@ class Login extends Component {
                   points: 0,
                   bonus: 0,          
                   darkMode: false,
-                  notifications: false
+                  notifications: false,
+                  vehiclePlate: "SM 000 PK",
+                  license: "SMRTPKNG2020"
                 });
   
                 firebase.database().ref('Users/' + tempUser.uid).set(
