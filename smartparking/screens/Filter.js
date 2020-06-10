@@ -488,7 +488,7 @@ class Filter extends Component {
 
                 <Slider
                   minimumValue={0}
-                  maximumValue={200}
+                  maximumValue={30}
                   thumbStyle={styles.thumb}
                   trackStyle={{ height: 3, borderRadius: 3 }}
                   minimumTrackTintColor="rgba(3, 166, 150, 0.50)"
