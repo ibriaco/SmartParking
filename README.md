@@ -63,7 +63,6 @@ to the intrinsic presence of this. All RN components, in fact, are ”linked” 
 values, and modifying them results in modifying also the UI to which the value is
 linked.
 # Third Party Integration
----
 # Google
 Considering the huge impact Google has as an IT company all over the World, and
 that it has under its wing around 2 billion users, we wanted facilitate the access to
@@ -79,5 +78,10 @@ also two different sandbox accounts (one Merchant and one Customer). Due to the 
 of documentation of React Native-PayPal libraries and components, we were forced to
 implement the payment through a Webview and calls to bare PayPal APIs, using POST
 fetch requests.
+# Stripe
+Stripe implementation in React Native is far from being cross-platform, and this is the
+reason why we had to follow the same approach of PayPal implementation, using a
+Webview to call the Stripe Checkout APIs and proceed to the payment.
+
 
 
