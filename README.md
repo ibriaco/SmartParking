@@ -32,11 +32,11 @@ and each of them includes a number of parking spots of different type: everythin
 be saved.
 Since Firebase RD is a NoSQL Database we have a JSON-style structure, where we have
 2 main folders: <b>Cities</b> and <b>Users</b> <br/>
-*<b>Cities</b> In this folder all the Cities included in the project are stored, and each of them
+* <b>Cities</b> In this folder all the Cities included in the project are stored, and each of them
 contains all the parking Areas that will be shown to the user
-*<b>Users</b> In this folder all the Users registered to SmartParking are stored (by their
+* <b>Users</b> In this folder all the Users registered to SmartParking are stored (by their
 ID), and each contains all the needed information about them such as e-mail, name,
-preferences, etc..
+preferences, etc.. <br/>
 <b>Communication<b/> The communication with the Realtime Database is implemented
 through three main methods: on(), update() and set().
 
