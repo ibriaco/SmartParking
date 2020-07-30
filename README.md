@@ -88,7 +88,7 @@ is the perfect choice, separating and simplifying the local state management fro
 global state management.
 Our Mobile Application follows the recommended usage with one single <b>store</b>, several
 <b>actions</b> to change the store state and a <b>reducer</b> to specify how the actions transform
-the store state.
+the store state. <br/>
 # System Attributes
 <h2>Reliability</h2>
 The system guarantees a 24/7 service. Even if some Back end data has to change the
