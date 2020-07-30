@@ -5,7 +5,6 @@ around them, together with detailed information. Users can also filter the parki
 several ways: searching for a specific address, a specific type, a maximum distance, etc..
 Moreover, users can pay the fee directly from the app, chosing the payment type and
 how much they want to stop
----
 # Front End
 The Mobile Application is a React Native application composed by several screens, each
 one will be described in the User Interface Design Section. The choice of React Native
@@ -24,7 +23,6 @@ The Mobile Application is composed of a total of 17 screens (including sub-scree
 * HomePage/Map
 * Parkings
 * Profile
----
 # Back End
 The Firebase back end is where all the parkings, users and reservations data are stored.
 The back end is also encharged of authentication and user session management (a well
@@ -33,5 +31,12 @@ The main data that has to be stored is the parking Area data: every city has som
 and each of them includes a number of parking spots of different type: everything must
 be saved.
 Since Firebase RD is a NoSQL Database we have a JSON-style structure, where we have
-2 main folders: <b>Cities</b> and <b>Users</b>
+2 main folders: <b>Cities</b> and <b>Users</b> <br/>
+*<b>Cities</b> In this folder all the Cities included in the project are stored, and each of them
+contains all the parking Areas that will be shown to the user
+*<b>Users</b> In this folder all the Users registered to SmartParking are stored (by their
+ID), and each contains all the needed information about them such as e-mail, name,
+preferences, etc..
+<b>Communication<b/> The communication with the Realtime Database is implemented
+through three main methods: on(), update() and set().
 
