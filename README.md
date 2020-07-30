@@ -63,22 +63,22 @@ to the intrinsic presence of this. All RN components, in fact, are ”linked” 
 values, and modifying them results in modifying also the UI to which the value is
 linked.
 # Third Party Integration
-# Google
+<h2>Google</h2>
 Considering the huge impact Google has as an IT company all over the World, and
 that it has under its wing around 2 billion users, we wanted facilitate the access to
 SmartParking’s functionalities. For this reason we integrated Google Authentication,
 already provided by Firebase back end services
-# Facebook
+<h2>Facebook</h2>
 For the same reasons provided to Google Authentication, we integrated Facebook Authentication as well. <br/>
 Such functionality is in fact already provided by Firebase back end
 services
-# PayPal
+<h2>PayPal</h2>
 In order to handle PayPal payments, we had to set up a PayPal Developer account, and
 also two different sandbox accounts (one Merchant and one Customer). Due to the lack
 of documentation of React Native-PayPal libraries and components, we were forced to
 implement the payment through a Webview and calls to bare PayPal APIs, using POST
 fetch requests.
-# Stripe
+<h2>Stripe</h2>
 Stripe implementation in React Native is far from being cross-platform, and this is the
 reason why we had to follow the same approach of PayPal implementation, using a
 Webview to call the Stripe Checkout APIs and proceed to the payment.
