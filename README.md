@@ -82,6 +82,39 @@ fetch requests.
 Stripe implementation in React Native is far from being cross-platform, and this is the
 reason why we had to follow the same approach of PayPal implementation, using a
 Webview to call the Stripe Checkout APIs and proceed to the payment.
+# Redux
+The Redux implementation is one of the core elements of the system. In fact, SmartParking has to handle a high amount of data often shared between all the screens: Redux
+is the perfect choice, separating and simplifying the local state management from the
+global state management.
+Our Mobile Application follows the recommended usage with one single <b>store</b>, several
+<b>actions</b> to change the store state and a <b>reducer</b> to specify how the actions transform
+the store state.
+# System Attributes
+<h2>Reliability</h2>
+The system guarantees a 24/7 service. Even if some Back end data has to change the
+system can be updated without down times, because every change in the Database will
+be immediately received and correctly updated from the Mobile Application.
+10.2 Availability
+The system is not used for critical services so the occurrence of faults is tolerated.
+However, given that the Mobile Application relies on safe and highly tested libraries and
+Third Party components and APIs, we can estimate the system availability to be at least
+at 99%.
+<h2>Security</h2>
+The only Security aspect that the system must handle is the credentials transmission and
+storage: Firebase does that, and obviously no password data is stored in the Database.
+Also for in-app payment, no sensible data is stored and Stripe/PayPal APIs provide a
+secure transmission of data.
+<h2>Compatibility</h2>
+The system will be hopefully used by a lot of people, so the Mobile Application must be
+compatible to as many devices as possible. Moreover, Hardware Limitations are not so
+tight because nowadays nearly every smartphone should satisfy them, making Compatibility easier to reach. In addition, nearly every smart device can run the application:
+every iOS or Android tablet and every iOS or Android smartphone.
+<h2>Scalability</h2>
+The architecture is simply scalable as the number of users grows during the time. Enlarging the structure of the system is be an easy task: Firebase helps us a lot in this
+case, because the number of possible users is huge and the parking Areas and Cities
+can be expanded in a really easy way, by simply adding them one after the other in the
+Database (also thanks to the NoSQL structure).
+
 
 
 
