@@ -37,6 +37,47 @@ contains all the parking Areas that will be shown to the user
 * <b>Users</b> In this folder all the Users registered to SmartParking are stored (by their
 ID), and each contains all the needed information about them such as e-mail, name,
 preferences, etc.. <br/>
-<b>Communication<b/> The communication with the Realtime Database is implemented
-through three main methods: on(), update() and set().
+# Design Patterns
+* <b>Model-View-Controller Pattern</b>: a software design pattern commonly used for
+developing user interfaces which divides the related application logic into three
+interconnected elements. This is done to separate internal representations of information from the ways information is presented to and accepted from the user.
+Following the MVC architectural pattern decouples these major components allowing for code reuse and parallel development.
+In SmartParking, we can say that the Mobile App represents both the View and
+the Controller of the system, while the entire Back end and in particular the
+Database represents the Model. That is, the App shows the relevant data to
+the user, and provides the possibility to choose between some options to modify
+the shown data: it behaves like a Controller, calling fetch methods to update the
+Server-side data.
+It is worth to mention that, in some cases, the MVC Pattern with a local copy
+on the client side has been used: this because relying on fetch methods every-time
+and considering that the user modifies only few data, it would be too heavy from
+a computational point of view, and also very bandwidth-consuming.
+* <b>Observer/Observable Pattern</b>: used when there is one-to-many relationship between objects such as if one object is modified, its dependent objects are to be
+notified automatically. Observer pattern falls under Behavioral Pattern category.
+This is the natural Design Pattern used to implement the MVC Pattern: in our
+system, the intent of this pattern is to let the User execute some queries through
+the UI and after searching the Database, the result is shown back in the UI. If
+changes occurs in the database, the UI is notified and updates the UI.
+We can say that React Native helped us a lot in implementing this pattern, due
+to the intrinsic presence of this. All RN components, in fact, are ”linked” to state
+values, and modifying them results in modifying also the UI to which the value is
+linked.
+# Third Party Integration
+---
+# Google
+Considering the huge impact Google has as an IT company all over the World, and
+that it has under its wing around 2 billion users, we wanted facilitate the access to
+SmartParking’s functionalities. For this reason we integrated Google Authentication,
+already provided by Firebase back end services
+# Facebook
+For the same reasons provided to Google Authentication, we integrated Facebook Authentication as well. <br/>
+Such functionality is in fact already provided by Firebase back end
+services
+# PayPal
+In order to handle PayPal payments, we had to set up a PayPal Developer account, and
+also two different sandbox accounts (one Merchant and one Customer). Due to the lack
+of documentation of React Native-PayPal libraries and components, we were forced to
+implement the payment through a Webview and calls to bare PayPal APIs, using POST
+fetch requests.
+
 
