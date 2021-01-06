@@ -16,7 +16,7 @@
     "@react-native-community/slider": "^2.0.9",
     "@react-navigation/drawer": "^5.1.1",
     "@react-navigation/material-bottom-tabs": "^5.2.8",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "base-64": "^0.1.0",
     "expo": "^36.0.0",
     "expo-asset": "~8.0.0",
